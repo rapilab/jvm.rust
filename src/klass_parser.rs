@@ -1,9 +1,13 @@
 pub struct KlassParser {
     clz_read: Vec<u8>,
     filename: String,
-    major: u16,
-    minor: u16,
+    minor_version: u16,
+    major_version: u16,
     pool_item_count: u16,
+    access_flags: u16,
+    this_klass: u16,
+    super_klass: u16,
+    interfaces: Vec<u16>,
 }
 
 impl KlassParser {
@@ -11,9 +15,13 @@ impl KlassParser {
         KlassParser {
             clz_read: buf,
             filename: String::from(""),
-            major: 0,
-            minor: 0,
+            major_version: 0,
+            minor_version: 0,
             pool_item_count: 0,
+            access_flags: 0,
+            this_klass: 0,
+            super_klass: 0,
+            interfaces: Vec::new(),
         }
     }
     pub fn parse(&mut self) {
@@ -28,8 +36,8 @@ impl KlassParser {
             );
         }
 
-        self.minor = ((self.clz_read[4] as u16) << 8) + self.clz_read[5] as u16;
-        self.major = ((self.clz_read[6] as u16) << 8) + self.clz_read[7] as u16;
+        self.minor_version = ((self.clz_read[4] as u16) << 8) + self.clz_read[5] as u16;
+        self.major_version = ((self.clz_read[6] as u16) << 8) + self.clz_read[7] as u16;
         self.pool_item_count = ((self.clz_read[8] as u16) << 8) + self.clz_read[9] as u16;
     }
 

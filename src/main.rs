@@ -11,7 +11,7 @@ fn main() {
         .expect(&format!("Problem reading {}", path));
 
 
-    let parser = KlassParser::new(bytes);
+    let mut parser = KlassParser::new(bytes);
     parser.parse();
 }
 
