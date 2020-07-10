@@ -16,16 +16,12 @@ impl KlassParser {
             pool_item_count: 0,
         }
     }
-    pub fn parse(&self) {
+    pub fn parse(&mut self) {
         self.parse_header();
     }
 
-    fn parse_header(&self) {
-        if self.clz_read[0] != 0xca
-            || self.clz_read[1] != 0xfe
-            || self.clz_read[2] != 0xba
-            || self.clz_read[3] != 0xbe
-        {
+    fn parse_header(&mut self) {
+        if self.is_klass_magic() {
             panic!(
                 "Input file {} does not have correct magic number",
                 self.filename
@@ -35,5 +31,12 @@ impl KlassParser {
         self.minor = ((self.clz_read[4] as u16) << 8) + self.clz_read[5] as u16;
         self.major = ((self.clz_read[6] as u16) << 8) + self.clz_read[7] as u16;
         self.pool_item_count = ((self.clz_read[8] as u16) << 8) + self.clz_read[9] as u16;
+    }
+
+    fn is_klass_magic(&mut self) -> bool {
+        self.clz_read[0] != 0xca
+            || self.clz_read[1] != 0xfe
+            || self.clz_read[2] != 0xba
+            || self.clz_read[3] != 0xbe
     }
 }
