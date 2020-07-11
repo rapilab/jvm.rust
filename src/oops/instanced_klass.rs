@@ -34,6 +34,10 @@ impl InstanceKlass {
 
     pub fn set_class_name(&mut self, index: u16) {
         let entry = self.constant_pool_entries[index as usize].clone();
+        self.klass_name = self.get_string_from_cp(entry);
+    }
+
+    fn get_string_from_cp(&mut self, entry: CpEntry) -> String {
         let mut class_name: String = String::from("");
         if let CpEntry::Class { idx } = entry {
             let name = self.constant_pool_entries[idx as usize].clone();
@@ -41,6 +45,6 @@ impl InstanceKlass {
                 class_name = val;
             }
         }
-        self.klass_name = String::from(class_name);
+        class_name
     }
 }
