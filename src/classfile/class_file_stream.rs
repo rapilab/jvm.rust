@@ -39,6 +39,10 @@ impl ClassFileStream {
         BigEndian::read_u16(&self.get_u2())
     }
 
+    pub fn read_u32(&mut self) -> u32 {
+        BigEndian::read_u32(&self.get_u4())
+    }
+
     pub fn read_to_length(&mut self, length: u16) -> Vec<u8> {
         let len = length as usize;
         let mut x = vec![0; len];

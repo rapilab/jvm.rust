@@ -1,5 +1,6 @@
 use crate::classfile::attribute_info::AttributeInfo;
 
+#[derive(Clone, Debug)]
 pub struct MemberInfo {
     pub(crate) access_flags:u16,
     pub(crate) name_index:u16,

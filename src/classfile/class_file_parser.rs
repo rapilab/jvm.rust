@@ -1,9 +1,12 @@
-use crate::classfile::class_file_stream::ClassFileStream;
-use crate::oops::instanced_klass::InstanceKlass;
 use std::borrow::Borrow;
-use byteorder::{ByteOrder, LittleEndian, BigEndian};
-use crate::oops::constant_pool::{ConstantInfo, CpEntry};
+
+use byteorder::{BigEndian, ByteOrder, LittleEndian};
+
+use crate::classfile::attribute_info::{read_attribute_info, AttributeInfo};
+use crate::classfile::class_file_stream::ClassFileStream;
 use crate::classfile::member_info::MemberInfo;
+use crate::oops::constant_pool::{ConstantInfo, CpEntry};
+use crate::oops::instanced_klass::InstanceKlass;
 
 pub struct ClassFileParser {
     major_version: Vec<u8>,
@@ -77,22 +80,27 @@ impl ClassFileParser {
         // self.parse_fields(&mut stream, self.field_count as usize);
 
         self.method_count = stream.read_u16();
-        self.parse_fields(&mut stream, self.method_count as usize);
+        self.methods = self.parse_fields(&mut stream, self.method_count as usize);
     }
 
-    fn parse_fields(&mut self, stream: &mut ClassFileStream, size: usize) {
+    fn parse_fields(&mut self, stream: &mut ClassFileStream, size: usize) -> Vec<MemberInfo> {
+        let mut members = vec![];
         for _i in 1..size {
-            let member = MemberInfo {
+            let mut member = MemberInfo {
                 access_flags: stream.read_u16(),
                 name_index: stream.read_u16(),
                 descriptor_index: stream.read_u16(),
                 attribute_table: vec![]
             };
             let att_count = stream.read_u16();
-            for _j in 1..att_count {
-
+            let mut attr: AttributeInfo = AttributeInfo::None();
+            for _j in 0..att_count {
+                attr = read_attribute_info(stream, self.constant_pool_entries.clone());
+                member.attribute_table.push(attr);
             }
+            members.push(member);
         }
+        members
     }
 
     fn parse_interfaces(&mut self, stream: &mut ClassFileStream, size: usize) -> Vec<u16> {
@@ -127,5 +135,6 @@ impl ClassFileParser {
         klass.set_class_name(self.this_class_index);
         klass.set_super_name(self.super_class_index);
         klass.set_interfaces(self.interfaces.clone());
+        klass.set_methods(self.methods.clone());
     }
 }

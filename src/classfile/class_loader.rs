@@ -68,5 +68,6 @@ mod tests {
         assert_eq!("HelloWorld", klass.klass_name);
         assert_eq!("java/lang/Object", klass.super_klass_name);
         assert_eq!(0, klass.interfaces.len());
+        assert_eq!(1, klass.methods.len());
     }
 }
