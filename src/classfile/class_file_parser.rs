@@ -3,7 +3,6 @@ use crate::oops::instanced_klass::InstanceKlass;
 use std::borrow::Borrow;
 
 pub struct ClassFileParser {
-    stream: ClassFileStream,
     major_version: u16,
     minor_version: u16,
     this_class_index: u16,
@@ -14,22 +13,23 @@ pub struct ClassFileParser {
 }
 
 
-fn parse_stream(stream: ClassFileStream) {
-
+fn parse_stream(file_parser: &ClassFileParser, mut stream: ClassFileStream) {
+    stream.get_u4();
 }
 
 impl ClassFileParser {
     pub fn new(stream: ClassFileStream) -> ClassFileParser {
-        parse_stream(stream.clone());
-        ClassFileParser {
-            stream,
+        let file_parser = ClassFileParser {
             major_version: 0,
             minor_version: 0,
             this_class_index: 0,
             super_class_index: 0,
             itfs_len: 0,
             java_fields_count: 0
-        }
+        };
+        parse_stream(file_parser.borrow(), stream.clone());
+
+        file_parser
     }
 
     pub fn create_instance_klass(&mut self) -> InstanceKlass {
@@ -39,7 +39,6 @@ impl ClassFileParser {
     }
 
     fn fill_instance_klass(&mut self, mut klass: InstanceKlass) {
-        // klass.set_class_loader_data();
         klass.set_name();
     }
 }
