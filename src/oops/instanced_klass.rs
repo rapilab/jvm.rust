@@ -1,6 +1,7 @@
 use byteorder::{ByteOrder, BigEndian};
 use crate::oops::constant_pool::CpEntry;
 use crate::classfile::member_info::MemberInfo;
+use crate::classfile::attribute_info::AttributeInfo;
 
 
 #[derive(Debug, Clone)]
@@ -12,7 +13,8 @@ pub struct InstanceKlass {
     pub klass_name: String,
     pub super_klass_name: String,
     pub interfaces: Vec<String>,
-    pub methods: Vec<MemberInfo>
+    pub methods: Vec<MemberInfo>,
+    pub attributes: Vec<AttributeInfo>
 }
 
 impl InstanceKlass {
@@ -25,7 +27,8 @@ impl InstanceKlass {
             klass_name: String::from(""),
             super_klass_name: String::from(""),
             interfaces: vec![],
-            methods: vec![]
+            methods: vec![],
+            attributes: vec![]
         }
     }
 
@@ -53,6 +56,10 @@ impl InstanceKlass {
 
     pub fn set_methods(&mut self, methods: Vec<MemberInfo>) {
         self.methods = methods;
+    }
+
+    pub fn set_attributes(&mut self, attributes: Vec<AttributeInfo>) {
+        self.attributes = attributes;
     }
 
     pub fn set_interfaces(&mut self, interfaces: Vec<u16>) {

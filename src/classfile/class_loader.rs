@@ -78,5 +78,7 @@ mod tests {
 
         let method2 = klass.methods[1].clone();
         assert_eq!(1, method2.attribute_table.len());
+
+        assert_eq!(1, klass.attributes.len());
     }
 }

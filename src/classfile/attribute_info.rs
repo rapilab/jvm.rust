@@ -118,7 +118,7 @@ impl CodeAttribute {
     }
 }
 
-pub fn readExceptionTable(stream: &mut ClassFileStream) -> Vec<ExceptionTableEntry> {
+pub fn read_exception_table(stream: &mut ClassFileStream) -> Vec<ExceptionTableEntry> {
     let mut exceptions: Vec<ExceptionTableEntry> = vec![];
     let length = stream.read_u16();
     for i in 1..length {
@@ -133,7 +133,7 @@ pub fn readExceptionTable(stream: &mut ClassFileStream) -> Vec<ExceptionTableEnt
     exceptions
 }
 
-pub fn read_read_attribute(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> Vec<AttributeInfo> {
+pub fn read_attributes(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> Vec<AttributeInfo> {
     let att_count = stream.read_u16();
     let mut attr: AttributeInfo = AttributeInfo::None();
     let mut attrs: Vec<AttributeInfo> = vec![];
@@ -164,8 +164,8 @@ pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
             };
             let code_length = stream.read_u32();
             attribute.code = stream.read_to_length(code_length as u16);
-            attribute.exception_table = readExceptionTable(stream);
-            attribute.attribute_table = read_read_attribute(stream, entries);
+            attribute.exception_table = read_exception_table(stream);
+            attribute.attribute_table = read_attributes(stream, entries);
             AttributeInfo::Code(attribute)
         }
         "LineNumberTable" => {

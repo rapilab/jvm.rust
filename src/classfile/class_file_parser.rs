@@ -2,7 +2,7 @@ use std::borrow::Borrow;
 
 use byteorder::{BigEndian, ByteOrder, LittleEndian};
 
-use crate::classfile::attribute_info::{read_attribute_info, AttributeInfo};
+use crate::classfile::attribute_info::{read_attribute_info, AttributeInfo, read_attributes};
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::classfile::member_info::MemberInfo;
 use crate::oops::constant_pool::{ConstantInfo, CpEntry};
@@ -22,6 +22,8 @@ pub struct ClassFileParser {
     fields: Vec<MemberInfo>,
     method_count: u16,
     methods: Vec<MemberInfo>,
+    attr_count: u16,
+    attributes: Vec<AttributeInfo>,
 }
 
 fn to_u32(slice: &[u8]) -> u32 {
@@ -50,7 +52,9 @@ impl ClassFileParser {
             field_count: 0,
             fields: vec![],
             method_count: 0,
-            methods: vec![]
+            methods: vec![],
+            attr_count: 0,
+            attributes: vec![]
         };
         file_parser.parse_stream(stream.clone());
 
@@ -77,10 +81,12 @@ impl ClassFileParser {
         self.interfaces = self.parse_interfaces(&mut stream, self.interface_count as usize);
 
         self.field_count = stream.read_u16();
-        self.parse_fields(&mut stream, self.field_count as usize);
+        self.fields = self.parse_fields(&mut stream, self.field_count as usize);
 
         self.method_count = stream.read_u16();
         self.methods = self.parse_fields(&mut stream, self.method_count as usize);
+
+        self.attributes = read_attributes(&mut stream, self.constant_pool_entries.clone());
     }
 
     fn parse_fields(&mut self, stream: &mut ClassFileStream, size: usize) -> Vec<MemberInfo> {
@@ -137,5 +143,6 @@ impl ClassFileParser {
         klass.set_super_name(self.super_class_index);
         klass.set_interfaces(self.interfaces.clone());
         klass.set_methods(self.methods.clone());
+        klass.set_attributes(self.attributes.clone());
     }
 }
