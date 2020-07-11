@@ -72,8 +72,11 @@ mod tests {
         assert_eq!("HelloWorld", klass.klass_name);
         assert_eq!("java/lang/Object", klass.super_klass_name);
         assert_eq!(0, klass.interfaces.len());
-        assert_eq!(1, klass.methods.len());
+        assert_eq!(2, klass.methods.len());
         let info = klass.methods[0].clone();
         assert_eq!(1, info.attribute_table.len());
+
+        let method2 = klass.methods[1].clone();
+        assert_eq!(1, method2.attribute_table.len());
     }
 }

@@ -6,7 +6,7 @@ const Code: &str = "Code";
 const Exceptions: &str = "Exceptions";
 const SourceFile: &str = "SourceFile";
 const LineNumberTable: &str = "LineNumberTable";
-const LocalVariableTable: &str = "LocalVariableTable";
+const LocalVariableTable: &str = "local_variable_table";
 const InnerClasses: &str = "InnerClasses";
 const Synthetic: &str = "Synthetic";
 const Deprecated: &str = "Deprecated";
@@ -37,8 +37,8 @@ pub enum AttributeInfo {
     Code(CodeAttribute),
     Exceptions(),
     SourceFile(),
-    LineNumberTable(),
-    LocalVariableTable(),
+    LineNumberTable(LineNumberTableAttribute),
+    LocalVariableTable(LocalVariableTable),
     InnerClasses(),
     Synthetic(),
     Deprecated(),
@@ -78,6 +78,32 @@ pub struct CodeAttribute {
     pub code: Vec<u8>,
     pub exception_table: Vec<ExceptionTableEntry>,
     pub attribute_table: Vec<AttributeInfo>,
+}
+
+#[derive(Clone, Debug)]
+pub struct LineNumberTableAttribute {
+    line_number_table: Vec<LineNumberTableEntry>
+}
+
+#[derive(Clone, Debug)]
+struct LineNumberTableEntry {
+    start_pc: u16,
+    line_number: u16,
+}
+
+
+#[derive(Clone, Debug)]
+pub struct LocalVariableTable {
+    local_variable_table: Vec<LocalVariableTableEntry>
+}
+
+#[derive(Clone, Debug)]
+pub struct LocalVariableTableEntry {
+    start_pc: u16,
+    length: u16,
+    name_index: u16,
+    descriptor_index: u16,
+    index: u16,
 }
 
 impl CodeAttribute {
@@ -120,7 +146,7 @@ pub fn read_read_attribute(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
 
 pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> AttributeInfo {
     let attr_name_index = stream.read_u16();
-    let attrLen = stream.read_u32();
+    let attr_len = stream.read_u32();
     let mut attr_name: String = String::from("");
     let entry = entries[attr_name_index as usize].clone();
     if let CpEntry::Utf8 { val } = entry {
@@ -142,9 +168,52 @@ pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
             attribute.attribute_table = read_read_attribute(stream, entries);
             AttributeInfo::Code(attribute)
         }
+        "LineNumberTable" => {
+            let line_attribute = build_line_table(stream);
+            AttributeInfo::LineNumberTable(line_attribute)
+        }
+        "LocalVariableTable" => {
+            let local_vars_attr = build_local_vars_table(stream);
+            AttributeInfo::LocalVariableTable(local_vars_attr)
+        }
         _ => {
             println!("{}", attr_name);
             AttributeInfo::None()
         }
     }
+}
+
+pub fn build_local_vars_table(stream: &mut ClassFileStream) -> LocalVariableTable {
+    let table_length = stream.read_u16();
+    let mut local_vars_table = LocalVariableTable {
+        local_variable_table: vec![]
+    };
+
+    for _i in 0..table_length as usize {
+        let entry = LocalVariableTableEntry {
+            start_pc: stream.read_u16(),
+            length: stream.read_u16(),
+            name_index: stream.read_u16(),
+            descriptor_index: stream.read_u16(),
+            index: stream.read_u16()
+        };
+        local_vars_table.local_variable_table.push(entry);
+    }
+    local_vars_table
+}
+
+pub fn build_line_table(stream: &mut ClassFileStream) -> LineNumberTableAttribute {
+    let table_length = stream.read_u16();
+    let mut line_attribute = LineNumberTableAttribute {
+        line_number_table: vec![]
+    };
+
+    for _i in 0..table_length as usize {
+        let entry = LineNumberTableEntry {
+            start_pc: stream.read_u16(),
+            line_number: stream.read_u16(),
+        };
+        line_attribute.line_number_table.push(entry);
+    }
+    line_attribute
 }

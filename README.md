@@ -27,3 +27,9 @@ ClassFile {
     attribute_info attributes[attributes_count];
 }
 ```
+
+Vim show bytes:
+
+```
+:%!xxd
+```

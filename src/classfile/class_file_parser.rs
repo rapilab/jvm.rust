@@ -77,7 +77,7 @@ impl ClassFileParser {
         self.interfaces = self.parse_interfaces(&mut stream, self.interface_count as usize);
 
         self.field_count = stream.read_u16();
-        // self.parse_fields(&mut stream, self.field_count as usize);
+        self.parse_fields(&mut stream, self.field_count as usize);
 
         self.method_count = stream.read_u16();
         self.methods = self.parse_fields(&mut stream, self.method_count as usize);
@@ -85,7 +85,7 @@ impl ClassFileParser {
 
     fn parse_fields(&mut self, stream: &mut ClassFileStream, size: usize) -> Vec<MemberInfo> {
         let mut members = vec![];
-        for _i in 1..size {
+        for _i in 0..size {
             let mut member = MemberInfo {
                 access_flags: stream.read_u16(),
                 name_index: stream.read_u16(),
