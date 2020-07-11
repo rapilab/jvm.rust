@@ -1,0 +1,1 @@
+pub mod instanced_klass;
