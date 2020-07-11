@@ -126,7 +126,7 @@ impl CodeAttribute {
 pub fn read_exception_table(stream: &mut ClassFileStream) -> Vec<ExceptionTableEntry> {
     let mut exceptions: Vec<ExceptionTableEntry> = vec![];
     let length = stream.read_u16();
-    for i in 1..length {
+    for _i in 1..length {
         let exception = ExceptionTableEntry {
             start_pc: stream.read_u16(),
             end_pc: stream.read_u16(),
@@ -151,7 +151,7 @@ pub fn read_attributes(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> V
 
 pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> AttributeInfo {
     let attr_name_index = stream.read_u16();
-    let attr_len = stream.read_u32();
+    let _attr_len = stream.read_u32();
     let mut attr_name: String = String::from("");
     let entry = entries[attr_name_index as usize].clone();
     if let CpEntry::Utf8 { val } = entry {

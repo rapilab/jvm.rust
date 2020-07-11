@@ -2,7 +2,7 @@ use crate::classfile::class_factory::ClassFactory;
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::oops::instanced_klass::InstanceKlass;
 
-use std::str;
+
 use std::fs;
 use std::fs::File;
 use std::io::Read;
@@ -57,8 +57,8 @@ impl ClassLoader {
 mod tests {
     use crate::classfile::class_loader::ClassLoader;
     use crate::classfile::attribute_info::AttributeInfo;
-    use byteorder::{BigEndian, ByteOrder};
-    use std::str;
+    
+    
     use crate::oops::instanced_klass::InstanceKlass;
 
     #[test]

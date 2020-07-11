@@ -1,6 +1,6 @@
 use std::str;
 
-use byteorder::{ByteOrder, LittleEndian, BigEndian, ReadBytesExt};
+use byteorder::{ByteOrder, BigEndian, ReadBytesExt};
 
 use crate::classfile::class_file_stream::ClassFileStream;
 

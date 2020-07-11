@@ -1,6 +1,6 @@
-use std::borrow::Borrow;
 
-use byteorder::{BigEndian, ByteOrder, LittleEndian};
+
+use byteorder::{BigEndian, ByteOrder};
 
 use crate::classfile::attribute_info::{read_attribute_info, AttributeInfo, read_attributes};
 use crate::classfile::class_file_stream::ClassFileStream;
