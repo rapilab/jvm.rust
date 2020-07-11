@@ -29,17 +29,22 @@ impl ClassPathEntry {
 }
 
 pub struct ClassLoader {
-
+    pub jl_object_class: Vec<InstanceKlass>
 }
 
 impl ClassLoader {
     pub fn new() -> ClassLoader {
         ClassLoader {
-
+            jl_object_class: vec![]
         }
     }
 
-    pub fn load_class(&mut self, class_name: String) -> InstanceKlass {
+    pub fn init(&mut self, class_name: String) {
+        let klass = self.load_obj_class(class_name);
+        self.jl_object_class.push(klass);
+    }
+
+    pub fn load_obj_class(&mut self, class_name: String) -> InstanceKlass {
         let file_name = self.file_name_for_class_name(class_name);
         let entry = ClassPathEntry::new();
         let stream = entry.open_stream(file_name);
@@ -84,7 +89,7 @@ mod tests {
     fn build_klass() -> InstanceKlass {
         let path = "testdata/java8/HelloWorld.Class";
         let mut class_loader = ClassLoader::new();
-        let klass = class_loader.load_class(String::from(path));
+        let klass = class_loader.load_obj_class(String::from(path));
         klass
     }
 
