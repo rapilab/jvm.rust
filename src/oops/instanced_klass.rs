@@ -1,3 +1,4 @@
+#[derive(Debug, Clone)]
 pub struct InstanceKlass {
 
 }
@@ -7,5 +8,9 @@ impl InstanceKlass {
         InstanceKlass {
 
         }
+    }
+
+    pub fn set_name(&mut self) {
+
     }
 }
