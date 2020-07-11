@@ -3,6 +3,7 @@ use crate::oops::instanced_klass::InstanceKlass;
 use std::borrow::Borrow;
 use byteorder::{ByteOrder, LittleEndian, BigEndian};
 use crate::oops::constant_pool::{ConstantInfo, CpEntry};
+use crate::classfile::member_info::MemberInfo;
 
 pub struct ClassFileParser {
     major_version: Vec<u8>,
@@ -14,8 +15,10 @@ pub struct ClassFileParser {
     super_class_index: u16,
     interface_count: u16,
     interfaces: Vec<u16>,
-    itfs_len: Vec<u8>,
-    java_fields_count: Vec<u8>,
+    field_count: u16,
+    fields: Vec<MemberInfo>,
+    method_count: u16,
+    methods: Vec<MemberInfo>,
 }
 
 fn to_u32(slice: &[u8]) -> u32 {
@@ -41,8 +44,10 @@ impl ClassFileParser {
             super_class_index: 0,
             interface_count: 0,
             interfaces: vec![],
-            itfs_len: vec![0; 2],
-            java_fields_count: vec![0; 2],
+            field_count: 0,
+            fields: vec![],
+            method_count: 0,
+            methods: vec![]
         };
         file_parser.parse_stream(stream.clone());
 
@@ -67,6 +72,27 @@ impl ClassFileParser {
 
         self.interface_count = stream.read_u16();
         self.interfaces = self.parse_interfaces(&mut stream, self.interface_count as usize);
+
+        self.field_count = stream.read_u16();
+        // self.parse_fields(&mut stream, self.field_count as usize);
+
+        self.method_count = stream.read_u16();
+        self.parse_fields(&mut stream, self.method_count as usize);
+    }
+
+    fn parse_fields(&mut self, stream: &mut ClassFileStream, size: usize) {
+        for _i in 1..size {
+            let member = MemberInfo {
+                access_flags: stream.read_u16(),
+                name_index: stream.read_u16(),
+                descriptor_index: stream.read_u16(),
+                attribute_table: vec![]
+            };
+            let att_count = stream.read_u16();
+            for _j in 1..att_count {
+
+            }
+        }
     }
 
     fn parse_interfaces(&mut self, stream: &mut ClassFileStream, size: usize) -> Vec<u16> {
