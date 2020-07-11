@@ -43,7 +43,7 @@ impl ClassFileParser {
 
     fn parse_stream(&mut self, mut stream: ClassFileStream) {
         let magic = stream.get_u4();
-        let i = LittleEndian::read_u16(magic.borrow());
+        let _i = LittleEndian::read_u16(magic.borrow());
         if is_klass_magic(magic) {
             panic!("Input file {} does not have correct magic number")
         }
@@ -55,8 +55,8 @@ impl ClassFileParser {
     }
 
     fn parse_constant_pool(&mut self, stream: &mut ClassFileStream, size: u16) {
-        let pool: Vec<ConstantInfo> = Vec::with_capacity(size as usize);
-        for i in 1..size {
+        let _pool: Vec<ConstantInfo> = Vec::with_capacity(size as usize);
+        for _i in 1..size {
             let vec = stream.get_u2();
             ConstantInfo::from(BigEndian::read_u16(&vec));
         }

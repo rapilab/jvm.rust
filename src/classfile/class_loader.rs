@@ -1,7 +1,7 @@
 use crate::classfile::class_factory::ClassFactory;
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::oops::instanced_klass::InstanceKlass;
-use crate::classfile::class_loader_data::ClassLoaderData;
+
 use std::fs;
 use std::fs::File;
 use std::io::Read;
@@ -40,7 +40,7 @@ impl ClassLoader {
 
     pub fn load_class(&mut self, class_name: String) -> InstanceKlass {
         let file_name = self.file_name_for_class_name(class_name);
-        let mut entry = ClassPathEntry::new();
+        let entry = ClassPathEntry::new();
         let stream = entry.open_stream(file_name);
 
         let klass = ClassFactory::create_from_stream(stream);

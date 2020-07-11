@@ -1,5 +1,5 @@
-use byteorder::{ByteOrder, LittleEndian, BigEndian};
-use std::borrow::Borrow;
+use byteorder::{ByteOrder, BigEndian};
+
 
 #[derive(Debug, Clone)]
 pub struct InstanceKlass {
