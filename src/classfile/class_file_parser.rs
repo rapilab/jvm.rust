@@ -1,35 +1,51 @@
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::oops::instanced_klass::InstanceKlass;
 use std::borrow::Borrow;
+use byteorder::{BigEndian, ReadBytesExt};
 
 pub struct ClassFileParser {
-    major_version: u16,
-    minor_version: u16,
-    this_class_index: u16,
-    super_class_index: u16,
-    itfs_len: u16,
-    java_fields_count: u16
+    major_version: Vec<u8>,
+    minor_version: Vec<u8>,
+    this_class_index: Vec<u8>,
+    super_class_index: Vec<u8>,
+    itfs_len: Vec<u8>,
+    java_fields_count: Vec<u8>
 
 }
 
+fn to_u32(slice: &[u8]) -> u32 {
+    slice.iter().fold((0,1),|(acc,mul),&bit|(acc+(mul*(1&bit as u32)),mul.wrapping_add(mul))).0
+}
 
-fn parse_stream(file_parser: &ClassFileParser, mut stream: ClassFileStream) {
-    stream.get_u4();
+fn is_klass_magic(clz_read: Vec<u8>) -> bool {
+    clz_read[0] != 0xca
+        || clz_read[1] != 0xfe
+        || clz_read[2] != 0xba
+        || clz_read[3] != 0xbe
 }
 
 impl ClassFileParser {
     pub fn new(stream: ClassFileStream) -> ClassFileParser {
-        let file_parser = ClassFileParser {
-            major_version: 0,
-            minor_version: 0,
-            this_class_index: 0,
-            super_class_index: 0,
-            itfs_len: 0,
-            java_fields_count: 0
+        let mut file_parser = ClassFileParser {
+            major_version: vec![0; 2],
+            minor_version: vec![0; 2],
+            this_class_index: vec![0; 2],
+            super_class_index: vec![0; 2],
+            itfs_len: vec![0; 2],
+            java_fields_count: vec![0; 2]
         };
-        parse_stream(file_parser.borrow(), stream.clone());
+        file_parser.parse_stream(stream.clone());
 
         file_parser
+    }
+
+    fn parse_stream(&mut self, mut stream: ClassFileStream) {
+        let magic = stream.get_u4();
+        if is_klass_magic(magic) {
+            panic!("Input file {} does not have correct magic number")
+        }
+
+        self.minor_version = stream.get_u2();
     }
 
     pub fn create_instance_klass(&mut self) -> InstanceKlass {
@@ -39,6 +55,6 @@ impl ClassFileParser {
     }
 
     fn fill_instance_klass(&mut self, mut klass: InstanceKlass) {
-        klass.set_name();
+        // klass.min
     }
 }
