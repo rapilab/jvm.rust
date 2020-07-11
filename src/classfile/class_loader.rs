@@ -58,7 +58,7 @@ mod tests {
 
     #[test]
     fn test_load_class() {
-        let path = "testdata/HelloWorld.class";
+        let path = "testdata/HelloWorld.Class";
         let mut class_loader = ClassLoader::new();
         let klass = class_loader.load_class(String::from(path));
 

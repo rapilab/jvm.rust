@@ -1,6 +1,7 @@
 use crate::classfile::class_file_stream::ClassFileStream;
 use byteorder::{LittleEndian, ByteOrder};
-use crate::classfile::cp_method_ref_info::ConstantMemberRefInfo;
+use crate::classfile::cp_member_ref_info::ConstantMemberRefInfo;
+use crate::classfile::cp_string::ConstantStringInfo;
 
 pub const CONSTANT_UTF8: u8 = 1;
 pub const CONSTANT_INTEGER: u8 = 3;
@@ -22,8 +23,23 @@ pub const CONSTANT_DYNAMIC: u8 = 17;
 
 pub struct ConstantInfo {}
 
+#[derive(Clone, Debug)]
+pub enum CpEntry {
+    Utf8 { val: String },
+    Integer { val: i32 },
+    Float { val: f32 },
+    Long { val: i64 },
+    Double { val: f64 },
+    Class { idx: u16 },
+    String { idx: u16 },
+    FieldRef { clz_idx: u16, nt_idx: u16 },
+    MethodRef { class_idx: u16, name_type_idx: u16 },
+    InterfaceMethodRef { clz_idx: u16, nt_idx: u16 },
+    NameAndType { name_idx: u16, type_idx: u16 },
+}
+
 impl ConstantInfo {
-    pub fn from(stream: &mut ClassFileStream) {
+    pub fn from(stream: &mut ClassFileStream) -> CpEntry {
         let tag = stream.get_u1();
         match tag {
             // CONSTANT_UTF8 => {}
@@ -32,12 +48,22 @@ impl ConstantInfo {
             // CONSTANT_LONG => {}
             // CONSTANT_DOUBLE => {}
             // CONSTANT_CLASS => {}
-            // CONSTANT_STRING => {}
-            // CONSTANT_FIELD_REF => {}
+            CONSTANT_STRING => {
+                CpEntry::String {
+                    idx: stream.read_u16()
+                }
+            }
+            CONSTANT_FIELD_REF => {
+                CpEntry::FieldRef {
+                    clz_idx: stream.read_u16(),
+                    nt_idx: stream.read_u16()
+                }
+            }
             CONSTANT_METHOD_REF => {
-                let mut info = ConstantMemberRefInfo::new();
-                info.class_index = stream.read_u16();
-                info.name_and_type_index = stream.read_u16();
+                CpEntry::MethodRef {
+                    class_idx: stream.read_u16(),
+                    name_type_idx: stream.read_u16()
+                }
             }
             // CONSTANT_INTERFACE_METHOD_REF => {}
             // CONSTANT_NAME_AND_TYPE => {}
@@ -48,7 +74,7 @@ impl ConstantInfo {
             // CONSTANT_PACKAGE => {}
             // CONSTANT_DYNAMIC => {}
             _ => {
-                println!("{}", tag);
+                // panic!("Unsupported Constant Pool type {} at {}", tag, stream.current)
             }
         }
     }

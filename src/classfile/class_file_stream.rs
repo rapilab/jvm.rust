@@ -3,7 +3,7 @@ use byteorder::{LittleEndian, ByteOrder};
 #[derive(Debug, Clone)]
 pub struct ClassFileStream {
     source: Vec<u8>,
-    current: usize,
+    pub(crate) current: usize,
 }
 
 impl ClassFileStream {
