@@ -67,5 +67,6 @@ mod tests {
         assert_eq!(klass.constant_pool_count as usize, klass.constant_pool_entries.len());
         assert_eq!("HelloWorld", klass.klass_name);
         assert_eq!("java/lang/Object", klass.super_klass_name);
+        assert_eq!(0, klass.interfaces.len());
     }
 }

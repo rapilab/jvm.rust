@@ -9,7 +9,8 @@ pub struct InstanceKlass {
     pub constant_pool_count: u8,
     pub constant_pool_entries: Vec<CpEntry>,
     pub klass_name: String,
-    pub super_klass_name: String
+    pub super_klass_name: String,
+    pub interfaces: Vec<String>
 }
 
 impl InstanceKlass {
@@ -20,7 +21,8 @@ impl InstanceKlass {
             constant_pool_count: 0,
             constant_pool_entries: vec![],
             klass_name: String::from(""),
-            super_klass_name: String::from("")
+            super_klass_name: String::from(""),
+            interfaces: vec![]
         }
     }
 
@@ -38,8 +40,20 @@ impl InstanceKlass {
     }
 
     pub fn set_class_name(&mut self, index: u16) {
+        self.klass_name = self.get_class_name(index);
+    }
+
+    fn get_class_name(&mut self, index: u16) -> String {
         let entry = self.constant_pool_entries[index as usize].clone();
-        self.klass_name = self.get_string_from_cp(entry);
+        self.get_string_from_cp(entry)
+    }
+
+    pub fn set_interfaces(&mut self, interfaces: Vec<u16>) {
+        let mut results: Vec<String> = vec![];
+        for x in interfaces {
+            results.push(self.get_class_name(x));
+        }
+        self.interfaces = results
     }
 
     fn get_string_from_cp(&mut self, entry: CpEntry) -> String {
