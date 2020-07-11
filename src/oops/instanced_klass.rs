@@ -8,7 +8,8 @@ pub struct InstanceKlass {
     pub major_version: u16,
     pub constant_pool_count: u8,
     pub constant_pool_entries: Vec<CpEntry>,
-    pub klass_name: String
+    pub klass_name: String,
+    pub super_klass_name: String
 }
 
 impl InstanceKlass {
@@ -18,7 +19,8 @@ impl InstanceKlass {
             major_version: 0,
             constant_pool_count: 0,
             constant_pool_entries: vec![],
-            klass_name: String::from("")
+            klass_name: String::from(""),
+            super_klass_name: String::from("")
         }
     }
 
@@ -32,19 +34,13 @@ impl InstanceKlass {
 
     pub fn set_class_name(&mut self, index: u16) {
         let entry = self.constant_pool_entries[index as usize].clone();
-        match entry {
-            CpEntry::Class { idx } => {
-                let name = self.constant_pool_entries[idx as usize].clone();
-                match name {
-                    CpEntry::Utf8 { val } => {
-                        self.klass_name = val;
-                    },
-                    _ => {}
-                }
-            },
-            _ => {
-
+        let mut class_name: String = String::from("");
+        if let CpEntry::Class { idx } = entry {
+            let name = self.constant_pool_entries[idx as usize].clone();
+            if let CpEntry::Utf8 { val } = name {
+                class_name = val;
             }
         }
+        self.klass_name = String::from(class_name);
     }
 }
