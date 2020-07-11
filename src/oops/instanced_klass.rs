@@ -1,4 +1,4 @@
-use byteorder::{ByteOrder, LittleEndian};
+use byteorder::{ByteOrder, LittleEndian, BigEndian};
 use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
@@ -16,12 +16,11 @@ impl InstanceKlass {
     }
 
     pub fn set_minor_version(&mut self, vector: Vec<u8>) {
-        self.minor_version = ((vector[0] as u16) << 8) | vector[1] as u16;
+        self.minor_version = BigEndian::read_u16(&vector);
     }
 
     pub fn set_major_version(&mut self, vector: Vec<u8>) {
-        // let v = LittleEndian::read_u16(&data);
-        self.major_version = ((vector[0] as u16) << 8) | vector[1] as u16;
+        self.major_version = BigEndian::read_u16(&vector);
     }
 
     pub fn set_name(&mut self) {
