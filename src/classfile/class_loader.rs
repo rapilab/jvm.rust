@@ -58,11 +58,12 @@ mod tests {
 
     #[test]
     fn test_load_class() {
-        let path = "testdata/HelloWorld.Class";
+        let path = "testdata/java8/HelloWorld.Class";
         let mut class_loader = ClassLoader::new();
         let klass = class_loader.load_class(String::from(path));
 
         assert_eq!(0, klass.minor_version);
         assert_eq!(52, klass.major_version);
+        assert_eq!(33, klass.constant_pool_entries.len());
     }
 }

@@ -2,12 +2,13 @@ use crate::classfile::class_file_stream::ClassFileStream;
 use crate::oops::instanced_klass::InstanceKlass;
 use std::borrow::Borrow;
 use byteorder::{ByteOrder, LittleEndian, BigEndian};
-use crate::oops::constant_pool::ConstantInfo;
+use crate::oops::constant_pool::{ConstantInfo, CpEntry};
 
 pub struct ClassFileParser {
     major_version: Vec<u8>,
     minor_version: Vec<u8>,
-    // constant_pool_count: u8,
+    constant_pool_count: u8,
+    constant_pool_entries: Vec<CpEntry>,
     this_class_index: Vec<u8>,
     super_class_index: Vec<u8>,
     itfs_len: Vec<u8>,
@@ -30,7 +31,8 @@ impl ClassFileParser {
         let mut file_parser = ClassFileParser {
             major_version: vec![0; 2],
             minor_version: vec![0; 2],
-            // constant_pool_count: 0,
+            constant_pool_count: 0,
+            constant_pool_entries: vec![],
             this_class_index: vec![0; 2],
             super_class_index: vec![0; 2],
             itfs_len: vec![0; 2],
@@ -50,15 +52,18 @@ impl ClassFileParser {
 
         self.minor_version = stream.get_u2();
         self.major_version = stream.get_u2();
-        let constant_pool_count = BigEndian::read_u16(&stream.get_u2());
-        self.parse_constant_pool(&mut stream, constant_pool_count);
+        self.constant_pool_count = BigEndian::read_u16(&stream.get_u2()) as u8;
+        self.constant_pool_entries = self.parse_constant_pool(&mut stream, self.constant_pool_count);
     }
 
-    fn parse_constant_pool(&mut self, stream: &mut ClassFileStream, size: u16) {
+    fn parse_constant_pool(&mut self, stream: &mut ClassFileStream, size: u8) -> Vec<CpEntry> {
+        let mut entries: Vec<CpEntry> = vec![];
         let _pool: Vec<ConstantInfo> = Vec::with_capacity(size as usize);
         for _i in 1..size {
-            ConstantInfo::from( stream);
+            let cp_entry = ConstantInfo::from(stream);
+            entries.push(cp_entry);
         }
+        entries
     }
 
     pub fn create_instance_klass(&mut self) -> InstanceKlass {
@@ -70,5 +75,6 @@ impl ClassFileParser {
     fn fill_instance_klass(&mut self, klass: &mut InstanceKlass) {
         klass.set_minor_version(self.minor_version.clone());
         klass.set_major_version(self.major_version.clone());
+        klass.constant_pool_entries = self.constant_pool_entries.clone();
     }
 }

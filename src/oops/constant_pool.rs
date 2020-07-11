@@ -83,7 +83,12 @@ impl ConstantInfo {
                 }
             }
             // CONSTANT_INTERFACE_METHOD_REF => {}
-            // CONSTANT_NAME_AND_TYPE => {}
+            CONSTANT_NAME_AND_TYPE => {
+                CpEntry::NameAndType {
+                    name_idx: stream.read_u16(),
+                    type_idx: stream.read_u16()
+                }
+            }
             // CONSTANT_METHOD_HANDLE => {}
             // CONSTANT_METHOD_TYPE => {}
             // CONSTANT_INVOKE_DYNAMIC => {}
