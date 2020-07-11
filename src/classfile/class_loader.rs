@@ -62,6 +62,7 @@ mod tests {
         let mut class_loader = ClassLoader::new();
         let klass = class_loader.load_class(String::from(path));
 
-        // assert_eq!(klass)
+        assert_eq!(0, klass.minor_version);
+        assert_eq!(52, klass.major_version);
     }
 }

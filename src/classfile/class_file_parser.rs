@@ -1,7 +1,7 @@
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::oops::instanced_klass::InstanceKlass;
 use std::borrow::Borrow;
-use byteorder::{BigEndian, ReadBytesExt};
+use byteorder::{ByteOrder, LittleEndian};
 
 pub struct ClassFileParser {
     major_version: Vec<u8>,
@@ -41,20 +41,23 @@ impl ClassFileParser {
 
     fn parse_stream(&mut self, mut stream: ClassFileStream) {
         let magic = stream.get_u4();
+        let i = LittleEndian::read_u16(magic.borrow());
         if is_klass_magic(magic) {
             panic!("Input file {} does not have correct magic number")
         }
 
         self.minor_version = stream.get_u2();
+        self.major_version = stream.get_u2();
     }
 
     pub fn create_instance_klass(&mut self) -> InstanceKlass {
         let mut klass = InstanceKlass::new();
-        self.fill_instance_klass(klass.clone());
+        self.fill_instance_klass(&mut klass);
         klass
     }
 
-    fn fill_instance_klass(&mut self, mut klass: InstanceKlass) {
-        // klass.min
+    fn fill_instance_klass(&mut self, klass: &mut InstanceKlass) {
+        klass.set_minor_version(self.minor_version.clone());
+        klass.set_major_version(self.major_version.clone());
     }
 }
