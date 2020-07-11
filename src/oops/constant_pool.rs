@@ -26,6 +26,7 @@ pub struct ConstantInfo {}
 
 #[derive(Clone, Debug)]
 pub enum CpEntry {
+    Empty {},
     Utf8 { val: String },
     Integer { val: i32 },
     Float { val: f32 },

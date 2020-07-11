@@ -52,14 +52,15 @@ impl ClassFileParser {
         self.minor_version = stream.get_u2();
         self.major_version = stream.get_u2();
         self.constant_pool_count = BigEndian::read_u16(&stream.get_u2()) as u8;
-        self.constant_pool_entries = self.parse_constant_pool(&mut stream, self.constant_pool_count);
+        self.constant_pool_entries = self.parse_constant_pool(&mut stream, self.constant_pool_count as usize);
     }
 
-    fn parse_constant_pool(&mut self, stream: &mut ClassFileStream, size: u8) -> Vec<CpEntry> {
+    fn parse_constant_pool(&mut self, stream: &mut ClassFileStream, size: usize) -> Vec<CpEntry> {
         let mut entries: Vec<CpEntry> = vec![];
-        for _i in 1..size - 1 {
-            let entry = ConstantInfo::from(stream);
-            entries.push(entry);
+        entries.push(CpEntry::Empty {});
+        // The constant_pool table is indexed from 1
+        for _i in 1..size {
+            entries.push(ConstantInfo::from(stream));
         }
         entries
     }
@@ -74,5 +75,6 @@ impl ClassFileParser {
         klass.set_minor_version(self.minor_version.clone());
         klass.set_major_version(self.major_version.clone());
         klass.constant_pool_entries = self.constant_pool_entries.clone();
+        klass.constant_pool_count = self.constant_pool_count.clone();
     }
 }
