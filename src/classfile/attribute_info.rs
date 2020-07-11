@@ -87,9 +87,24 @@ impl CodeAttribute {
             max_locals: 0,
             code: vec![],
             exception_table: vec![],
-            attribute_table: vec![]
+            attribute_table: vec![],
         }
     }
+}
+
+pub fn readExceptionTable(stream: &mut ClassFileStream) -> Vec<ExceptionTableEntry> {
+    let mut exceptions: Vec<ExceptionTableEntry> = vec![];
+    let length = stream.read_u16();
+    for i in 1..length {
+        let exception = ExceptionTableEntry {
+            start_pc: stream.read_u16(),
+            end_pc: stream.read_u16(),
+            handler_pc: stream.read_u16(),
+            catch_type: stream.read_u16(),
+        };
+        exceptions.push(exception);
+    }
+    exceptions
 }
 
 pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> AttributeInfo {
@@ -100,9 +115,20 @@ pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
     if let CpEntry::Utf8 { val } = entry {
         attr_name = val;
     }
+
     match &attr_name[..] {
         "Code" => {
-            AttributeInfo::Code(CodeAttribute::new())
+            let mut attribute = CodeAttribute {
+                max_stack: stream.read_u16(),
+                max_locals: stream.read_u16(),
+                code: vec![],
+                exception_table: vec![],
+                attribute_table: vec![],
+            };
+            let code_length = stream.read_u16();
+            attribute.code = stream.read_to_length(code_length);
+            attribute.exception_table = readExceptionTable(stream);
+            AttributeInfo::Code(attribute)
         }
         _ => {
             println!("{}", attr_name);

@@ -94,7 +94,7 @@ impl ClassFileParser {
             };
             let att_count = stream.read_u16();
             let mut attr: AttributeInfo = AttributeInfo::None();
-            for _j in 0..att_count {
+            for _j in 1..att_count {
                 attr = read_attribute_info(stream, self.constant_pool_entries.clone());
                 member.attribute_table.push(attr);
             }
