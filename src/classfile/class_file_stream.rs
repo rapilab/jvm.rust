@@ -38,4 +38,12 @@ impl ClassFileStream {
     pub fn read_u16(&mut self) -> u16 {
         LittleEndian::read_u16(&self.get_u2())
     }
+
+    pub fn read_to_length(&mut self, length: u16) -> Vec<u8> {
+        let len = length as usize;
+        let mut x = vec![0; len];
+        x[..len].clone_from_slice(&self.source[self.current..self.current + len]);
+        self.current += len;
+        x
+    }
 }

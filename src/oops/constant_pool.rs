@@ -1,7 +1,8 @@
+use std::str;
+
+use byteorder::{ByteOrder, LittleEndian, BigEndian, ReadBytesExt};
+
 use crate::classfile::class_file_stream::ClassFileStream;
-use byteorder::{LittleEndian, ByteOrder};
-use crate::classfile::cp_member_ref_info::ConstantMemberRefInfo;
-use crate::classfile::cp_string::ConstantStringInfo;
 
 pub const CONSTANT_UTF8: u8 = 1;
 pub const CONSTANT_INTEGER: u8 = 3;
@@ -42,12 +43,28 @@ impl ConstantInfo {
     pub fn from(stream: &mut ClassFileStream) -> CpEntry {
         let tag = stream.get_u1();
         match tag {
-            // CONSTANT_UTF8 => {}
+            CONSTANT_UTF8 => {
+                let length_bytes = stream.get_u2();
+                let length = BigEndian::read_i16(&length_bytes);
+
+                let str_bytes = stream.read_to_length(length as u16);
+                let s = match str::from_utf8(&str_bytes) {
+                    Ok(v) => v,
+                    Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
+                };
+                CpEntry::Utf8 {
+                    val: String::from(s)
+                }
+            }
             // CONSTANT_INTEGER => {}
             // CONSTANT_FLOAT => {}
             // CONSTANT_LONG => {}
             // CONSTANT_DOUBLE => {}
-            // CONSTANT_CLASS => {}
+            CONSTANT_CLASS => {
+                CpEntry::Class {
+                    idx: stream.read_u16()
+                }
+            }
             CONSTANT_STRING => {
                 CpEntry::String {
                     idx: stream.read_u16()
@@ -74,7 +91,7 @@ impl ConstantInfo {
             // CONSTANT_PACKAGE => {}
             // CONSTANT_DYNAMIC => {}
             _ => {
-                // panic!("Unsupported Constant Pool type {} at {}", tag, stream.current)
+                panic!("Unsupported Constant Pool type {} at {}", tag, stream.current)
             }
         }
     }
