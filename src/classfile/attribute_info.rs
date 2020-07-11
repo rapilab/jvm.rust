@@ -36,7 +36,7 @@ pub enum AttributeInfo {
     ConstantValue(),
     Code(CodeAttribute),
     Exceptions(),
-    SourceFile(),
+    SourceFile(SourceFile),
     LineNumberTable(LineNumberTableAttribute),
     LocalVariableTable(LocalVariableTable),
     InnerClasses(),
@@ -104,6 +104,11 @@ pub struct LocalVariableTableEntry {
     name_index: u16,
     descriptor_index: u16,
     index: u16,
+}
+
+#[derive(Clone, Debug)]
+pub struct SourceFile {
+    source_file_index: u16
 }
 
 impl CodeAttribute {
@@ -175,6 +180,12 @@ pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
         "LocalVariableTable" => {
             let local_vars_attr = build_local_vars_table(stream);
             AttributeInfo::LocalVariableTable(local_vars_attr)
+        }
+        "SourceFile" => {
+            let source_file = SourceFile {
+                source_file_index: stream.read_u16()
+            };
+            AttributeInfo::SourceFile(source_file)
         }
         _ => {
             println!("{}", attr_name);

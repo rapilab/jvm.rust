@@ -59,12 +59,11 @@ mod tests {
     use crate::classfile::attribute_info::AttributeInfo;
     use byteorder::{BigEndian, ByteOrder};
     use std::str;
+    use crate::oops::instanced_klass::InstanceKlass;
 
     #[test]
     fn test_load_class() {
-        let path = "testdata/java8/HelloWorld.Class";
-        let mut class_loader = ClassLoader::new();
-        let klass = class_loader.load_class(String::from(path));
+        let klass = build_klass();
 
         assert_eq!(0, klass.minor_version);
         assert_eq!(52, klass.major_version);
@@ -80,5 +79,27 @@ mod tests {
         assert_eq!(1, method2.attribute_table.len());
 
         assert_eq!(1, klass.attributes.len());
+    }
+
+    fn build_klass() -> InstanceKlass {
+        let path = "testdata/java8/HelloWorld.Class";
+        let mut class_loader = ClassLoader::new();
+        let klass = class_loader.load_class(String::from(path));
+        klass
+    }
+
+    #[test]
+    fn test_load_attr() {
+        let klass = build_klass();
+        for attr in klass.attributes {
+            match attr {
+                AttributeInfo::SourceFile(_) => {
+                    assert!(true)
+                },
+                _ => {
+                    assert!(false)
+                }
+            }
+        }
     }
 }
