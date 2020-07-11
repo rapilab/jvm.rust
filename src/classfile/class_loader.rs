@@ -139,4 +139,10 @@ mod tests {
         }
     }
 
+    #[test]
+    fn test_load_source_file() {
+        let klass = build_klass();
+        assert_eq!("HelloWorld.java", klass.source_file);
+    }
+
 }

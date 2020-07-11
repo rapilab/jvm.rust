@@ -14,7 +14,8 @@ pub struct InstanceKlass {
     pub super_klass_name: String,
     pub interfaces: Vec<String>,
     pub methods: Vec<MemberInfo>,
-    pub attributes: Vec<AttributeInfo>
+    pub attributes: Vec<AttributeInfo>,
+    pub source_file: String,
 }
 
 impl InstanceKlass {
@@ -28,7 +29,8 @@ impl InstanceKlass {
             super_klass_name: String::from(""),
             interfaces: vec![],
             methods: vec![],
-            attributes: vec![]
+            attributes: vec![],
+            source_file: String::from("")
         }
     }
 
@@ -60,6 +62,15 @@ impl InstanceKlass {
 
     pub fn set_attributes(&mut self, attributes: Vec<AttributeInfo>) {
         self.attributes = attributes;
+        for x in self.attributes.to_vec() {
+            match x {
+                AttributeInfo::SourceFile(source_file) => {
+                    let string = self.get_string_by_index(source_file.source_file_index);
+                    self.source_file = string;
+                },
+                _ => {}
+            }
+        }
     }
 
     pub fn set_interfaces(&mut self, interfaces: Vec<u16>) {
@@ -73,11 +84,17 @@ impl InstanceKlass {
     fn get_string_from_cp(&mut self, entry: CpEntry) -> String {
         let mut class_name: String = String::from("");
         if let CpEntry::Class { idx } = entry {
-            let name = self.constant_pool_entries[idx as usize].clone();
-            if let CpEntry::Utf8 { val } = name {
-                class_name = val;
-            }
+            class_name = self.get_string_by_index(idx)
         }
         class_name
+    }
+
+    fn get_string_by_index(&mut self, idx: u16) -> String {
+        let mut str: String = String::from("");
+        let name = self.constant_pool_entries[idx as usize].clone();
+        if let CpEntry::Utf8 { val } = name {
+            str = val;
+        }
+        str
     }
 }

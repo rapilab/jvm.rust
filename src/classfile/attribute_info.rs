@@ -99,16 +99,16 @@ pub struct LocalVariableTable {
 
 #[derive(Clone, Debug)]
 pub struct LocalVariableTableEntry {
-    start_pc: u16,
-    length: u16,
-    name_index: u16,
-    descriptor_index: u16,
-    index: u16,
+    pub start_pc: u16,
+    pub length: u16,
+    pub name_index: u16,
+    pub descriptor_index: u16,
+    pub index: u16,
 }
 
 #[derive(Clone, Debug)]
 pub struct SourceFile {
-    source_file_index: u16
+    pub source_file_index: u16
 }
 
 impl CodeAttribute {
