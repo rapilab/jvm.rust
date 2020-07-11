@@ -1,5 +1,7 @@
-mod class_loader_data;
-mod class_file_parser;
-mod class_loader;
-mod class_file_stream;
-mod class_factory;
+pub mod class_loader_data;
+pub mod class_file_parser;
+pub mod class_loader;
+pub mod class_file_stream;
+pub mod class_factory;
+
+pub mod cp_method_ref_info;

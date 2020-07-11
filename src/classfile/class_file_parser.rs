@@ -57,8 +57,7 @@ impl ClassFileParser {
     fn parse_constant_pool(&mut self, stream: &mut ClassFileStream, size: u16) {
         let _pool: Vec<ConstantInfo> = Vec::with_capacity(size as usize);
         for _i in 1..size {
-            let vec = stream.get_u2();
-            ConstantInfo::from(BigEndian::read_u16(&vec));
+            ConstantInfo::from( stream);
         }
     }
 

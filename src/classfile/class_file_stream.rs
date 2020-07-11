@@ -1,6 +1,4 @@
-
-
-
+use byteorder::{LittleEndian, ByteOrder};
 
 #[derive(Debug, Clone)]
 pub struct ClassFileStream {
@@ -16,6 +14,13 @@ impl ClassFileStream {
         }
     }
 
+    pub fn get_u1(&mut self) -> u8 {
+        let mut x = vec![0; 1];
+        x[..1].clone_from_slice(&self.source[self.current..self.current + 1]);
+        self.current += 1;
+        x[0]
+    }
+
     pub fn get_u2(&mut self) -> Vec<u8> {
         let mut x = vec![0; 2];
         x[..2].clone_from_slice(&self.source[self.current..self.current + 2]);
@@ -28,5 +33,9 @@ impl ClassFileStream {
         x[..4].clone_from_slice(&self.source[self.current..self.current + 4]);
         self.current += 4;
         x
+    }
+
+    pub fn read_u16(&mut self) -> u16 {
+        LittleEndian::read_u16(&self.get_u2())
     }
 }
