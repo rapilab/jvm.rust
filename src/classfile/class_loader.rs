@@ -2,6 +2,7 @@ use crate::classfile::class_factory::ClassFactory;
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::oops::instanced_klass::InstanceKlass;
 
+use std::str;
 use std::fs;
 use std::fs::File;
 use std::io::Read;
@@ -55,6 +56,9 @@ impl ClassLoader {
 #[cfg(test)]
 mod tests {
     use crate::classfile::class_loader::ClassLoader;
+    use crate::classfile::attribute_info::AttributeInfo;
+    use byteorder::{BigEndian, ByteOrder};
+    use std::str;
 
     #[test]
     fn test_load_class() {
@@ -69,5 +73,7 @@ mod tests {
         assert_eq!("java/lang/Object", klass.super_klass_name);
         assert_eq!(0, klass.interfaces.len());
         assert_eq!(1, klass.methods.len());
+        let info = klass.methods[0].clone();
+        assert_eq!(1, info.attribute_table.len());
     }
 }

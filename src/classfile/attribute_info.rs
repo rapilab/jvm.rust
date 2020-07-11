@@ -73,11 +73,11 @@ pub struct ExceptionTableEntry {
 
 #[derive(Clone, Debug)]
 pub struct CodeAttribute {
-    max_stack: u16,
-    max_locals: u16,
-    code: Vec<u8>,
-    exception_table: Vec<ExceptionTableEntry>,
-    attribute_table: Vec<ExceptionTableEntry>,
+    pub max_stack: u16,
+    pub max_locals: u16,
+    pub code: Vec<u8>,
+    pub exception_table: Vec<ExceptionTableEntry>,
+    pub attribute_table: Vec<AttributeInfo>,
 }
 
 impl CodeAttribute {
@@ -107,6 +107,17 @@ pub fn readExceptionTable(stream: &mut ClassFileStream) -> Vec<ExceptionTableEnt
     exceptions
 }
 
+pub fn read_read_attribute(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> Vec<AttributeInfo> {
+    let att_count = stream.read_u16();
+    let mut attr: AttributeInfo = AttributeInfo::None();
+    let mut attrs: Vec<AttributeInfo> = vec![];
+    for _j in 0..att_count as usize {
+        attr = read_attribute_info(stream, entries.clone());
+        attrs.push(attr);
+    }
+    attrs
+}
+
 pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> AttributeInfo {
     let attr_name_index = stream.read_u16();
     let attrLen = stream.read_u32();
@@ -125,9 +136,10 @@ pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
                 exception_table: vec![],
                 attribute_table: vec![],
             };
-            let code_length = stream.read_u16();
-            attribute.code = stream.read_to_length(code_length);
+            let code_length = stream.read_u32();
+            attribute.code = stream.read_to_length(code_length as u16);
             attribute.exception_table = readExceptionTable(stream);
+            attribute.attribute_table = read_read_attribute(stream, entries);
             AttributeInfo::Code(attribute)
         }
         _ => {
