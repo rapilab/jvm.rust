@@ -9,8 +9,9 @@ pub struct ClassFileParser {
     minor_version: Vec<u8>,
     constant_pool_count: u8,
     constant_pool_entries: Vec<CpEntry>,
-    this_class_index: Vec<u8>,
-    super_class_index: Vec<u8>,
+    access_flags: Vec<u8>,
+    this_class_index: u16,
+    super_class_index: u16,
     itfs_len: Vec<u8>,
     java_fields_count: Vec<u8>,
 }
@@ -33,8 +34,9 @@ impl ClassFileParser {
             minor_version: vec![0; 2],
             constant_pool_count: 0,
             constant_pool_entries: vec![],
-            this_class_index: vec![0; 2],
-            super_class_index: vec![0; 2],
+            access_flags: vec![0; 2],
+            this_class_index: 0,
+            super_class_index: 0,
             itfs_len: vec![0; 2],
             java_fields_count: vec![0; 2],
         };
@@ -53,6 +55,9 @@ impl ClassFileParser {
         self.major_version = stream.get_u2();
         self.constant_pool_count = BigEndian::read_u16(&stream.get_u2()) as u8;
         self.constant_pool_entries = self.parse_constant_pool(&mut stream, self.constant_pool_count as usize);
+        self.access_flags = stream.get_u2();
+        self.this_class_index = stream.read_u16();
+        self.super_class_index = stream.read_u16();
     }
 
     fn parse_constant_pool(&mut self, stream: &mut ClassFileStream, size: usize) -> Vec<CpEntry> {
@@ -76,5 +81,6 @@ impl ClassFileParser {
         klass.set_major_version(self.major_version.clone());
         klass.constant_pool_entries = self.constant_pool_entries.clone();
         klass.constant_pool_count = self.constant_pool_count.clone();
+        klass.set_class_name(self.this_class_index);
     }
 }

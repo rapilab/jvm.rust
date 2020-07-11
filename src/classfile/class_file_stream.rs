@@ -1,4 +1,4 @@
-use byteorder::{LittleEndian, ByteOrder};
+use byteorder::{LittleEndian, ByteOrder, BigEndian};
 
 #[derive(Debug, Clone)]
 pub struct ClassFileStream {
@@ -36,7 +36,7 @@ impl ClassFileStream {
     }
 
     pub fn read_u16(&mut self) -> u16 {
-        LittleEndian::read_u16(&self.get_u2())
+        BigEndian::read_u16(&self.get_u2())
     }
 
     pub fn read_to_length(&mut self, length: u16) -> Vec<u8> {

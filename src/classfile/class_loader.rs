@@ -65,5 +65,6 @@ mod tests {
         assert_eq!(0, klass.minor_version);
         assert_eq!(52, klass.major_version);
         assert_eq!(klass.constant_pool_count as usize, klass.constant_pool_entries.len());
+        assert_eq!("HelloWorld", klass.klass_name);
     }
 }

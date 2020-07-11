@@ -7,7 +7,8 @@ pub struct InstanceKlass {
     pub minor_version: u16,
     pub major_version: u16,
     pub constant_pool_count: u8,
-    pub constant_pool_entries: Vec<CpEntry>
+    pub constant_pool_entries: Vec<CpEntry>,
+    pub klass_name: String
 }
 
 impl InstanceKlass {
@@ -16,7 +17,8 @@ impl InstanceKlass {
             minor_version: 0,
             major_version: 0,
             constant_pool_count: 0,
-            constant_pool_entries: vec![]
+            constant_pool_entries: vec![],
+            klass_name: String::from("")
         }
     }
 
@@ -28,7 +30,21 @@ impl InstanceKlass {
         self.major_version = BigEndian::read_u16(&vector);
     }
 
-    pub fn set_name(&mut self) {
+    pub fn set_class_name(&mut self, index: u16) {
+        let entry = self.constant_pool_entries[index as usize].clone();
+        match entry {
+            CpEntry::Class { idx } => {
+                let name = self.constant_pool_entries[idx as usize].clone();
+                match name {
+                    CpEntry::Utf8 { val } => {
+                        self.klass_name = val;
+                    },
+                    _ => {}
+                }
+            },
+            _ => {
 
+            }
+        }
     }
 }

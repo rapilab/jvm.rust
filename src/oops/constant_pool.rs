@@ -24,6 +24,9 @@ pub const CONSTANT_DYNAMIC: u8 = 17;
 
 pub struct ConstantInfo {}
 
+// #[derive(Clone, Debug)]
+// pub struct CpClassInfo { idx: u16 }
+
 #[derive(Clone, Debug)]
 pub enum CpEntry {
     Empty {},
