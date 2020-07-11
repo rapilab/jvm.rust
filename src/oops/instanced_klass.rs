@@ -32,6 +32,11 @@ impl InstanceKlass {
         self.major_version = BigEndian::read_u16(&vector);
     }
 
+    pub fn set_super_name(&mut self, index: u16) {
+        let entry = self.constant_pool_entries[index as usize].clone();
+        self.super_klass_name = self.get_string_from_cp(entry);
+    }
+
     pub fn set_class_name(&mut self, index: u16) {
         let entry = self.constant_pool_entries[index as usize].clone();
         self.klass_name = self.get_string_from_cp(entry);

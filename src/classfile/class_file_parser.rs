@@ -82,5 +82,6 @@ impl ClassFileParser {
         klass.constant_pool_entries = self.constant_pool_entries.clone();
         klass.constant_pool_count = self.constant_pool_count.clone();
         klass.set_class_name(self.this_class_index);
+        klass.set_super_name(self.super_class_index);
     }
 }
