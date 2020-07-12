@@ -16,7 +16,7 @@ impl LoadN {
 }
 
 impl InstructionExec for LoadN {
-    fn execute(&self, frame: &Frame) {
+    fn execute(&self, _frame: &Frame) {
 
     }
 }

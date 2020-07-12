@@ -35,20 +35,20 @@ mod tests {
         let length = instr.len();
         let vec = decoder(instr.clone());
         for i in 0..length {
-            let mut x = vec.get(i).unwrap();
+            let x = vec.get(i).unwrap();
             x.execute(frame);
         }
     }
 
     #[test]
     fn test_frame() {
-        let mut runtime = Runtime::new();
+        let runtime = Runtime::new();
         let string = String::from("testdata/java8/HelloWorld.Class");
         let mut class_loader = runtime.boot_loader;
         class_loader.init(string);
 
         let klass = class_loader.jl_object_class.get(0).unwrap();
-        let mut method = klass.methods.get(1).unwrap();
+        let method = klass.methods.get(1).unwrap();
 
         let mut thread = JThread::new();
         let frame = thread.clone().new_frame(method.clone());

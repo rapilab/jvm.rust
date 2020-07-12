@@ -15,7 +15,7 @@ impl DirectoryEntry {
 }
 
 impl Entry for DirectoryEntry {
-    fn read_class(&self, class_name: String) {
+    fn read_class(&self, _class_name: String) {
         unimplemented!()
     }
 }

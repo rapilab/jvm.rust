@@ -14,7 +14,7 @@ impl LDC {
 }
 
 impl InstructionExec for LDC {
-    fn execute(&self, frame: &Frame) {
+    fn execute(&self, _frame: &Frame) {
 
     }
 }

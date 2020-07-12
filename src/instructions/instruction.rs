@@ -32,7 +32,7 @@ impl NoOperandsInstruction {
 }
 
 impl InstructionExec for NoOperandsInstruction {
-    fn execute(&self, frame: &Frame) {
+    fn execute(&self, _frame: &Frame) {
         println!("NoOperandsInstruction");
     }
 }

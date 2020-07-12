@@ -3,7 +3,7 @@ use crate::oops::constant_pool::CpEntry;
 use crate::classfile::member_info::MemberInfo;
 use crate::classfile::attribute_info::{AttributeInfo, ExceptionTableEntry, LineNumberTableAttribute};
 use crate::oops::method_descriptor::MethodDescriptor;
-use crate::instructions::j_class::Class;
+
 use std::borrow::Borrow;
 
 

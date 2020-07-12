@@ -14,7 +14,7 @@ impl InvokeVirtual {
 }
 
 impl InstructionExec for InvokeVirtual {
-    fn execute(&self, frame: &Frame) {
+    fn execute(&self, _frame: &Frame) {
 
     }
 }

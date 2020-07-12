@@ -14,7 +14,7 @@ impl JReturn {
 }
 
 impl InstructionExec for JReturn {
-    fn execute(&self, frame: &Frame) {
+    fn execute(&self, _frame: &Frame) {
 
     }
 }

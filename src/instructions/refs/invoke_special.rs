@@ -15,6 +15,6 @@ impl InvokeSpecial {
 
 impl InstructionExec for InvokeSpecial {
     fn execute(&self, frame: &Frame) {
-        let cp = frame.clone().get_constant_pool();
+        let _cp = frame.clone().get_constant_pool();
     }
 }
