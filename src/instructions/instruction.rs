@@ -1,4 +1,6 @@
 use crate::instructions::opcode;
+use crate::instructions::exec::InstructionExec;
+use crate::instructions::constants::j_const::ConstNull;
 
 #[derive(Clone, Debug)]
 pub enum Instruction {
@@ -14,13 +16,9 @@ pub enum Instruction {
     OpGetStatic(),
 }
 
-pub trait InstructionExec {
-
-}
-
-pub struct  InstructionStack {
-    stack: Vec<Box<dyn InstructionExec>>,
-}
+// pub struct  InstructionStack {
+//     stack: Vec<Box<dyn InstructionExec>>,
+// }
 
 pub struct NoOperandsInstruction {
 
@@ -33,7 +31,9 @@ impl NoOperandsInstruction {
 }
 
 impl InstructionExec for NoOperandsInstruction {
+    fn execute() {
 
+    }
 }
 
 pub fn get_instruction(ops: &u8, ins: u8) -> Box<dyn InstructionExec> {
@@ -41,9 +41,9 @@ pub fn get_instruction(ops: &u8, ins: u8) -> Box<dyn InstructionExec> {
         opcode::OpNop => {
             Box::new(NoOperandsInstruction::new())
         }
-        // opcode::OpAConstNull => {
-        //     println!("ACONST_NULL")
-        // }
+        opcode::OpAConstNull => {
+            Box::new(ConstNull::new())
+        }
         // opcode::OpIConstM1 => {
         //     println!("ICONST_M1")
         // }
