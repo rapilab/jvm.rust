@@ -1,7 +1,7 @@
 use byteorder::{ByteOrder, BigEndian};
 use crate::oops::constant_pool::CpEntry;
 use crate::classfile::member_info::MemberInfo;
-use crate::classfile::attribute_info::{AttributeInfo, ExceptionTableEntry};
+use crate::classfile::attribute_info::{AttributeInfo, ExceptionTableEntry, LineNumberTableAttribute};
 
 
 #[derive(Debug, Clone)]
@@ -28,6 +28,7 @@ pub struct JMethod {
     pub attribute_table: Vec<AttributeInfo>,
     pub parameter_annotation_data: Vec<u8>,
     pub annotation_default_data: Vec<u8>,
+    pub line_num_table: LineNumberTableAttribute,
 
 }
 
@@ -41,7 +42,8 @@ impl JMethod {
             exception_table: vec![],
             attribute_table: vec![],
             parameter_annotation_data: vec![],
-            annotation_default_data: vec![]
+            annotation_default_data: vec![],
+            line_num_table: LineNumberTableAttribute::new()
         }
     }
 }
@@ -87,14 +89,15 @@ impl InstanceKlass {
     pub fn set_methods(&mut self, methods: Vec<MemberInfo>) {
         for x in methods {
             let mut j_method = JMethod::new();
+            j_method.name = self.klass_name.clone();
+            j_method.attribute_table = x.attribute_table.clone();
+
             for j in x.attribute_table {
                 match j {
                     AttributeInfo::Code(code) => {
-                        j_method.name = self.klass_name.clone();
                         j_method.max_stack = code.max_stack;
                         j_method.code = code.code;
                         j_method.max_locals = code.max_locals;
-                        j_method.attribute_table = code.attribute_table;
                         j_method.exception_table = code.exception_table;
                     },
                     _ => {}

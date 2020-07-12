@@ -85,6 +85,14 @@ pub struct LineNumberTableAttribute {
     line_number_table: Vec<LineNumberTableEntry>
 }
 
+impl LineNumberTableAttribute {
+    pub fn new() -> LineNumberTableAttribute {
+        LineNumberTableAttribute {
+            line_number_table: vec![]
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 struct LineNumberTableEntry {
     start_pc: u16,
