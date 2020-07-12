@@ -14,7 +14,7 @@ impl JThread {
         }
     }
 
-    pub fn push_frame(&mut self, frame: Frame) {
+    pub fn push_frame(&mut self, frame: &Frame) {
         self.stack.push(frame)
     }
 
@@ -28,6 +28,18 @@ mod tests {
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::JThread;
     use std::borrow::Borrow;
+    use crate::instructions::decoder::decoder;
+    use crate::rtda::frame::Frame;
+
+    fn exec_bytecode_method(frame: &Frame, instr: Vec<u8>) {
+        let length = instr.len();
+        let vec = decoder(instr);
+        for i in 1..length {
+            let x = vec.get(0).unwrap();
+            x.execute();
+        }
+        // vec
+    }
 
     #[test]
     fn test_frame() {
@@ -41,6 +53,8 @@ mod tests {
 
         let mut thread = JThread::new();
         let frame = thread.clone().new_frame(method.clone());
-        thread.push_frame(frame);
+        thread.push_frame(frame.borrow());
+
+        exec_bytecode_method(frame.borrow(), method.clone().code);
     }
 }

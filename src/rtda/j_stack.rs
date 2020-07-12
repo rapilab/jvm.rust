@@ -1,10 +1,11 @@
 use crate::rtda::frame::Frame;
+use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
 pub struct JStack {
     max_size: usize,
     size: usize,
-    top: Option<Box<Frame>>
+    top: Option<Frame>
 }
 
 impl JStack {
@@ -16,7 +17,7 @@ impl JStack {
         }
     }
 
-    pub fn push(&mut self, frame: Frame) {
-        self.top = Some(Box::new(frame));
+    pub fn push(&mut self, frame: &Frame) {
+        // self.top = Some(frame.borrow());
     }
 }
