@@ -4,6 +4,7 @@ use std::io::Error;
 use std::fs::{ReadDir, DirEntry};
 use std::ffi::OsStr;
 use crate::classpath::zip_entry::ZipEntry;
+use crate::classpath::directory_entry::DirectoryEntry;
 
 pub trait Entry {
     // className: fully/qualified/ClassName.class
@@ -26,13 +27,13 @@ impl ClassPath {
     }
 
     pub fn parse(java_home: String, user_path: String) -> ClassPath {
-        let mut classpaths = ClassPath::new(java_home.clone(), user_path);
+        let mut classpaths = ClassPath::new(java_home.clone(), user_path.clone());
 
         classpaths.parse_boot_path(java_home.clone());
 
         classpaths.parse_ext_path(java_home.clone());
 
-        classpaths.parse_user_class_path();
+        classpaths.parse_user_class_path(user_path.clone());
 
         classpaths
     }
@@ -51,7 +52,7 @@ impl ClassPath {
         let files = fs::read_dir(path).unwrap();
         files
             .filter_map(Result::ok)
-            .filter(|d| is_jar(d))
+            .filter(|d| is_dir_jar(d))
             .for_each(|f| {
                 let entry = ZipEntry::new(f.path());
                 // entries.push(Box::from(entry));
@@ -59,10 +60,21 @@ impl ClassPath {
             });
     }
 
-    pub fn parse_user_class_path(&self) {}
+    pub fn parse_user_class_path(&mut self, path: String) {
+        let is_jar = path.ends_with(".jar");
+        let is_zip = path.ends_with(".zip");
+
+        if is_jar || is_zip {
+            let entry = ZipEntry::new(Path::new(&path).to_path_buf());
+            self.entries.push(Box::from(entry));
+        } else {
+            let dir_entry = DirectoryEntry::new(Path::new(&path).to_path_buf());
+            self.entries.push(Box::from(dir_entry));
+        }
+    }
 }
 
-fn is_jar(d: &DirEntry) -> bool {
+fn is_dir_jar(d: &DirEntry) -> bool {
     if let Some(e) = d.path().extension() { e == "jar" } else { false }
 }
 
@@ -78,6 +90,6 @@ mod tests {
         let user_path: String = String::from("testdata/java8");
         let class_paths = ClassPath::parse(java_home, user_path);
 
-        assert_eq!(20, class_paths.entries.len());
+        assert_eq!(21, class_paths.entries.len());
     }
 }
