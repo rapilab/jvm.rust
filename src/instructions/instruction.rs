@@ -47,12 +47,12 @@ pub fn get_instruction(ops: &u8, ins: u8) -> Box<dyn InstructionExec> {
         opcode::OpIConstM1 => {
             Box::new(ConstInt::new(-1))
         }
-        // opcode::OpIConst0 => {
-        //     println!("ICONST_0")
-        // }
-        // opcode::OpIConst1 => {
-        //     println!("ICONST_1")
-        // }
+        opcode::OpIConst0 => {
+            Box::new(ConstInt::new(0))
+        }
+        opcode::OpIConst1 => {
+            Box::new(ConstInt::new(1))
+        }
         // opcode::OpLDC => {
         //     println!("LDC")
         // }
