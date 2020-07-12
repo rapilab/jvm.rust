@@ -1,8 +1,6 @@
 use std::path::{Path, PathBuf};
 use std::fs;
-use std::io::Error;
-use std::fs::{ReadDir, DirEntry};
-use std::ffi::OsStr;
+use std::fs::{DirEntry};
 use crate::classpath::zip_entry::ZipEntry;
 use crate::classpath::directory_entry::DirectoryEntry;
 

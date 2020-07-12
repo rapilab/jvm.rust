@@ -1,4 +1,3 @@
-use std::iter::Zip;
 use std::path::PathBuf;
 use crate::classpath::classpath::Entry;
 

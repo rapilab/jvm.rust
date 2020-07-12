@@ -1,6 +1,7 @@
 use byteorder::{BigEndian, ByteOrder};
 use jvm::instructions::opcode;
 use jvm::instructions::instruction::get_instruction;
+use std::borrow::Borrow;
 
 fn main() {}
 

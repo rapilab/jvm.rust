@@ -1,11 +1,6 @@
 use crate::classfile::class_factory::ClassFactory;
-use crate::classfile::class_file_stream::ClassFileStream;
-use crate::oops::instanced_klass::InstanceKlass;
-
-use std::fs;
-use std::fs::File;
-use std::io::Read;
 use crate::classpath::class_file_entry::ClassFileEntry;
+use crate::oops::instanced_klass::InstanceKlass;
 
 pub struct ClassLoader {
     pub jl_object_class: Vec<InstanceKlass>
@@ -43,10 +38,8 @@ impl ClassLoader {
 
 #[cfg(test)]
 mod tests {
-    use crate::classfile::class_loader::ClassLoader;
     use crate::classfile::attribute_info::AttributeInfo;
-    
-    
+    use crate::classfile::class_loader::ClassLoader;
     use crate::oops::instanced_klass::InstanceKlass;
 
     #[test]
