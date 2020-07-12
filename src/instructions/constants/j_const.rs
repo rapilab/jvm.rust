@@ -6,8 +6,8 @@ pub struct JConst {
 }
 
 impl InstructionExec for JConst {
-    fn execute() {
-        unimplemented!()
+    fn execute(&self) {
+
     }
 }
 
@@ -24,5 +24,5 @@ impl ConstNull {
 }
 
 impl InstructionExec for ConstNull {
-    fn execute() {}
+    fn execute(&self) {}
 }

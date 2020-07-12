@@ -1,3 +1,3 @@
 pub trait InstructionExec {
-    fn execute();
+    fn execute(&self);
 }

@@ -31,7 +31,7 @@ impl NoOperandsInstruction {
 }
 
 impl InstructionExec for NoOperandsInstruction {
-    fn execute() {
+    fn execute(&self) {
 
     }
 }
