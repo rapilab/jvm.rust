@@ -1,5 +1,6 @@
 use crate::rtda::frame::Frame;
 
+#[derive(Debug, Clone)]
 pub struct JStack {
     max_size: usize,
     size: usize,

@@ -2,6 +2,7 @@ use crate::instructions::slot::Slot;
 use crate::oops::instanced_klass::JMethod;
 use crate::rtda::thread::JThread;
 
+#[derive(Debug, Clone)]
 pub struct LocalVars {
     slots: Vec<Slot>
 }
@@ -14,6 +15,7 @@ impl LocalVars {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct OperandStack {
     size: usize,
     slots: Vec<Slot>,
@@ -28,6 +30,7 @@ impl OperandStack {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct Frame {
     pub max_locals: u16,
     pub max_stack: u16,
