@@ -2,6 +2,7 @@ use std::iter::Zip;
 use std::path::PathBuf;
 use crate::classpath::classpath::Entry;
 
+#[derive(Clone)]
 pub struct ZipEntry {
     pub path: PathBuf
 }

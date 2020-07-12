@@ -10,7 +10,6 @@ pub trait Entry {
     fn read_class(&self, class_name: String);
 }
 
-// #[derive(Clone, Debug, Default)]
 pub struct ClassPath {
     pub entries: Vec<Box<dyn Entry>>,
     pub java_home: String,
@@ -26,41 +25,39 @@ impl ClassPath {
         }
     }
 
-    pub fn parse(java_home: String, user_path: String) {
+    pub fn parse(java_home: String, user_path: String) -> ClassPath {
         let mut classpaths = ClassPath::new(java_home.clone(), user_path);
 
-        let boot_entries = classpaths.parse_boot_path(java_home.clone());
-        // classpaths.entries.join(boot_entries);
+        classpaths.parse_boot_path(java_home.clone());
 
         classpaths.parse_ext_path();
 
         classpaths.parse_user_class_path();
+
+        classpaths
     }
 
-    pub fn parse_boot_path(&self, java_home: String) -> Vec<ZipEntry> {
+    pub fn parse_boot_path(&mut self, java_home: String)  {
         let jre_path = Path::new(&java_home).join("lib");
-        spread_wildcard_entry(jre_path)
+        self.spread_wildcard_entry(jre_path);
+    }
+
+    pub fn spread_wildcard_entry(&mut self, path: PathBuf)  {
+        let files = fs::read_dir(path).unwrap();
+        files
+            .filter_map(Result::ok)
+            .filter(|d| is_jar(d))
+            .for_each(|f| {
+                let entry = ZipEntry::new(f.path());
+                // entries.push(Box::from(entry));
+                self.entries.push(Box::from(entry));
+            });
     }
 
     pub fn parse_ext_path(&self) {
 
     }
     pub fn parse_user_class_path(&self) {}
-}
-
-pub fn spread_wildcard_entry(path: PathBuf) -> Vec<ZipEntry> {
-    let mut entries = vec![];
-    let files = fs::read_dir(path).unwrap();
-    files
-        .filter_map(Result::ok)
-        .filter(|d| is_jar(d))
-        .for_each(|f| {
-            let entry = ZipEntry::new(f.path());
-            entries.push(entry);
-        });
-
-    entries
-
 }
 
 fn is_jar(d: &DirEntry) -> bool {
@@ -75,6 +72,8 @@ mod tests {
     fn test_load_class() {
         let java_home: String = String::from("/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre");
         let user_path: String = String::from("testdata/java8");
-        let class_parse = ClassPath::parse(java_home, user_path);
+        let class_paths = ClassPath::parse(java_home, user_path);
+
+        assert_eq!(10, class_paths.entries.len());
     }
 }
