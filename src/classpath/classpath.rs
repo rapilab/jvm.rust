@@ -30,7 +30,7 @@ impl ClassPath {
 
         classpaths.parse_boot_path(java_home.clone());
 
-        classpaths.parse_ext_path();
+        classpaths.parse_ext_path(java_home.clone());
 
         classpaths.parse_user_class_path();
 
@@ -39,6 +39,11 @@ impl ClassPath {
 
     pub fn parse_boot_path(&mut self, java_home: String)  {
         let jre_path = Path::new(&java_home).join("lib");
+        self.spread_wildcard_entry(jre_path);
+    }
+
+    pub fn parse_ext_path(&mut self, java_home: String) {
+        let jre_path = Path::new(&java_home).join("lib").join("ext");
         self.spread_wildcard_entry(jre_path);
     }
 
@@ -54,9 +59,6 @@ impl ClassPath {
             });
     }
 
-    pub fn parse_ext_path(&self) {
-
-    }
     pub fn parse_user_class_path(&self) {}
 }
 
@@ -74,6 +76,6 @@ mod tests {
         let user_path: String = String::from("testdata/java8");
         let class_paths = ClassPath::parse(java_home, user_path);
 
-        assert_eq!(10, class_paths.entries.len());
+        assert_eq!(20, class_paths.entries.len());
     }
 }
