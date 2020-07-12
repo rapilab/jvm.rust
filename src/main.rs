@@ -5,9 +5,47 @@ fn main() {}
 fn exec_bytecode_method(instr: Vec<u8>) {
     let mut current = 0;
     loop {
-        match instr.get(current) {
-            Some(var) => {
-                println!("{}", var);
+        let ops_ins = instr.get(current);
+        match ops_ins {
+            Some(ins) => {
+                match ins {
+                    0x00 => {
+                        println!("NOP");
+                    }
+                    0x01 => {
+                        println!("ACONST_NULL");
+                    }
+                    0x02 => {
+                        println!("ICONST_M1");
+                    }
+                    0x03 => {
+                        println!("ICONST_0");
+                    }
+                    0x04 => {
+                        println!("ICONST_1");
+                    }
+                    0x12 => {
+                        println!("LDC");
+                    }
+                    0x2a => {
+                        println!("ALOAD_0")
+                    }
+                    0xb7 => {
+                        println!("INVOKESPECIAL")
+                    }
+                    0xb6 => {
+                        println!("INVOKEVIRTUAL")
+                    }
+                    0xb1 => {
+                        println!("RETURN")
+                    }
+                    0xb2 => {
+                        println!("GETSTATIC")
+                    }
+                    _ => {
+                        println!("{}", ins);
+                    }
+                }
             }
             _ => {
                 break;
