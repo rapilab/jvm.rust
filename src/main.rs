@@ -12,7 +12,7 @@ fn exec_bytecode_method(instr: Vec<u8>) {
         match ops_ins {
             Some(ops) => {
                 let ins = *ops;
-                let instruction = get_instruction(ops, ins);
+                let instruction = get_instruction(ins);
             }
             _ => {
                 break;
