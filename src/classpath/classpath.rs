@@ -72,6 +72,8 @@ mod tests {
 
     #[test]
     fn test_load_class() {
+        // todo: change java_home to get from shell
+        // "$(java -XshowSettings:properties -version 2>&1 > /dev/null | grep 'java.home' | awk '{print $3}')"
         let java_home: String = String::from("/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre");
         let user_path: String = String::from("testdata/java8");
         let class_paths = ClassPath::parse(java_home, user_path);
