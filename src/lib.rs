@@ -1,3 +1,4 @@
+mod instructions;
 mod classpath;
 pub mod rtda;
 pub mod oops;
