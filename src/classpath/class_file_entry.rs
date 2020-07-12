@@ -3,13 +3,13 @@ use std::fs::File;
 use std::fs;
 use std::io::Read;
 
-pub struct ClassPathEntry {
+pub struct ClassFileEntry {
 
 }
 
-impl ClassPathEntry {
-    pub fn new() -> ClassPathEntry {
-        ClassPathEntry {
+impl ClassFileEntry {
+    pub fn new() -> ClassFileEntry {
+        ClassFileEntry {
 
         }
     }

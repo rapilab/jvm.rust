@@ -5,7 +5,7 @@ use crate::oops::instanced_klass::InstanceKlass;
 use std::fs;
 use std::fs::File;
 use std::io::Read;
-use crate::classpath::class_path_entry::ClassPathEntry;
+use crate::classpath::class_file_entry::ClassFileEntry;
 
 pub struct ClassLoader {
     pub jl_object_class: Vec<InstanceKlass>
@@ -29,7 +29,7 @@ impl ClassLoader {
 
     pub fn build_user_class(&mut self, class_name: String) -> InstanceKlass {
         let file_name = self.file_name_for_class_name(class_name);
-        let entry = ClassPathEntry::new();
+        let entry = ClassFileEntry::new();
 
         let stream = entry.open_stream(file_name);
         let klass = ClassFactory::create_from_stream(stream);
