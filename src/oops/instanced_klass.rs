@@ -2,6 +2,7 @@ use byteorder::{ByteOrder, BigEndian};
 use crate::oops::constant_pool::CpEntry;
 use crate::classfile::member_info::MemberInfo;
 use crate::classfile::attribute_info::{AttributeInfo, ExceptionTableEntry, LineNumberTableAttribute};
+use crate::oops::method_descriptor::MethodDescriptor;
 
 
 #[derive(Debug, Clone)]
@@ -24,6 +25,7 @@ pub struct JMethod {
     pub max_stack: u16,
     pub max_locals: u16,
     pub code: Vec<u8>,
+    pub descriptor: MethodDescriptor,
     pub exception_table: Vec<ExceptionTableEntry>,
     pub attribute_table: Vec<AttributeInfo>,
     pub parameter_annotation_data: Vec<u8>,
@@ -43,7 +45,8 @@ impl JMethod {
             attribute_table: vec![],
             parameter_annotation_data: vec![],
             annotation_default_data: vec![],
-            line_num_table: LineNumberTableAttribute::new()
+            line_num_table: LineNumberTableAttribute::new(),
+            descriptor: MethodDescriptor::new()
         }
     }
 }
