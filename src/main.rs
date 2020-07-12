@@ -43,7 +43,7 @@ fn exec_bytecode_method(instr: Vec<u8>) {
                         println!("GETSTATIC")
                     }
                     _ => {
-                        println!("{}", ins);
+                        println!("{:x}", ins);
                     }
                 }
             }
