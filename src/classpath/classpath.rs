@@ -3,12 +3,14 @@ use std::fs;
 use std::io::Error;
 use std::fs::{ReadDir, DirEntry};
 use std::ffi::OsStr;
+use crate::classpath::zip_entry::ZipEntry;
 
 pub trait Entry {
     // className: fully/qualified/ClassName.class
     fn read_class(&self, class_name: String);
 }
 
+// #[derive(Clone, Debug, Default)]
 pub struct ClassPath {
     pub entries: Vec<Box<dyn Entry>>,
     pub java_home: String,
@@ -25,38 +27,40 @@ impl ClassPath {
     }
 
     pub fn parse(java_home: String, user_path: String) {
-        let path = ClassPath::new(java_home.clone(), user_path);
+        let mut classpaths = ClassPath::new(java_home.clone(), user_path);
 
-        path.parse_boot_path(java_home.clone());
+        let boot_entries = classpaths.parse_boot_path(java_home.clone());
+        // classpaths.entries.join(boot_entries);
 
-        path.parse_ext_path();
+        classpaths.parse_ext_path();
 
-        path.parse_user_class_path();
+        classpaths.parse_user_class_path();
     }
 
-    pub fn parse_boot_path(&self, java_home: String) {
+    pub fn parse_boot_path(&self, java_home: String) -> Vec<ZipEntry> {
         let jre_path = Path::new(&java_home).join("lib");
-        spread_wildcard_entry(jre_path);
+        spread_wildcard_entry(jre_path)
     }
-    pub fn parse_ext_path(&self) {}
+
+    pub fn parse_ext_path(&self) {
+
+    }
     pub fn parse_user_class_path(&self) {}
 }
 
-pub fn spread_wildcard_entry(path: PathBuf) {
+pub fn spread_wildcard_entry(path: PathBuf) -> Vec<ZipEntry> {
+    let mut entries = vec![];
     let files = fs::read_dir(path).unwrap();
     files
         .filter_map(Result::ok)
         .filter(|d| is_jar(d))
-        .for_each(|f| println!("{:?}", f));
-    //
-    // let names =
-    //     files.filter_map(|entry| {
-    //         entry.ok().and_then(|e| e.path().file_name()
-    //             .and_then(|n| n.to_str().map(
-    //                 |s| { String::from(s) }
-    //             ))
-    //         )
-    //     }).collect::<Vec<String>>();
+        .for_each(|f| {
+            let entry = ZipEntry::new(f.path());
+            entries.push(entry);
+        });
+
+    entries
+
 }
 
 fn is_jar(d: &DirEntry) -> bool {
