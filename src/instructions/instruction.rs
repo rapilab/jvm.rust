@@ -1,6 +1,6 @@
 use crate::instructions::opcode;
 use crate::instructions::exec::InstructionExec;
-use crate::instructions::constants::j_const::ConstNull;
+use crate::instructions::constants::j_const::{ConstNull, ConstInt};
 
 #[derive(Clone, Debug)]
 pub enum Instruction {
@@ -44,9 +44,9 @@ pub fn get_instruction(ops: &u8, ins: u8) -> Box<dyn InstructionExec> {
         opcode::OpAConstNull => {
             Box::new(ConstNull::new())
         }
-        // opcode::OpIConstM1 => {
-        //     println!("ICONST_M1")
-        // }
+        opcode::OpIConstM1 => {
+            Box::new(ConstInt::new(-1))
+        }
         // opcode::OpIConst0 => {
         //     println!("ICONST_0")
         // }

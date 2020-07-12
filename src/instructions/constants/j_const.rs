@@ -1,5 +1,5 @@
 use crate::instructions::exec::InstructionExec;
-use crate::instructions::slot::{Slot, EmptySlot};
+use crate::instructions::slot::{Slot, EmptySlot, IntSlot};
 
 pub struct JConst {
     k: Slot
@@ -12,17 +12,19 @@ impl InstructionExec for JConst {
 }
 
 pub struct ConstNull {}
-
 impl ConstNull {
-    pub fn new() -> ConstNull {
-        let j_const = JConst {
+    pub fn new() -> JConst {
+        JConst {
             k: EmptySlot::new()
-        };
-
-        ConstNull {}
+        }
     }
 }
 
-impl InstructionExec for ConstNull {
-    fn execute(&self) {}
+pub struct ConstInt {}
+impl ConstInt {
+    pub fn new(n: i32) -> JConst {
+        JConst {
+            k: IntSlot::new(n)
+        }
+    }
 }

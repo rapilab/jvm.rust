@@ -14,3 +14,13 @@ impl EmptySlot {
         }
     }
 }
+
+pub struct IntSlot {}
+impl IntSlot {
+    pub(crate) fn new(n: i32) -> Slot {
+        Slot {
+            val: n as i64,
+            obj: JObject {},
+        }
+    }
+}
