@@ -1,4 +1,5 @@
 use byteorder::{BigEndian, ByteOrder};
+use jvm::instructions::opcode;
 
 fn main() {}
 
@@ -8,38 +9,38 @@ fn exec_bytecode_method(instr: Vec<u8>) {
         let ops_ins = instr.get(current);
         match ops_ins {
             Some(ins) => {
-                match ins {
-                    0x00 => {
+                match *ins {
+                    opcode::OpNop => {
                         println!("NOP");
                     }
-                    0x01 => {
+                    opcode::OpAConstNull => {
                         println!("ACONST_NULL");
                     }
-                    0x02 => {
+                    opcode::OpIConstM1 => {
                         println!("ICONST_M1");
                     }
-                    0x03 => {
+                    opcode::OpIConst0 => {
                         println!("ICONST_0");
                     }
-                    0x04 => {
+                    opcode::OpIConst1 => {
                         println!("ICONST_1");
                     }
-                    0x12 => {
+                    opcode::OpLDC => {
                         println!("LDC");
                     }
-                    0x2a => {
+                    opcode::OpALoad0 => {
                         println!("ALOAD_0")
                     }
-                    0xb7 => {
+                    opcode::OpInvokeSpecial => {
                         println!("INVOKESPECIAL")
                     }
-                    0xb6 => {
+                    opcode::OpInvokeVirtual => {
                         println!("INVOKEVIRTUAL")
                     }
-                    0xb1 => {
+                    opcode::OpReturn => {
                         println!("RETURN")
                     }
-                    0xb2 => {
+                    opcode::OpGetStatic => {
                         println!("GETSTATIC")
                     }
                     _ => {

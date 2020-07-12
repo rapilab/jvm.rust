@@ -1,4 +1,4 @@
-mod instructions;
+pub mod instructions;
 mod classpath;
 pub mod rtda;
 pub mod oops;
