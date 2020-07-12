@@ -1,6 +1,12 @@
 use crate::instructions::opcode;
 use crate::instructions::exec::InstructionExec;
 use crate::instructions::constants::j_const::{ConstNull, ConstInt};
+use crate::instructions::constants::ldc::LDC;
+use crate::instructions::loads::load_n::LoadN;
+use crate::instructions::refs::invoke_special::InvokeSpecial;
+use crate::instructions::refs::invoke_virtual::InvokeVirtual;
+use crate::instructions::control::j_return::JReturn;
+use crate::instructions::refs::get_static::GetStatic;
 
 #[derive(Clone, Debug)]
 pub enum Instruction {
@@ -53,24 +59,24 @@ pub fn get_instruction(ops: &u8, ins: u8) -> Box<dyn InstructionExec> {
         opcode::OpIConst1 => {
             Box::new(ConstInt::new(1))
         }
-        // opcode::OpLDC => {
-        //     println!("LDC")
-        // }
-        // opcode::OpALoad0 => {
-        //     println!("ALOAD_0")
-        // }
-        // opcode::OpInvokeSpecial => {
-        //     println!("INVOKESPECIAL")
-        // }
-        // opcode::OpInvokeVirtual => {
-        //     println!("INVOKEVIRTUAL")
-        // }
-        // opcode::OpReturn => {
-        //     println!("RETURN")
-        // }
-        // opcode::OpGetStatic => {
-        //     println!("GETSTATIC")
-        // }
+        opcode::OpLDC => {
+            Box::new(LDC::new())
+        }
+        opcode::OpALoad0 => {
+            Box::new(LoadN::new(0, false))
+        }
+        opcode::OpInvokeSpecial => {
+            Box::new(InvokeSpecial::new())
+        }
+        opcode::OpInvokeVirtual => {
+            Box::new(InvokeVirtual::new())
+        }
+        opcode::OpReturn => {
+            Box::new(JReturn::new())
+        }
+        opcode::OpGetStatic => {
+            Box::new(GetStatic::new())
+        }
         _ => {
             Box::new(NoOperandsInstruction::new())
         }
