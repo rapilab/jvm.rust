@@ -2,25 +2,14 @@ use byteorder::{BigEndian, ByteOrder};
 use jvm::instructions::opcode;
 use jvm::instructions::instruction::get_instruction;
 use std::borrow::Borrow;
+use jvm::instructions::decoder::decoder;
+use jvm::instructions::exec::InstructionExec;
 
 fn main() {}
 
-fn exec_bytecode_method(instr: Vec<u8>) {
-    let mut current = 0;
-    loop {
-        let ops_ins = instr.get(current);
-        match ops_ins {
-            Some(ops) => {
-                let ins = *ops;
-                let instruction = get_instruction(ins);
-            }
-            _ => {
-                break;
-            }
-        }
-
-        current += 1;
-    }
+fn exec_bytecode_method(instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
+    let vec = decoder(instr);
+    vec
 }
 
 
@@ -37,7 +26,8 @@ mod tests {
         class_loader.init(string);
         for x in class_loader.jl_object_class {
             for x in x.methods {
-                exec_bytecode_method(x.code.clone())
+                let ins = exec_bytecode_method(x.code.clone());
+                // assert_eq!(5, ins.len());
             }
         }
     }

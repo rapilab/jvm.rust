@@ -1,3 +1,4 @@
+pub mod decoder;
 pub mod j_class;
 pub mod j_object;
 

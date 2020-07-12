@@ -22,10 +22,6 @@ pub enum Instruction {
     OpGetStatic(),
 }
 
-// pub struct  InstructionStack {
-//     stack: Vec<Box<dyn InstructionExec>>,
-// }
-
 pub struct NoOperandsInstruction {
 
 }
