@@ -1,4 +1,5 @@
 use crate::instructions::exec::InstructionExec;
+use crate::rtda::frame::Frame;
 
 pub struct JReturn {
 
@@ -13,7 +14,7 @@ impl JReturn {
 }
 
 impl InstructionExec for JReturn {
-    fn execute(&self) {
+    fn execute(&self, frame: &Frame) {
 
     }
 }

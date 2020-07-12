@@ -1,4 +1,5 @@
 use crate::instructions::exec::InstructionExec;
+use crate::rtda::frame::Frame;
 
 pub struct LDC {
     index: usize
@@ -13,7 +14,7 @@ impl LDC {
 }
 
 impl InstructionExec for LDC {
-    fn execute(&self) {
+    fn execute(&self, frame: &Frame) {
 
     }
 }

@@ -1,4 +1,5 @@
 use crate::instructions::exec::InstructionExec;
+use crate::rtda::frame::Frame;
 
 pub struct InvokeVirtual {
     pub index: usize
@@ -13,7 +14,7 @@ impl InvokeVirtual {
 }
 
 impl InstructionExec for InvokeVirtual {
-    fn execute(&self) {
+    fn execute(&self, frame: &Frame) {
 
     }
 }

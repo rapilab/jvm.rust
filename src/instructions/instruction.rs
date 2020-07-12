@@ -7,6 +7,7 @@ use crate::instructions::refs::invoke_special::InvokeSpecial;
 use crate::instructions::refs::invoke_virtual::InvokeVirtual;
 use crate::instructions::control::j_return::JReturn;
 use crate::instructions::refs::get_static::GetStatic;
+use crate::rtda::frame::Frame;
 
 #[derive(Clone, Debug)]
 pub enum Instruction {
@@ -22,20 +23,16 @@ pub enum Instruction {
     OpGetStatic(),
 }
 
-pub struct NoOperandsInstruction {
-
-}
+pub struct NoOperandsInstruction {}
 
 impl NoOperandsInstruction {
     pub fn new() -> NoOperandsInstruction {
-        NoOperandsInstruction{}
+        NoOperandsInstruction {}
     }
 }
 
 impl InstructionExec for NoOperandsInstruction {
-    fn execute(&self) {
-
-    }
+    fn execute(&self, frame: &Frame) {}
 }
 
 pub fn get_instruction(ins: u8) -> Box<dyn InstructionExec> {

@@ -1,4 +1,5 @@
 use crate::instructions::exec::InstructionExec;
+use crate::rtda::frame::Frame;
 
 pub struct InvokeSpecial {
     pub index: usize
@@ -13,7 +14,7 @@ impl InvokeSpecial {
 }
 
 impl InstructionExec for InvokeSpecial {
-    fn execute(&self) {
+    fn execute(&self, frame: &Frame) {
 
     }
 }

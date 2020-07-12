@@ -36,7 +36,7 @@ mod tests {
         let vec = decoder(instr);
         for i in 1..length {
             let x = vec.get(0).unwrap();
-            x.execute();
+            x.execute(frame);
         }
         // vec
     }

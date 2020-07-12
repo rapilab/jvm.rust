@@ -1,12 +1,13 @@
 use crate::instructions::exec::InstructionExec;
 use crate::instructions::slot::{Slot, EmptySlot, IntSlot};
+use crate::rtda::frame::Frame;
 
 pub struct JConst {
     k: Slot
 }
 
 impl InstructionExec for JConst {
-    fn execute(&self) {
+    fn execute(&self, frame: &Frame) {
 
     }
 }

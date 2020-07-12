@@ -1,4 +1,5 @@
 use crate::instructions::exec::InstructionExec;
+use crate::rtda::frame::Frame;
 
 pub struct LoadN {
     n: usize,
@@ -15,7 +16,7 @@ impl LoadN {
 }
 
 impl InstructionExec for LoadN {
-    fn execute(&self) {
+    fn execute(&self, frame: &Frame) {
 
     }
 }
