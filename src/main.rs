@@ -7,9 +7,14 @@ use jvm::instructions::exec::InstructionExec;
 
 fn main() {}
 
-fn exec_bytecode_method(instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
+fn exec_bytecode_method(instr: Vec<u8>) {
+    let length = instr.len();
     let vec = decoder(instr);
-    vec
+    for i in 1..length {
+        let x = vec.get(0).unwrap();
+        x.execute();
+    }
+    // vec
 }
 
 
