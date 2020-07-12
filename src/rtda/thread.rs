@@ -33,9 +33,9 @@ mod tests {
 
     fn execute_method(frame: &Frame, instr: Vec<u8>) {
         let length = instr.len();
-        let vec = decoder(instr);
+        let vec = decoder(instr.clone());
         for i in 0..length {
-            let x = vec.get(i).unwrap();
+            let mut x = vec.get(i).unwrap();
             x.execute(frame);
         }
     }
