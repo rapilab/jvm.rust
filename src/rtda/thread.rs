@@ -31,14 +31,13 @@ mod tests {
     use crate::instructions::decoder::decoder;
     use crate::rtda::frame::Frame;
 
-    fn exec_bytecode_method(frame: &Frame, instr: Vec<u8>) {
+    fn execute_method(frame: &Frame, instr: Vec<u8>) {
         let length = instr.len();
         let vec = decoder(instr);
-        for i in 1..length {
-            let x = vec.get(0).unwrap();
+        for i in 0..length {
+            let x = vec.get(i).unwrap();
             x.execute(frame);
         }
-        // vec
     }
 
     #[test]
@@ -49,12 +48,12 @@ mod tests {
         class_loader.init(string);
 
         let klass = class_loader.jl_object_class.get(0).unwrap();
-        let mut method = klass.methods.get(0).unwrap();
+        let mut method = klass.methods.get(1).unwrap();
 
         let mut thread = JThread::new();
         let frame = thread.clone().new_frame(method.clone());
         thread.push_frame(frame.borrow());
 
-        exec_bytecode_method(frame.borrow(), method.clone().code);
+        execute_method(frame.borrow(), method.clone().code);
     }
 }

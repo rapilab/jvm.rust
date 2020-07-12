@@ -32,7 +32,9 @@ impl NoOperandsInstruction {
 }
 
 impl InstructionExec for NoOperandsInstruction {
-    fn execute(&self, frame: &Frame) {}
+    fn execute(&self, frame: &Frame) {
+        println!("NoOperandsInstruction");
+    }
 }
 
 pub fn get_instruction(ins: u8) -> Box<dyn InstructionExec> {
