@@ -142,6 +142,7 @@ impl ClassFileParser {
         klass.set_class_name(self.this_class_index);
         klass.set_super_name(self.super_class_index);
         klass.set_interfaces(self.interfaces.clone());
+        klass.set_fields(self.fields.clone());
         klass.set_methods(self.methods.clone());
         klass.set_attributes(self.attributes.clone());
     }

@@ -17,6 +17,7 @@ pub struct InstanceKlass {
     pub super_klass_name: String,
     pub interfaces: Vec<String>,
     pub methods: Vec<JMethod>,
+    pub fields: Vec<MemberInfo>,
     pub attributes: Vec<AttributeInfo>,
     pub source_file: String,
 }
@@ -66,6 +67,7 @@ impl InstanceKlass {
             super_klass_name: String::from(""),
             interfaces: vec![],
             methods: vec![],
+            fields: vec![],
             attributes: vec![],
             source_file: String::from("")
         }
@@ -91,6 +93,10 @@ impl InstanceKlass {
     fn get_class_name(&mut self, index: u16) -> String {
         let entry = self.constant_pool_entries[index as usize].clone();
         self.get_string_from_cp(entry)
+    }
+
+    pub fn set_fields(&mut self, fields: Vec<MemberInfo>) {
+        self.fields = fields;
     }
 
     pub fn set_methods(&mut self, methods: Vec<MemberInfo>) {

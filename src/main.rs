@@ -7,21 +7,9 @@ use jvm::instructions::exec::InstructionExec;
 
 fn main() {}
 
-fn exec_bytecode_method(instr: Vec<u8>) {
-    let length = instr.len();
-    let vec = decoder(instr);
-    for i in 1..length {
-        let x = vec.get(0).unwrap();
-        x.execute();
-    }
-    // vec
-}
-
-
 #[cfg(test)]
 mod tests {
     use jvm::rtda::heap::runtime::Runtime;
-    use crate::exec_bytecode_method;
 
     #[test]
     fn test_stack() {
@@ -29,11 +17,5 @@ mod tests {
         let string = String::from("testdata/java8/HelloWorld.Class");
         let mut class_loader = runtime.boot_loader;
         class_loader.init(string);
-        for x in class_loader.jl_object_class {
-            for x in x.methods {
-                let ins = exec_bytecode_method(x.code.clone());
-                // assert_eq!(5, ins.len());
-            }
-        }
     }
 }
