@@ -71,9 +71,6 @@ mod tests {
     #[test]
     fn test_load_methods() {
         let klass = build_klass();
-        // assert_eq!(1, klass.methods[0].access_flags);
-        // assert_eq!(7, klass.methods[0].name_index);
-        // assert_eq!(8, klass.methods[0].descriptor_index);
         let attribute_info = klass.methods[0].attribute_table[0].clone();
         match attribute_info {
             AttributeInfo::Code(code) => {
@@ -85,9 +82,6 @@ mod tests {
             _ => assert!(false),
         }
 
-        // assert_eq!(9, klass.methods[1].access_flags);
-        // assert_eq!(14, klass.methods[1].name_index);
-        // assert_eq!(15, klass.methods[1].descriptor_index);
         let attribute_info = klass.methods[1].attribute_table[0].clone();
         match attribute_info {
             AttributeInfo::Code(code) => {
