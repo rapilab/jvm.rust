@@ -85,12 +85,12 @@ impl InstanceKlass {
         self.major_version = BigEndian::read_u16(&vector);
     }
 
-    pub fn set_super_name(&mut self, index: u16) {
+    pub fn fill_super_name(&mut self, index: u16) {
         let entry = self.constant_pool_entries[index as usize].clone();
         self.super_klass_name = self.get_string_from_cp(entry);
     }
 
-    pub fn set_class_name(&mut self, index: u16) {
+    pub fn fill_class_name(&mut self, index: u16) {
         self.klass_name = self.get_class_name(index);
     }
 
@@ -99,11 +99,11 @@ impl InstanceKlass {
         self.get_string_from_cp(entry)
     }
 
-    pub fn set_fields(&mut self, fields: Vec<MemberInfo>) {
+    pub fn fill_fields(&mut self, fields: Vec<MemberInfo>) {
         self.fields = fields;
     }
 
-    pub fn set_methods(&mut self, methods: Vec<MemberInfo>) {
+    pub fn fill_methods(&mut self, methods: Vec<MemberInfo>) {
         for x in methods {
             let mut j_method = JMethod::new();
             j_method.name = self.klass_name.clone();
@@ -127,7 +127,7 @@ impl InstanceKlass {
         }
     }
 
-    pub fn set_attributes(&mut self, attributes: Vec<AttributeInfo>) {
+    pub fn fill_attributes(&mut self, attributes: Vec<AttributeInfo>) {
         self.attributes = attributes;
         for x in self.attributes.to_vec() {
             match x {
@@ -140,7 +140,7 @@ impl InstanceKlass {
         }
     }
 
-    pub fn set_interfaces(&mut self, interfaces: Vec<u16>) {
+    pub fn fill_interfaces(&mut self, interfaces: Vec<u16>) {
         let mut results: Vec<String> = vec![];
         for x in interfaces {
             results.push(self.get_class_name(x));
@@ -148,7 +148,7 @@ impl InstanceKlass {
         self.interfaces = results
     }
 
-    pub fn build_pool(&mut self, cf: &mut ClassFileParser) {
+    pub fn fill_pool(&mut self, cf: &mut ClassFileParser) {
         let entries = cf.constant_pool_entries.clone();
         let mut pool: Vec<JConstant> = Vec::with_capacity(entries.len());
 

@@ -185,13 +185,15 @@ impl ClassFileParser {
         klass.set_major_version(self.major_version.clone());
         klass.constant_pool_entries = self.constant_pool_entries.clone();
         klass.constant_pool_count = self.constant_pool_count.clone();
-        klass.set_class_name(self.this_class_index);
-        klass.set_super_name(self.super_class_index);
-        klass.set_interfaces(self.interfaces.clone());
-        klass.set_fields(self.fields.clone());
-        klass.set_attributes(self.attributes.clone());
-        klass.build_pool(self);
+        klass.fill_class_name(self.this_class_index);
+        klass.fill_super_name(self.super_class_index);
+        klass.fill_interfaces(self.interfaces.clone());
+        klass.fill_fields(self.fields.clone());
+        klass.fill_attributes(self.attributes.clone());
 
-        klass.set_methods(self.methods.clone());
+        // should before set methods
+        klass.fill_pool(self);
+
+        klass.fill_methods(self.methods.clone());
     }
 }
