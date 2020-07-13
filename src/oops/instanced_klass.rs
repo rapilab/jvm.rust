@@ -29,7 +29,7 @@ pub struct InstanceKlass {
 #[derive(Debug, Clone)]
 pub struct JMethod {
     pub name: String,
-    pub class: InstanceKlass,
+    pub klass: InstanceKlass,
     pub max_stack: u16,
     pub max_locals: u16,
     pub code: Vec<u8>,
@@ -45,7 +45,7 @@ impl JMethod {
     pub fn new() -> JMethod {
         JMethod {
             name: String::from(""),
-            class: InstanceKlass::new(),
+            klass: InstanceKlass::new(),
             max_stack: 0,
             max_locals: 0,
             code: vec![],
@@ -108,7 +108,7 @@ impl InstanceKlass {
             let mut j_method = JMethod::new();
             j_method.name = self.klass_name.clone();
             j_method.attribute_table = x.attribute_table.clone();
-            j_method.class = self.clone().borrow().clone();
+            j_method.klass = self.clone().borrow().clone();
 
             for j in x.attribute_table {
                 match j {

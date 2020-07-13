@@ -52,6 +52,6 @@ impl Frame {
     }
 
     pub fn get_constant_pool(self) -> Vec<JConstant> {
-        self.method.class.constant_pool
+        self.method.klass.constant_pool
     }
 }
