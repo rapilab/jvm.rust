@@ -8,15 +8,10 @@ pub struct LoadN {
 
 impl LoadN {
     pub fn new(n: usize, d: bool) -> LoadN {
-        LoadN {
-            n,
-            d
-        }
+        LoadN { n, d }
     }
 }
 
 impl InstructionExec for LoadN {
-    fn execute(&mut self, _frame: &Frame) {
-
-    }
+    fn execute(&mut self, _frame: &Frame) {}
 }

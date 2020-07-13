@@ -82,13 +82,13 @@ pub struct CodeAttribute {
 
 #[derive(Clone, Debug)]
 pub struct LineNumberTableAttribute {
-    line_number_table: Vec<LineNumberTableEntry>
+    line_number_table: Vec<LineNumberTableEntry>,
 }
 
 impl LineNumberTableAttribute {
     pub fn new() -> LineNumberTableAttribute {
         LineNumberTableAttribute {
-            line_number_table: vec![]
+            line_number_table: vec![],
         }
     }
 }
@@ -99,10 +99,9 @@ struct LineNumberTableEntry {
     line_number: u16,
 }
 
-
 #[derive(Clone, Debug)]
 pub struct LocalVariableTable {
-    local_variable_table: Vec<LocalVariableTableEntry>
+    local_variable_table: Vec<LocalVariableTableEntry>,
 }
 
 #[derive(Clone, Debug)]
@@ -116,7 +115,7 @@ pub struct LocalVariableTableEntry {
 
 #[derive(Clone, Debug)]
 pub struct SourceFile {
-    pub source_file_index: u16
+    pub source_file_index: u16,
 }
 
 impl CodeAttribute {
@@ -191,7 +190,7 @@ pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
         }
         "SourceFile" => {
             let source_file = SourceFile {
-                source_file_index: stream.read_u16()
+                source_file_index: stream.read_u16(),
             };
             AttributeInfo::SourceFile(source_file)
         }
@@ -205,7 +204,7 @@ pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
 pub fn build_local_vars_table(stream: &mut ClassFileStream) -> LocalVariableTable {
     let table_length = stream.read_u16();
     let mut local_vars_table = LocalVariableTable {
-        local_variable_table: vec![]
+        local_variable_table: vec![],
     };
 
     for _i in 0..table_length as usize {
@@ -214,7 +213,7 @@ pub fn build_local_vars_table(stream: &mut ClassFileStream) -> LocalVariableTabl
             length: stream.read_u16(),
             name_index: stream.read_u16(),
             descriptor_index: stream.read_u16(),
-            index: stream.read_u16()
+            index: stream.read_u16(),
         };
         local_vars_table.local_variable_table.push(entry);
     }
@@ -224,7 +223,7 @@ pub fn build_local_vars_table(stream: &mut ClassFileStream) -> LocalVariableTabl
 pub fn build_line_table(stream: &mut ClassFileStream) -> LineNumberTableAttribute {
     let table_length = stream.read_u16();
     let mut line_attribute = LineNumberTableAttribute {
-        line_number_table: vec![]
+        line_number_table: vec![],
     };
 
     for _i in 0..table_length as usize {

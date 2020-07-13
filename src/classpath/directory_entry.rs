@@ -1,16 +1,14 @@
+use crate::classpath::class_path::Entry;
 use std::path::PathBuf;
-use crate::classpath::classpath::Entry;
 
 #[derive(Clone)]
 pub struct DirectoryEntry {
-    pub path: PathBuf
+    pub path: PathBuf,
 }
 
 impl DirectoryEntry {
     pub fn new(path: PathBuf) -> DirectoryEntry {
-        DirectoryEntry {
-            path
-        }
+        DirectoryEntry { path }
     }
 }
 

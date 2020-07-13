@@ -1,6 +1,6 @@
 use std::str;
 
-use byteorder::{ByteOrder, BigEndian};
+use byteorder::{BigEndian, ByteOrder};
 
 use crate::classfile::class_file_stream::ClassFileStream;
 
@@ -25,7 +25,10 @@ pub const CONSTANT_DYNAMIC: u8 = 17;
 pub struct ConstantInfo {}
 
 #[derive(Clone, Debug)]
-pub struct FieldRef { pub clz_idx: u16, pub(crate) nt_idx: u16 }
+pub struct FieldRef {
+    pub clz_idx: u16,
+    pub(crate) nt_idx: u16,
+}
 
 #[derive(Clone, Debug)]
 pub enum CpEntry {
@@ -57,23 +60,19 @@ impl ConstantInfo {
                     Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
                 };
                 CpEntry::Utf8 {
-                    val: String::from(s)
+                    val: String::from(s),
                 }
             }
             // CONSTANT_INTEGER => {}
             // CONSTANT_FLOAT => {}
             // CONSTANT_LONG => {}
             // CONSTANT_DOUBLE => {}
-            CONSTANT_CLASS => {
-                CpEntry::Class {
-                    idx: stream.read_u16()
-                }
-            }
-            CONSTANT_STRING => {
-                CpEntry::String {
-                    idx: stream.read_u16()
-                }
-            }
+            CONSTANT_CLASS => CpEntry::Class {
+                idx: stream.read_u16(),
+            },
+            CONSTANT_STRING => CpEntry::String {
+                idx: stream.read_u16(),
+            },
             CONSTANT_FIELD_REF => {
                 let field_ref = FieldRef {
                     clz_idx: stream.read_u16(),
@@ -81,28 +80,25 @@ impl ConstantInfo {
                 };
                 CpEntry::FieldRef(field_ref)
             }
-            CONSTANT_METHOD_REF => {
-                CpEntry::MethodRef {
-                    class_idx: stream.read_u16(),
-                    name_type_idx: stream.read_u16(),
-                }
-            }
+            CONSTANT_METHOD_REF => CpEntry::MethodRef {
+                class_idx: stream.read_u16(),
+                name_type_idx: stream.read_u16(),
+            },
             // CONSTANT_INTERFACE_METHOD_REF => {}
-            CONSTANT_NAME_AND_TYPE => {
-                CpEntry::NameAndType {
-                    name_idx: stream.read_u16(),
-                    type_idx: stream.read_u16(),
-                }
-            }
+            CONSTANT_NAME_AND_TYPE => CpEntry::NameAndType {
+                name_idx: stream.read_u16(),
+                type_idx: stream.read_u16(),
+            },
             // CONSTANT_METHOD_HANDLE => {}
             // CONSTANT_METHOD_TYPE => {}
             // CONSTANT_INVOKE_DYNAMIC => {}
             // CONSTANT_MODULE => {}
             // CONSTANT_PACKAGE => {}
             // CONSTANT_DYNAMIC => {}
-            _ => {
-                panic!("Unsupported Constant Pool type {} at {}", tag, stream.current)
-            }
+            _ => panic!(
+                "Unsupported Constant Pool type {} at {}",
+                tag, stream.current
+            ),
         }
     }
 }

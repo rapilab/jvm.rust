@@ -1,18 +1,16 @@
 use crate::instructions::slot::Slot;
 use crate::oops::instanced_klass::JMethod;
-use crate::rtda::thread::JThread;
 use crate::rtda::heap::j_constant::JConstant;
+use crate::rtda::thread::JThread;
 
 #[derive(Debug, Clone)]
 pub struct LocalVars {
-    slots: Vec<Slot>
+    slots: Vec<Slot>,
 }
 
 impl LocalVars {
     pub fn new() -> LocalVars {
-        LocalVars {
-            slots: vec![]
-        }
+        LocalVars { slots: vec![] }
     }
 }
 
@@ -26,7 +24,7 @@ impl OperandStack {
     pub fn new() -> OperandStack {
         OperandStack {
             size: 0,
-            slots: vec![]
+            slots: vec![],
         }
     }
 }
@@ -49,11 +47,11 @@ impl Frame {
             thread,
             local_vars: LocalVars::new(),
             operand_stack: OperandStack::new(),
-            method
+            method,
         }
     }
 
     pub fn get_constant_pool(self) -> Vec<JConstant> {
-        return self.method.class.constant_pool
+        self.method.class.constant_pool
     }
 }

@@ -1,13 +1,14 @@
-use byteorder::{ByteOrder, BigEndian};
-use crate::oops::constant_pool::CpEntry;
+use crate::classfile::attribute_info::{
+    AttributeInfo, ExceptionTableEntry, LineNumberTableAttribute,
+};
 use crate::classfile::member_info::MemberInfo;
-use crate::classfile::attribute_info::{AttributeInfo, ExceptionTableEntry, LineNumberTableAttribute};
+use crate::oops::constant_pool::CpEntry;
 use crate::oops::method_descriptor::MethodDescriptor;
+use byteorder::{BigEndian, ByteOrder};
 
-use std::borrow::Borrow;
-use crate::rtda::heap::j_constant::{JConstant, JField};
 use crate::classfile::class_file_parser::ClassFileParser;
-
+use crate::rtda::heap::j_constant::{JConstant, JField};
+use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
 pub struct InstanceKlass {
@@ -38,7 +39,6 @@ pub struct JMethod {
     pub parameter_annotation_data: Vec<u8>,
     pub annotation_default_data: Vec<u8>,
     pub line_num_table: LineNumberTableAttribute,
-
 }
 
 impl JMethod {
@@ -150,24 +150,24 @@ impl InstanceKlass {
 
     pub fn build_fields_refs(&mut self, cf: &mut ClassFileParser) {
         let entries = cf.constant_pool_entries.clone();
-        let mut pool: Vec<JConstant>  = Vec::with_capacity(entries.len());
+        let mut pool: Vec<JConstant> = Vec::with_capacity(entries.len());
         for x in entries {
             match x {
-                CpEntry::Empty { .. } => {},
-                CpEntry::Utf8 { .. } => {},
-                CpEntry::Integer { .. } => {},
-                CpEntry::Float { .. } => {},
-                CpEntry::Long { .. } => {},
-                CpEntry::Double { .. } => {},
-                CpEntry::Class { .. } => {},
-                CpEntry::String { .. } => {},
+                CpEntry::Empty { .. } => {}
+                CpEntry::Utf8 { .. } => {}
+                CpEntry::Integer { .. } => {}
+                CpEntry::Float { .. } => {}
+                CpEntry::Long { .. } => {}
+                CpEntry::Double { .. } => {}
+                CpEntry::Class { .. } => {}
+                CpEntry::String { .. } => {}
                 CpEntry::FieldRef(field_ref) => {
                     let info = JField::new(self, cf.borrow(), field_ref);
                     pool.push(JConstant::ConstantField(info))
-                },
-                CpEntry::MethodRef { .. } => {},
-                CpEntry::InterfaceMethodRef { .. } => {},
-                CpEntry::NameAndType { .. } => {},
+                }
+                CpEntry::MethodRef { .. } => {}
+                CpEntry::InterfaceMethodRef { .. } => {}
+                CpEntry::NameAndType { .. } => {}
             }
         }
 

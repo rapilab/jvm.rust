@@ -1,4 +1,4 @@
-use byteorder::{ByteOrder, BigEndian};
+use byteorder::{BigEndian, ByteOrder};
 
 #[derive(Debug, Clone)]
 pub struct ClassFileStream {

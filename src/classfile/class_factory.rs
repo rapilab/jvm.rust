@@ -1,10 +1,8 @@
+use crate::classfile::class_file_parser::ClassFileParser;
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::oops::instanced_klass::InstanceKlass;
-use crate::classfile::class_file_parser::ClassFileParser;
 
-pub struct ClassFactory {
-
-}
+pub struct ClassFactory {}
 
 impl ClassFactory {
     pub fn create_from_stream(stream: ClassFileStream) -> InstanceKlass {

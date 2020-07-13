@@ -2,14 +2,12 @@ use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 
 pub struct InvokeSpecial {
-    pub index: usize
+    pub index: usize,
 }
 
 impl InvokeSpecial {
     pub fn new() -> InvokeSpecial {
-        InvokeSpecial {
-            index: 0
-        }
+        InvokeSpecial { index: 0 }
     }
 }
 

@@ -1,6 +1,6 @@
 use byteorder::{BigEndian, ByteOrder};
 
-use crate::classfile::attribute_info::{read_attribute_info, AttributeInfo, read_attributes};
+use crate::classfile::attribute_info::{read_attribute_info, read_attributes, AttributeInfo};
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::classfile::member_info::MemberInfo;
 use crate::oops::constant_pool::{ConstantInfo, CpEntry};
@@ -40,14 +40,16 @@ impl NameAndType {
 }
 
 fn to_u32(slice: &[u8]) -> u32 {
-    slice.iter().fold((0, 1), |(acc, mul), &bit| (acc + (mul * (1 & bit as u32)), mul.wrapping_add(mul))).0
+    slice
+        .iter()
+        .fold((0, 1), |(acc, mul), &bit| {
+            (acc + (mul * (1 & bit as u32)), mul.wrapping_add(mul))
+        })
+        .0
 }
 
 fn is_klass_magic(clz_read: Vec<u8>) -> bool {
-    clz_read[0] != 0xca
-        || clz_read[1] != 0xfe
-        || clz_read[2] != 0xba
-        || clz_read[3] != 0xbe
+    clz_read[0] != 0xca || clz_read[1] != 0xfe || clz_read[2] != 0xba || clz_read[3] != 0xbe
 }
 
 impl ClassFileParser {
@@ -84,7 +86,8 @@ impl ClassFileParser {
         self.major_version = stream.get_u2();
 
         self.constant_pool_count = BigEndian::read_u16(&stream.get_u2()) as u8;
-        self.constant_pool_entries = self.parse_constant_pool(&mut stream, self.constant_pool_count as usize);
+        self.constant_pool_entries =
+            self.parse_constant_pool(&mut stream, self.constant_pool_count as usize);
 
         self.access_flags = stream.get_u2();
         self.this_class_index = stream.read_u16();
@@ -156,19 +159,15 @@ impl ClassFileParser {
             return String::from("");
         }
         match self.get_constant_info(cp_index) {
-            CpEntry::Utf8 { val } => {
-                val
-            }
-            _ => {
-                String::from("")
-            }
+            CpEntry::Utf8 { val } => val,
+            _ => String::from(""),
         }
     }
 
     pub fn get_name_and_type(&self, cp_index: u16) -> NameAndType {
         let mut and_type = NameAndType::new();
         if cp_index < 0 {
-            return and_type
+            return and_type;
         }
 
         match self.get_constant_info(cp_index) {
@@ -180,7 +179,6 @@ impl ClassFileParser {
         }
 
         and_type
-
     }
 
     fn fill_instance_klass(&mut self, klass: &mut InstanceKlass) {

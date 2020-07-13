@@ -1,8 +1,8 @@
-use std::path::{Path, PathBuf};
-use std::fs;
-use std::fs::{DirEntry};
-use crate::classpath::zip_entry::ZipEntry;
 use crate::classpath::directory_entry::DirectoryEntry;
+use crate::classpath::zip_entry::ZipEntry;
+use std::fs;
+use std::fs::DirEntry;
+use std::path::{Path, PathBuf};
 
 pub trait Entry {
     // className: fully/qualified/ClassName.class
@@ -36,7 +36,7 @@ impl ClassPath {
         classpaths
     }
 
-    pub fn parse_boot_path(&mut self, java_home: String)  {
+    pub fn parse_boot_path(&mut self, java_home: String) {
         let jre_path = Path::new(&java_home).join("lib");
         self.spread_wildcard_entry(jre_path);
     }
@@ -46,7 +46,7 @@ impl ClassPath {
         self.spread_wildcard_entry(jre_path);
     }
 
-    pub fn spread_wildcard_entry(&mut self, path: PathBuf)  {
+    pub fn spread_wildcard_entry(&mut self, path: PathBuf) {
         let files = fs::read_dir(path).unwrap();
         files
             .filter_map(Result::ok)
@@ -73,18 +73,23 @@ impl ClassPath {
 }
 
 fn is_dir_jar(d: &DirEntry) -> bool {
-    if let Some(e) = d.path().extension() { e == "jar" } else { false }
+    if let Some(e) = d.path().extension() {
+        e == "jar"
+    } else {
+        false
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::classpath::classpath::ClassPath;
+    use crate::classpath::class_path::ClassPath;
 
     #[test]
     fn test_load_class() {
         // todo: change java_home to get from shell
         // "$(java -XshowSettings:properties -version 2>&1 > /dev/null | grep 'java.home' | awk '{print $3}')"
-        let java_home: String = String::from("/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre");
+        let java_home: String =
+            String::from("/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre");
         let user_path: String = String::from("testdata/java8");
         let class_paths = ClassPath::parse(java_home, user_path);
 

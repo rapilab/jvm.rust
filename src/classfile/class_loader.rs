@@ -3,13 +3,13 @@ use crate::classpath::class_file_entry::ClassFileEntry;
 use crate::oops::instanced_klass::InstanceKlass;
 
 pub struct ClassLoader {
-    pub jl_object_class: Vec<InstanceKlass>
+    pub jl_object_class: Vec<InstanceKlass>,
 }
 
 impl ClassLoader {
     pub fn new() -> ClassLoader {
         ClassLoader {
-            jl_object_class: vec![]
+            jl_object_class: vec![],
         }
     }
 
@@ -48,7 +48,10 @@ mod tests {
 
         assert_eq!(0, klass.minor_version);
         assert_eq!(52, klass.major_version);
-        assert_eq!(klass.constant_pool_count as usize, klass.constant_pool_entries.len());
+        assert_eq!(
+            klass.constant_pool_count as usize,
+            klass.constant_pool_entries.len()
+        );
         assert_eq!("HelloWorld", klass.klass_name);
         assert_eq!("java/lang/Object", klass.super_klass_name);
         assert_eq!(0, klass.interfaces.len());
@@ -82,10 +85,8 @@ mod tests {
                 assert_eq!(1, code.max_locals);
                 assert_eq!(0, code.exception_table.len());
                 assert_eq!(5, code.code.len());
-            },
-            _ => {
-                assert!(false)
             }
+            _ => assert!(false),
         }
 
         // assert_eq!(9, klass.methods[1].access_flags);
@@ -98,10 +99,8 @@ mod tests {
                 assert_eq!(1, code.max_locals);
                 assert_eq!(0, code.exception_table.len());
                 assert_eq!(9, code.code.len());
-            },
-            _ => {
-                assert!(false)
             }
+            _ => assert!(false),
         }
     }
 
@@ -110,12 +109,8 @@ mod tests {
         let klass = build_klass();
         for attr in klass.attributes {
             match attr {
-                AttributeInfo::SourceFile(_) => {
-                    assert!(true)
-                },
-                _ => {
-                    assert!(false)
-                }
+                AttributeInfo::SourceFile(_) => assert!(true),
+                _ => assert!(false),
             }
         }
     }
@@ -125,5 +120,4 @@ mod tests {
         let klass = build_klass();
         assert_eq!("HelloWorld.java", klass.source_file);
     }
-
 }

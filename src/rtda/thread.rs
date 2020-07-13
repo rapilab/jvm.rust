@@ -1,16 +1,16 @@
-use crate::rtda::j_stack::JStack;
-use crate::rtda::frame::Frame;
 use crate::oops::instanced_klass::JMethod;
+use crate::rtda::frame::Frame;
+use crate::rtda::j_stack::JStack;
 
 #[derive(Debug, Clone)]
 pub struct JThread {
-    stack: Box<JStack>
+    stack: Box<JStack>,
 }
 
 impl JThread {
     pub fn new() -> JThread {
         JThread {
-            stack: Box::from(JStack::new(0))
+            stack: Box::from(JStack::new(0)),
         }
     }
 
@@ -25,12 +25,11 @@ impl JThread {
 
 #[cfg(test)]
 mod tests {
-    use crate::rtda::heap::runtime::Runtime;
-    use crate::rtda::thread::JThread;
-    use std::borrow::{Borrow};
     use crate::instructions::decoder::decoder;
     use crate::rtda::frame::Frame;
-    
+    use crate::rtda::heap::runtime::Runtime;
+    use crate::rtda::thread::JThread;
+    use std::borrow::Borrow;
 
     fn execute_method(frame: &Frame, instr: Vec<u8>) {
         let _length = instr.len();

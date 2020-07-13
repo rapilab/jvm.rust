@@ -10,8 +10,7 @@ impl MethodDescriptor {
     pub fn new() -> MethodDescriptor {
         MethodDescriptor {
             parameter_types: vec![],
-            return_type: None
+            return_type: None,
         }
     }
 }
-
