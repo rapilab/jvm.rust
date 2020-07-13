@@ -23,6 +23,11 @@ pub enum Instruction {
     OpGetStatic(),
 }
 
+pub struct NullOperandsInstruction {}
+impl InstructionExec for NullOperandsInstruction {
+    fn execute(&mut self, _frame: &Frame) {}
+}
+
 pub struct NoOperandsInstruction {}
 
 impl NoOperandsInstruction {
@@ -37,7 +42,7 @@ impl InstructionExec for NoOperandsInstruction {
     }
 }
 
-pub fn decode_instruction(ins: u8) -> Box<dyn InstructionExec> {
+pub fn get_instruction(ins: u8) -> Box<dyn InstructionExec> {
     match ins {
         opcode::OpNop => {
             Box::new(NoOperandsInstruction::new())
