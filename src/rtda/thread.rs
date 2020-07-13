@@ -32,7 +32,7 @@ mod tests {
     use crate::rtda::thread::JThread;
     use std::borrow::Borrow;
 
-    fn execute_method(frame: &Frame, instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
+    fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
         let _length = instr.len();
         let mut vec = decoder(instr.clone());
         for i in 0..vec.len() {
@@ -52,10 +52,10 @@ mod tests {
 
         let method = klass.methods.get(1).unwrap();
         let mut thread = JThread::new();
-        let frame = thread.clone().new_frame(method.clone());
+        let mut frame = thread.clone().new_frame(method.clone());
         thread.push_frame(frame.borrow());
 
-        let execs = execute_method(frame.borrow(), method.clone().code);
+        let execs = execute_method(&mut frame, method.clone().code);
         assert_eq!(9, execs.len());
     }
 }

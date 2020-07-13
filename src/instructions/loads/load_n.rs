@@ -14,7 +14,7 @@ impl LoadN {
 }
 
 impl InstructionExec for LoadN {
-    fn execute(&mut self, _frame: &Frame) {}
+    fn execute(&mut self, frame: &mut Frame) {}
 
     fn fetch_operands(&mut self, _reader: &mut ClassFileStream) {}
 }

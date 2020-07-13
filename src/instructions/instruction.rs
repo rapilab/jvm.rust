@@ -26,7 +26,7 @@ pub enum Instruction {
 
 pub struct NullOperandsInstruction {}
 impl InstructionExec for NullOperandsInstruction {
-    fn execute(&mut self, _frame: &Frame) {}
+    fn execute(&mut self, frame: &mut Frame) {}
     fn fetch_operands(&mut self, _reader: &mut ClassFileStream) {}
 }
 
@@ -39,7 +39,7 @@ impl NoOperandsInstruction {
 }
 
 impl InstructionExec for NoOperandsInstruction {
-    fn execute(&mut self, _frame: &Frame) {
+    fn execute(&mut self, frame: &mut Frame) {
         println!("NoOperandsInstruction");
     }
     fn fetch_operands(&mut self, _reader: &mut ClassFileStream) {}

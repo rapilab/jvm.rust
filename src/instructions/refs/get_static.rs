@@ -27,7 +27,7 @@ impl GetStatic {
 }
 
 impl InstructionExec for GetStatic {
-    fn execute(&mut self, frame: &Frame) {
+    fn execute(&mut self, frame: &mut Frame) {
         let cp = frame.clone().get_constant_pool();
         let option = cp.get(self.index);
         match option {

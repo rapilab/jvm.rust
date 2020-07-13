@@ -13,7 +13,7 @@ impl InvokeVirtual {
 }
 
 impl InstructionExec for InvokeVirtual {
-    fn execute(&mut self, _frame: &Frame) {}
+    fn execute(&mut self, frame: &mut Frame) {}
 
     fn fetch_operands(&mut self, reader: &mut ClassFileStream) {
         self.index = reader.read_u16() as usize;
