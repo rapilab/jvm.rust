@@ -24,8 +24,8 @@ pub const CONSTANT_DYNAMIC: u8 = 17;
 
 pub struct ConstantInfo {}
 
-// #[derive(Clone, Debug)]
-// pub struct CpClassInfo { idx: u16 }
+#[derive(Clone, Debug)]
+pub struct FieldRef { pub clz_idx: u16, pub(crate) nt_idx: u16 }
 
 #[derive(Clone, Debug)]
 pub enum CpEntry {
@@ -37,7 +37,7 @@ pub enum CpEntry {
     Double { val: f64 },
     Class { idx: u16 },
     String { idx: u16 },
-    FieldRef { clz_idx: u16, nt_idx: u16 },
+    FieldRef(FieldRef),
     MethodRef { class_idx: u16, name_type_idx: u16 },
     InterfaceMethodRef { clz_idx: u16, nt_idx: u16 },
     NameAndType { name_idx: u16, type_idx: u16 },
@@ -75,22 +75,23 @@ impl ConstantInfo {
                 }
             }
             CONSTANT_FIELD_REF => {
-                CpEntry::FieldRef {
+                let field_ref = FieldRef {
                     clz_idx: stream.read_u16(),
-                    nt_idx: stream.read_u16()
-                }
+                    nt_idx: stream.read_u16(),
+                };
+                CpEntry::FieldRef(field_ref)
             }
             CONSTANT_METHOD_REF => {
                 CpEntry::MethodRef {
                     class_idx: stream.read_u16(),
-                    name_type_idx: stream.read_u16()
+                    name_type_idx: stream.read_u16(),
                 }
             }
             // CONSTANT_INTERFACE_METHOD_REF => {}
             CONSTANT_NAME_AND_TYPE => {
                 CpEntry::NameAndType {
                     name_idx: stream.read_u16(),
-                    type_idx: stream.read_u16()
+                    type_idx: stream.read_u16(),
                 }
             }
             // CONSTANT_METHOD_HANDLE => {}

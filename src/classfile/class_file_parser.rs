@@ -1,5 +1,3 @@
-
-
 use byteorder::{BigEndian, ByteOrder};
 
 use crate::classfile::attribute_info::{read_attribute_info, AttributeInfo, read_attributes};
@@ -54,7 +52,7 @@ impl ClassFileParser {
             method_count: 0,
             methods: vec![],
             attr_count: 0,
-            attributes: vec![]
+            attributes: vec![],
         };
         file_parser.parse_stream(stream.clone());
 
@@ -96,7 +94,7 @@ impl ClassFileParser {
                 access_flags: stream.read_u16(),
                 name_index: stream.read_u16(),
                 descriptor_index: stream.read_u16(),
-                attribute_table: vec![]
+                attribute_table: vec![],
             };
 
             let att_count = stream.read_u16();
@@ -132,6 +130,36 @@ impl ClassFileParser {
         let mut klass = InstanceKlass::new();
         self.fill_instance_klass(&mut klass);
         klass
+    }
+
+    pub fn get_constant_info(&self, cp_index: u16) -> CpEntry {
+        self.constant_pool_entries[cp_index as usize].clone()
+    }
+
+    pub fn get_utf8(&self, cp_index: u16) -> String {
+        if cpIndex == 0 {
+            String::from("")
+        }
+        match self.get_constant_info(cp_index) {
+            CpEntry::Utf8 { val } => {
+                val
+            },
+            _ => {
+                String::from("")
+            }
+        }
+    }
+
+    pub fn get_name_and_type(&self, cp_index: u16) {
+        if cp_index > 0 {
+            match self.get_constant_info(cp_index) {
+                CpEntry::NameAndType { name_idx, type_idx } => {
+                    name = self.get_utf8(cp_index);
+                    typ = self.get_utf8(type_idx);
+                },
+                _ => {}
+            }
+        }
     }
 
     fn fill_instance_klass(&mut self, klass: &mut InstanceKlass) {
