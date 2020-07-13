@@ -45,9 +45,6 @@ pub fn create_frame(method: &JMethod, thread: &mut JThread) -> Frame {
 
 #[cfg(test)]
 mod tests {
-    
-    
-    
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::{execute_method, JThread, create_frame};
     use std::borrow::Borrow;
@@ -63,12 +60,16 @@ mod tests {
         class_loader.init(string);
         let klass = class_loader.jl_object_class.get(0).unwrap();
 
-        let method = klass.methods.get(1).unwrap();
+        let second = klass.methods.get(1).unwrap();
+        let first = klass.methods.get(0).unwrap();
 
         let mut thread = JThread::new();
-        let mut frame = create_frame(method, &mut thread);
+        let mut frame = create_frame(second, &mut thread);
 
-        let execs = execute_method(&mut frame, method.clone().code);
+        let execs = execute_method(&mut frame, second.clone().code);
         assert_eq!(9, execs.len());
+
+        let first_execs = execute_method(&mut frame, first.clone().code);
+        assert_eq!(5, first_execs.len());
     }
 }
