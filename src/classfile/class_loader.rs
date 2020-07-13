@@ -48,10 +48,6 @@ mod tests {
 
         assert_eq!(0, klass.minor_version);
         assert_eq!(52, klass.major_version);
-        assert_eq!(
-            klass.constant_pool_count as usize,
-            klass.constant_pool_entries.len()
-        );
         assert_eq!("HelloWorld", klass.klass_name);
         assert_eq!("java/lang/Object", klass.super_klass_name);
         assert_eq!(0, klass.interfaces.len());
@@ -62,7 +58,7 @@ mod tests {
         let method2 = klass.methods[1].clone();
         assert_eq!(1, method2.attribute_table.len());
 
-        assert_eq!(1, klass.attributes.len());
+        assert_eq!(34, klass.constant_pool.len());
     }
 
     fn build_klass() -> InstanceKlass {

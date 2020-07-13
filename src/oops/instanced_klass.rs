@@ -12,10 +12,11 @@ use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
 pub struct InstanceKlass {
+    constant_pool_count: u8,
+    constant_pool_entries: Vec<CpEntry>,
+
     pub minor_version: u16,
     pub major_version: u16,
-    pub constant_pool_count: u8,
-    pub constant_pool_entries: Vec<CpEntry>,
     pub constant_pool: Vec<JConstant>,
     pub klass_name: String,
     pub super_klass_name: String,
@@ -77,6 +78,9 @@ impl InstanceKlass {
         }
     }
 
+    pub fn set_origin_pool_entries(&mut self, entries: Vec<CpEntry>) {
+        self.constant_pool_entries = entries;
+    }
     pub fn set_minor_version(&mut self, vector: Vec<u8>) {
         self.minor_version = BigEndian::read_u16(&vector);
     }
@@ -149,7 +153,7 @@ impl InstanceKlass {
     }
 
     pub fn fill_pool(&mut self, cf: &mut ClassFileParser) {
-        let entries = cf.constant_pool_entries.clone();
+        let entries = self.constant_pool_entries.clone();
         let mut pool: Vec<JConstant> = Vec::with_capacity(entries.len());
 
         for x in entries {

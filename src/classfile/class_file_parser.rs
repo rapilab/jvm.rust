@@ -10,7 +10,7 @@ pub struct ClassFileParser {
     major_version: Vec<u8>,
     minor_version: Vec<u8>,
     constant_pool_count: u8,
-    pub constant_pool_entries: Vec<CpEntry>,
+    constant_pool_entries: Vec<CpEntry>,
     access_flags: Vec<u8>,
     this_class_index: u16,
     super_class_index: u16,
@@ -181,10 +181,10 @@ impl ClassFileParser {
     }
 
     fn fill_instance_klass(&mut self, klass: &mut InstanceKlass) {
+        klass.set_origin_pool_entries(self.constant_pool_entries.clone());
         klass.set_minor_version(self.minor_version.clone());
         klass.set_major_version(self.major_version.clone());
-        klass.constant_pool_entries = self.constant_pool_entries.clone();
-        klass.constant_pool_count = self.constant_pool_count.clone();
+
         klass.fill_class_name(self.this_class_index);
         klass.fill_super_name(self.super_class_index);
         klass.fill_interfaces(self.interfaces.clone());
