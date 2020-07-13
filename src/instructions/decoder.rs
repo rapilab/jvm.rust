@@ -1,4 +1,4 @@
-use crate::instructions::instruction::{get_instruction, NoOperandsInstruction, NullOperandsInstruction};
+use crate::instructions::instruction::{get_instruction, NullOperandsInstruction};
 use crate::instructions::exec::InstructionExec;
 use crate::classfile::class_file_stream::ClassFileStream;
 

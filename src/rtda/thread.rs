@@ -27,13 +27,13 @@ impl JThread {
 mod tests {
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::JThread;
-    use std::borrow::{Borrow, BorrowMut};
+    use std::borrow::{Borrow};
     use crate::instructions::decoder::decoder;
     use crate::rtda::frame::Frame;
-    use byteorder::ReadBytesExt;
+    
 
     fn execute_method(frame: &Frame, instr: Vec<u8>) {
-        let length = instr.len();
+        let _length = instr.len();
         let mut vec = decoder(instr.clone());
         for i in 0..vec.len() {
             vec[i].execute(frame)
