@@ -35,6 +35,10 @@ impl ClassFileStream {
         x
     }
 
+    pub fn read_u8(&mut self) -> u8 {
+        self.get_u1()
+    }
+
     pub fn read_u16(&mut self) -> u16 {
         BigEndian::read_u16(&self.get_u2())
     }

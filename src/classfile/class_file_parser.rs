@@ -192,6 +192,6 @@ impl ClassFileParser {
         klass.set_fields(self.fields.clone());
         klass.set_methods(self.methods.clone());
         klass.set_attributes(self.attributes.clone());
-        klass.build_fields_refs(self);
+        klass.build_pool(self);
     }
 }

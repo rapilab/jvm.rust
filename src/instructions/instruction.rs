@@ -8,6 +8,7 @@ use crate::instructions::refs::get_static::GetStatic;
 use crate::instructions::refs::invoke_special::InvokeSpecial;
 use crate::instructions::refs::invoke_virtual::InvokeVirtual;
 use crate::rtda::frame::Frame;
+use crate::classfile::class_file_stream::ClassFileStream;
 
 #[derive(Clone, Debug)]
 pub enum Instruction {
@@ -26,6 +27,7 @@ pub enum Instruction {
 pub struct NullOperandsInstruction {}
 impl InstructionExec for NullOperandsInstruction {
     fn execute(&mut self, _frame: &Frame) {}
+    fn fetch_operands(&mut self, _reader: &mut ClassFileStream) {}
 }
 
 pub struct NoOperandsInstruction {}
@@ -40,6 +42,7 @@ impl InstructionExec for NoOperandsInstruction {
     fn execute(&mut self, _frame: &Frame) {
         println!("NoOperandsInstruction");
     }
+    fn fetch_operands(&mut self, _reader: &mut ClassFileStream) {}
 }
 
 pub fn get_instruction(ins: u8) -> Box<dyn InstructionExec> {

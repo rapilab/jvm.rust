@@ -148,26 +148,41 @@ impl InstanceKlass {
         self.interfaces = results
     }
 
-    pub fn build_fields_refs(&mut self, cf: &mut ClassFileParser) {
+    pub fn build_pool(&mut self, cf: &mut ClassFileParser) {
         let entries = cf.constant_pool_entries.clone();
         let mut pool: Vec<JConstant> = Vec::with_capacity(entries.len());
+
         for x in entries {
             match x {
-                CpEntry::Empty { .. } => {}
-                CpEntry::Utf8 { .. } => {}
-                CpEntry::Integer { .. } => {}
-                CpEntry::Float { .. } => {}
-                CpEntry::Long { .. } => {}
-                CpEntry::Double { .. } => {}
-                CpEntry::Class { .. } => {}
-                CpEntry::String { .. } => {}
+                CpEntry::Empty {  } => {
+                    pool.push(JConstant::Empty { })
+                }
+                CpEntry::Class { idx } => {
+                    pool.push(JConstant::Class { idx })
+                }
+                CpEntry::String { idx } => {
+                    pool.push(JConstant::String { idx })
+                }
+                CpEntry::MethodRef { class_idx, name_type_idx } => {
+                    pool.push(JConstant::MethodRef { class_idx, name_type_idx })
+                }
+                CpEntry::Utf8 { val } => {
+                    pool.push(JConstant::Utf8 { val })
+                }
                 CpEntry::FieldRef(field_ref) => {
                     let info = JField::new(self, cf.borrow(), field_ref);
                     pool.push(JConstant::ConstantField(info))
                 }
-                CpEntry::MethodRef { .. } => {}
                 CpEntry::InterfaceMethodRef { .. } => {}
-                CpEntry::NameAndType { .. } => {}
+                CpEntry::NameAndType { name_idx, type_idx } => {
+                    pool.push(JConstant::ConstantInfo(CpEntry::NameAndType {
+                        name_idx,
+                        type_idx,
+                    }))
+                }
+                _ => {
+                    println!("{:?}", x);
+                }
             }
         }
 

@@ -36,7 +36,7 @@ mod tests {
         let _length = instr.len();
         let mut vec = decoder(instr.clone());
         for i in 0..vec.len() {
-            vec[i].execute(frame)
+            vec[i].execute(frame);
         }
 
         vec
@@ -48,10 +48,9 @@ mod tests {
         let string = String::from("testdata/java8/HelloWorld.Class");
         let mut class_loader = runtime.boot_loader;
         class_loader.init(string);
-
         let klass = class_loader.jl_object_class.get(0).unwrap();
-        let method = klass.methods.get(1).unwrap();
 
+        let method = klass.methods.get(1).unwrap();
         let mut thread = JThread::new();
         let frame = thread.clone().new_frame(method.clone());
         thread.push_frame(frame.borrow());

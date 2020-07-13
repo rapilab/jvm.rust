@@ -34,6 +34,7 @@ impl InstructionExec for GetStatic {
             None => {}
             Some(entry) => match entry {
                 JConstant::ConstantField(field) => self.field = Box::from(field.clone()),
+                _ => {}
             },
         }
     }

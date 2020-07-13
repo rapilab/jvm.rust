@@ -12,14 +12,15 @@ pub fn decoder(code: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
 
     while reader.current.clone() < code.len() {
         let current = reader.current.clone();
-        vec[current] = decode_instruction(&mut reader);
+        let instruction = decode_instruction(&mut reader);
+        vec[current] = instruction;
     }
 
     vec
 }
 
 fn decode_instruction(reader: &mut ClassFileStream) -> Box<dyn InstructionExec> {
-    let ins = reader.get_u1();
+    let ins = reader.read_u8();
     let mut instruction = get_instruction(ins);
     instruction.fetch_operands(reader);
 
