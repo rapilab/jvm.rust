@@ -7,7 +7,7 @@ use crate::oops::method_descriptor::MethodDescriptor;
 use byteorder::{BigEndian, ByteOrder};
 
 use crate::classfile::class_file_parser::ClassFileParser;
-use crate::rtda::heap::j_constant::{JConstant, JField, JString};
+use crate::rtda::heap::j_constant::{JConstant, JField, JString, JMethodRef};
 use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
@@ -162,13 +162,10 @@ impl InstanceKlass {
                         go_str: str
                     }))
                 }
-                CpEntry::MethodRef {
-                    class_idx,
-                    name_type_idx,
-                } => pool.push(JConstant::MethodRef {
-                    class_idx,
-                    name_type_idx,
-                }),
+                CpEntry::MethodRef(method_ref) => {
+                    let info = JMethodRef::new(self, cf.borrow(), method_ref);
+                    pool.push(JConstant::ConstantMethodRef(info));
+                },
                 CpEntry::Utf8 { val } => pool.push(JConstant::Utf8 { val }),
                 CpEntry::FieldRef(field_ref) => {
                     let info = JField::new(self, cf.borrow(), field_ref);

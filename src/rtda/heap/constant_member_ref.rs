@@ -1,5 +1,5 @@
 use crate::classfile::class_file_parser::ClassFileParser;
-use crate::oops::constant_pool::FieldRef;
+use crate::oops::constant_pool::MemberRef;
 use crate::oops::instanced_klass::InstanceKlass;
 
 #[derive(Clone, Debug)]
@@ -14,10 +14,10 @@ impl ConstantMemberRef {
     pub fn new(
         class: &InstanceKlass,
         cf: &ClassFileParser,
-        field_ref: FieldRef,
+        field_ref: MemberRef,
     ) -> ConstantMemberRef {
         let class_name = &class.klass_name;
-        let name_type = cf.get_name_and_type(field_ref.nt_idx);
+        let name_type = cf.get_name_and_type(field_ref.name_type_index);
         ConstantMemberRef {
             class: Box::new(class.clone()),
             class_name: String::from(class_name),
