@@ -147,10 +147,9 @@ pub fn read_exception_table(stream: &mut ClassFileStream) -> Vec<ExceptionTableE
 
 pub fn read_attributes(stream: &mut ClassFileStream, entries: Vec<CpEntry>) -> Vec<AttributeInfo> {
     let att_count = stream.read_u16();
-    let mut attr: AttributeInfo = AttributeInfo::None();
     let mut attrs: Vec<AttributeInfo> = vec![];
     for _j in 0..att_count as usize {
-        attr = read_attribute_info(stream, entries.clone());
+        let attr = read_attribute_info(stream, entries.clone());
         attrs.push(attr);
     }
     attrs

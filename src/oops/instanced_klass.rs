@@ -154,21 +154,17 @@ impl InstanceKlass {
 
         for x in entries {
             match x {
-                CpEntry::Empty {  } => {
-                    pool.push(JConstant::Empty { })
-                }
-                CpEntry::Class { idx } => {
-                    pool.push(JConstant::Class { idx })
-                }
-                CpEntry::String { idx } => {
-                    pool.push(JConstant::String { idx })
-                }
-                CpEntry::MethodRef { class_idx, name_type_idx } => {
-                    pool.push(JConstant::MethodRef { class_idx, name_type_idx })
-                }
-                CpEntry::Utf8 { val } => {
-                    pool.push(JConstant::Utf8 { val })
-                }
+                CpEntry::Empty {} => pool.push(JConstant::Empty {}),
+                CpEntry::Class { idx } => pool.push(JConstant::Class { idx }),
+                CpEntry::String { idx } => pool.push(JConstant::String { idx }),
+                CpEntry::MethodRef {
+                    class_idx,
+                    name_type_idx,
+                } => pool.push(JConstant::MethodRef {
+                    class_idx,
+                    name_type_idx,
+                }),
+                CpEntry::Utf8 { val } => pool.push(JConstant::Utf8 { val }),
                 CpEntry::FieldRef(field_ref) => {
                     let info = JField::new(self, cf.borrow(), field_ref);
                     pool.push(JConstant::ConstantField(info))

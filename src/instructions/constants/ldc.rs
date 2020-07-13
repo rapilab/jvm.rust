@@ -1,6 +1,6 @@
+use crate::classfile::class_file_stream::ClassFileStream;
 use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
-use crate::classfile::class_file_stream::ClassFileStream;
 use crate::rtda::heap::j_constant::JConstant;
 
 pub struct LDC {
@@ -19,7 +19,7 @@ impl InstructionExec for LDC {
         let option = cp.get(self.index);
         if let Some(entry) = option {
             match entry {
-                JConstant::ConstantField(_) => {},
+                JConstant::ConstantField(_) => {}
                 JConstant::ConstantInfo(entry) => {
                     println!("{:?}", entry);
                 }

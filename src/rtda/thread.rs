@@ -26,11 +26,11 @@ impl JThread {
 #[cfg(test)]
 mod tests {
     use crate::instructions::decoder::decoder;
+    use crate::instructions::exec::InstructionExec;
     use crate::rtda::frame::Frame;
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::JThread;
     use std::borrow::Borrow;
-    use crate::instructions::exec::InstructionExec;
 
     fn execute_method(frame: &Frame, instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
         let _length = instr.len();

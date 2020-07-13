@@ -1,5 +1,5 @@
 use crate::classfile::class_file_parser::ClassFileParser;
-use crate::oops::constant_pool::{FieldRef, CpEntry};
+use crate::oops::constant_pool::{CpEntry, FieldRef};
 use crate::oops::instanced_klass::InstanceKlass;
 use crate::rtda::heap::constant_member_ref::ConstantMemberRef;
 
@@ -16,7 +16,7 @@ pub enum JConstant {
     MethodRef { class_idx: u16, name_type_idx: u16 },
 
     ConstantField(JField),
-    ConstantInfo(CpEntry)
+    ConstantInfo(CpEntry),
 }
 
 #[derive(Clone, Debug)]

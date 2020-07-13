@@ -1,3 +1,4 @@
+use crate::classfile::class_file_stream::ClassFileStream;
 use crate::instructions::constants::j_const::{ConstInt, ConstNull};
 use crate::instructions::constants::ldc::LDC;
 use crate::instructions::control::j_return::JReturn;
@@ -8,7 +9,6 @@ use crate::instructions::refs::get_static::GetStatic;
 use crate::instructions::refs::invoke_special::InvokeSpecial;
 use crate::instructions::refs::invoke_virtual::InvokeVirtual;
 use crate::rtda::frame::Frame;
-use crate::classfile::class_file_stream::ClassFileStream;
 
 #[derive(Clone, Debug)]
 pub enum Instruction {
