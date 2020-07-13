@@ -30,13 +30,19 @@ mod tests {
     use std::borrow::Borrow;
     use crate::instructions::decoder::decoder;
     use crate::rtda::frame::Frame;
+    use crate::instructions::exec::InstructionExec;
 
     fn execute_method(frame: &Frame, instr: Vec<u8>) {
         let length = instr.len();
         let vec = decoder(instr.clone());
         for i in 0..length {
-            let x = vec.get(i).unwrap();
-            x.execute(frame);
+            let x = vec.get(i);
+            match x {
+                None => {},
+                Some(some) => {
+                    some.execute(frame);
+                },
+            }
         }
     }
 
