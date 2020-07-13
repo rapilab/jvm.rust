@@ -1,5 +1,5 @@
 pub mod instructions;
-mod classpath;
+pub mod classpath;
 pub mod rtda;
 pub mod oops;
 pub mod classfile;

@@ -7,7 +7,7 @@ pub struct JConst {
 }
 
 impl InstructionExec for JConst {
-    fn execute(&self, _frame: &Frame) {
+    fn execute(&mut self, _frame: &Frame) {
 
     }
 }

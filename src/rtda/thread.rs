@@ -30,7 +30,6 @@ mod tests {
     use std::borrow::Borrow;
     use crate::instructions::decoder::decoder;
     use crate::rtda::frame::Frame;
-    use crate::instructions::exec::InstructionExec;
 
     fn execute_method(frame: &Frame, instr: Vec<u8>) {
         let length = instr.len();
@@ -40,7 +39,7 @@ mod tests {
             match x {
                 None => {},
                 Some(some) => {
-                    some.execute(frame);
+                    // some.execute(frame);
                 },
             }
         }

@@ -1,7 +1,7 @@
 use crate::instructions::slot::Slot;
 use crate::oops::instanced_klass::JMethod;
 use crate::rtda::thread::JThread;
-use crate::oops::constant_pool::CpEntry;
+use crate::rtda::heap::j_constant::JConstant;
 
 #[derive(Debug, Clone)]
 pub struct LocalVars {
@@ -53,7 +53,7 @@ impl Frame {
         }
     }
 
-    pub fn get_constant_pool(self) -> Vec<CpEntry> {
-        return self.method.class.constant_pool_entries
+    pub fn get_constant_pool(self) -> Vec<JConstant> {
+        return self.method.class.constant_pool
     }
 }

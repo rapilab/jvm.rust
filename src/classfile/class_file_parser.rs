@@ -10,7 +10,7 @@ pub struct ClassFileParser {
     major_version: Vec<u8>,
     minor_version: Vec<u8>,
     constant_pool_count: u8,
-    constant_pool_entries: Vec<CpEntry>,
+    pub constant_pool_entries: Vec<CpEntry>,
     access_flags: Vec<u8>,
     this_class_index: u16,
     super_class_index: u16,
@@ -22,6 +22,21 @@ pub struct ClassFileParser {
     methods: Vec<MemberInfo>,
     attr_count: u16,
     attributes: Vec<AttributeInfo>,
+}
+
+#[derive(Clone, Debug)]
+pub struct NameAndType {
+    pub(crate) name: String,
+    pub(crate) typ: String,
+}
+
+impl NameAndType {
+    pub fn new() -> NameAndType {
+        NameAndType {
+            name: String::from(""),
+            typ: String::from(""),
+        }
+    }
 }
 
 fn to_u32(slice: &[u8]) -> u32 {
@@ -137,29 +152,35 @@ impl ClassFileParser {
     }
 
     pub fn get_utf8(&self, cp_index: u16) -> String {
-        if cpIndex == 0 {
-            String::from("")
+        if cp_index == 0 {
+            return String::from("");
         }
         match self.get_constant_info(cp_index) {
             CpEntry::Utf8 { val } => {
                 val
-            },
+            }
             _ => {
                 String::from("")
             }
         }
     }
 
-    pub fn get_name_and_type(&self, cp_index: u16) {
-        if cp_index > 0 {
-            match self.get_constant_info(cp_index) {
-                CpEntry::NameAndType { name_idx, type_idx } => {
-                    name = self.get_utf8(cp_index);
-                    typ = self.get_utf8(type_idx);
-                },
-                _ => {}
-            }
+    pub fn get_name_and_type(&self, cp_index: u16) -> NameAndType {
+        let mut and_type = NameAndType::new();
+        if cp_index < 0 {
+            return and_type
         }
+
+        match self.get_constant_info(cp_index) {
+            CpEntry::NameAndType { name_idx, type_idx } => {
+                and_type.name = self.get_utf8(name_idx);
+                and_type.typ = self.get_utf8(type_idx);
+            }
+            _ => {}
+        }
+
+        and_type
+
     }
 
     fn fill_instance_klass(&mut self, klass: &mut InstanceKlass) {
@@ -173,5 +194,6 @@ impl ClassFileParser {
         klass.set_fields(self.fields.clone());
         klass.set_methods(self.methods.clone());
         klass.set_attributes(self.attributes.clone());
+        klass.build_fields_refs(self);
     }
 }

@@ -5,6 +5,8 @@ use crate::classfile::attribute_info::{AttributeInfo, ExceptionTableEntry, LineN
 use crate::oops::method_descriptor::MethodDescriptor;
 
 use std::borrow::Borrow;
+use crate::rtda::heap::j_constant::{JConstant, JField};
+use crate::classfile::class_file_parser::ClassFileParser;
 
 
 #[derive(Debug, Clone)]
@@ -13,6 +15,7 @@ pub struct InstanceKlass {
     pub major_version: u16,
     pub constant_pool_count: u8,
     pub constant_pool_entries: Vec<CpEntry>,
+    pub constant_pool: Vec<JConstant>,
     pub klass_name: String,
     pub super_klass_name: String,
     pub interfaces: Vec<String>,
@@ -51,7 +54,7 @@ impl JMethod {
             parameter_annotation_data: vec![],
             annotation_default_data: vec![],
             line_num_table: LineNumberTableAttribute::new(),
-            descriptor: MethodDescriptor::new()
+            descriptor: MethodDescriptor::new(),
         }
     }
 }
@@ -63,13 +66,14 @@ impl InstanceKlass {
             major_version: 0,
             constant_pool_count: 0,
             constant_pool_entries: vec![],
+            constant_pool: vec![],
             klass_name: String::from(""),
             super_klass_name: String::from(""),
             interfaces: vec![],
             methods: vec![],
             fields: vec![],
             attributes: vec![],
-            source_file: String::from("")
+            source_file: String::from(""),
         }
     }
 
@@ -113,7 +117,7 @@ impl InstanceKlass {
                         j_method.code = code.code;
                         j_method.max_locals = code.max_locals;
                         j_method.exception_table = code.exception_table;
-                    },
+                    }
                     _ => {}
                 }
             }
@@ -130,7 +134,7 @@ impl InstanceKlass {
                 AttributeInfo::SourceFile(source_file) => {
                     let string = self.get_string_by_index(source_file.source_file_index);
                     self.source_file = string;
-                },
+                }
                 _ => {}
             }
         }
@@ -142,6 +146,32 @@ impl InstanceKlass {
             results.push(self.get_class_name(x));
         }
         self.interfaces = results
+    }
+
+    pub fn build_fields_refs(&mut self, cf: &mut ClassFileParser) {
+        let entries = cf.constant_pool_entries.clone();
+        let mut pool: Vec<JConstant>  = Vec::with_capacity(entries.len());
+        for x in entries {
+            match x {
+                CpEntry::Empty { .. } => {},
+                CpEntry::Utf8 { .. } => {},
+                CpEntry::Integer { .. } => {},
+                CpEntry::Float { .. } => {},
+                CpEntry::Long { .. } => {},
+                CpEntry::Double { .. } => {},
+                CpEntry::Class { .. } => {},
+                CpEntry::String { .. } => {},
+                CpEntry::FieldRef(field_ref) => {
+                    let info = JField::new(self, cf.borrow(), field_ref);
+                    pool.push(JConstant::ConstantField(info))
+                },
+                CpEntry::MethodRef { .. } => {},
+                CpEntry::InterfaceMethodRef { .. } => {},
+                CpEntry::NameAndType { .. } => {},
+            }
+        }
+
+        self.constant_pool = pool
     }
 
     fn get_string_from_cp(&mut self, entry: CpEntry) -> String {
