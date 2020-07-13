@@ -143,3 +143,12 @@ NOP
 ICONST_1
 RETURN
 ```
+
+| 常量池操作 | 含义 |
+|---|---|
+| GETSTATIC | 获取类的静态字段，将其值压入栈顶 |
+| ICONST_M1 | int 型常量 -1 进栈|
+| LDC | int、float 或 String 型常量从常量池推送至栈顶|
+| ICONST_0 | int 型常量 0 进栈 |
+| INVOKEVIRTUAL | 调用实例方法 - 虚方法分派 |
+| ICONST_1 | int 型常量 1 进栈 |
