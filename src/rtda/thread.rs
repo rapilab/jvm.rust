@@ -1,3 +1,5 @@
+use crate::instructions::decoder::decoder;
+use crate::instructions::exec::InstructionExec;
 use crate::oops::instanced_klass::JMethod;
 use crate::rtda::frame::Frame;
 use crate::rtda::j_stack::JStack;
@@ -23,24 +25,24 @@ impl JThread {
     }
 }
 
+pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
+    let _length = instr.len();
+    let mut vec = decoder(instr.clone());
+    for i in 0..vec.len() {
+        vec[i].execute(frame);
+    }
+
+    vec
+}
+
 #[cfg(test)]
 mod tests {
     use crate::instructions::decoder::decoder;
     use crate::instructions::exec::InstructionExec;
     use crate::rtda::frame::Frame;
     use crate::rtda::heap::runtime::Runtime;
-    use crate::rtda::thread::JThread;
+    use crate::rtda::thread::{execute_method, JThread};
     use std::borrow::Borrow;
-
-    fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
-        let _length = instr.len();
-        let mut vec = decoder(instr.clone());
-        for i in 0..vec.len() {
-            vec[i].execute(frame);
-        }
-
-        vec
-    }
 
     #[test]
     fn test_frame() {
