@@ -37,9 +37,9 @@ pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Box<dyn Instruct
 
 #[cfg(test)]
 mod tests {
-    use crate::instructions::decoder::decoder;
-    use crate::instructions::exec::InstructionExec;
-    use crate::rtda::frame::Frame;
+    
+    
+    
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::{execute_method, JThread};
     use std::borrow::Borrow;

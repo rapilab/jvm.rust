@@ -8,7 +8,7 @@ pub struct JConst {
 }
 
 impl InstructionExec for JConst {
-    fn execute(&mut self, frame: &mut Frame) {}
+    fn execute(&mut self, _frame: &mut Frame) {}
 
     fn fetch_operands(&mut self, _reader: &mut ClassFileStream) {}
 }
