@@ -3,6 +3,7 @@ use crate::instructions::exec::InstructionExec;
 use crate::oops::instanced_klass::JMethod;
 use crate::rtda::frame::Frame;
 use crate::rtda::j_stack::JStack;
+use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
 pub struct JThread {
@@ -35,16 +36,24 @@ pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Box<dyn Instruct
     vec
 }
 
+pub fn create_frame(method: &JMethod, thread: &mut JThread) -> Frame {
+    let mut frame = thread.clone().new_frame(method.clone());
+    thread.push_frame(frame.borrow());
+    frame
+}
+
+
 #[cfg(test)]
 mod tests {
     
     
     
     use crate::rtda::heap::runtime::Runtime;
-    use crate::rtda::thread::{execute_method, JThread};
+    use crate::rtda::thread::{execute_method, JThread, create_frame};
     use std::borrow::Borrow;
     use crate::oops::instanced_klass::JMethod;
     use crate::rtda::frame::Frame;
+    use std::thread::Thread;
 
     #[test]
     fn test_frame() {
@@ -55,16 +64,11 @@ mod tests {
         let klass = class_loader.jl_object_class.get(0).unwrap();
 
         let method = klass.methods.get(1).unwrap();
-        let mut frame = create_frame(method);
+
+        let mut thread = JThread::new();
+        let mut frame = create_frame(method, &mut thread);
 
         let execs = execute_method(&mut frame, method.clone().code);
         assert_eq!(9, execs.len());
-    }
-
-    fn create_frame(method: &JMethod) -> Frame {
-        let mut thread = JThread::new();
-        let mut frame = thread.clone().new_frame(method.clone());
-        thread.push_frame(frame.borrow());
-        frame
     }
 }
