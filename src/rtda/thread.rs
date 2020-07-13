@@ -37,20 +37,15 @@ pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Box<dyn Instruct
 }
 
 pub fn create_frame(method: &JMethod, thread: &mut JThread) -> Frame {
-    let mut frame = thread.clone().new_frame(method.clone());
+    let frame = thread.clone().new_frame(method.clone());
     thread.push_frame(frame.borrow());
     frame
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::rtda::heap::runtime::Runtime;
-    use crate::rtda::thread::{execute_method, JThread, create_frame};
-    use std::borrow::Borrow;
-    use crate::oops::instanced_klass::JMethod;
-    use crate::rtda::frame::Frame;
-    use std::thread::Thread;
+    use crate::rtda::thread::{create_frame, execute_method, JThread};
 
     #[test]
     fn test_frame() {

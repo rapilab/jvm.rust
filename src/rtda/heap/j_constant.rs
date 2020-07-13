@@ -1,6 +1,6 @@
 use crate::classfile::class_file_parser::ClassFileParser;
 use crate::oops::constant_pool::{CpEntry, MemberRef};
-use crate::oops::instanced_klass::{InstanceKlass, JMethod};
+use crate::oops::instanced_klass::InstanceKlass;
 use crate::rtda::heap::constant_member_ref::ConstantMemberRef;
 
 #[derive(Clone, Debug)]
@@ -22,7 +22,7 @@ pub enum JConstant {
 #[derive(Clone, Debug)]
 pub struct JMethodRef {
     // pub resolved: JMethod,
-    pub member_ref: ConstantMemberRef
+    pub member_ref: ConstantMemberRef,
 }
 
 impl JMethodRef {
@@ -35,7 +35,7 @@ impl JMethodRef {
 #[derive(Clone, Debug)]
 pub struct JString {
     // pub class: InstanceKlass,
-    pub go_str: String
+    pub go_str: String,
 }
 
 #[derive(Clone, Debug)]

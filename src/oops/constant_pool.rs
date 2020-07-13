@@ -80,12 +80,10 @@ impl ConstantInfo {
                 };
                 CpEntry::FieldRef(field_ref)
             }
-            CONSTANT_METHOD_REF => CpEntry::MethodRef(
-                MemberRef {
-                    class_index: stream.read_u16(),
-                    name_type_index: stream.read_u16(),
-                }
-            ),
+            CONSTANT_METHOD_REF => CpEntry::MethodRef(MemberRef {
+                class_index: stream.read_u16(),
+                name_type_index: stream.read_u16(),
+            }),
             // CONSTANT_INTERFACE_METHOD_REF => {}
             CONSTANT_NAME_AND_TYPE => CpEntry::NameAndType {
                 name_idx: stream.read_u16(),
