@@ -30,13 +30,16 @@ mod tests {
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::JThread;
     use std::borrow::Borrow;
+    use crate::instructions::exec::InstructionExec;
 
-    fn execute_method(frame: &Frame, instr: Vec<u8>) {
+    fn execute_method(frame: &Frame, instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
         let _length = instr.len();
         let mut vec = decoder(instr.clone());
         for i in 0..vec.len() {
             vec[i].execute(frame)
         }
+
+        vec
     }
 
     #[test]
@@ -53,6 +56,7 @@ mod tests {
         let frame = thread.clone().new_frame(method.clone());
         thread.push_frame(frame.borrow());
 
-        execute_method(frame.borrow(), method.clone().code);
+        let execs = execute_method(frame.borrow(), method.clone().code);
+        assert_eq!(9, execs.len());
     }
 }
