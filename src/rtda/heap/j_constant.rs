@@ -11,12 +11,18 @@ pub enum JConstant {
     Long { val: i64 },
     Double { val: f64 },
     Class { idx: u16 },
-    String { idx: u16 },
     Utf8 { val: String },
     MethodRef { class_idx: u16, name_type_idx: u16 },
 
+    String(JString),
     ConstantField(JField),
     ConstantInfo(CpEntry),
+}
+
+#[derive(Clone, Debug)]
+pub struct JString {
+    // pub class: InstanceKlass,
+    pub go_str: String
 }
 
 #[derive(Clone, Debug)]

@@ -19,11 +19,15 @@ impl InstructionExec for LDC {
         let option = cp.get(self.index);
         if let Some(entry) = option {
             match entry {
-                JConstant::ConstantField(_) => {}
+                JConstant::String(str) => {
+                    println!("String -> {:?}", str.go_str);
+                }
                 JConstant::ConstantInfo(entry) => {
                     println!("{:?}", entry);
                 }
-                _ => {}
+                _ => {
+                    println!("{:?}", entry);
+                }
             }
         }
     }
