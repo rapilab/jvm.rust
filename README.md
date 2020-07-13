@@ -152,3 +152,27 @@ RETURN
 | ICONST_0 | int 型常量 0 进栈 |
 | INVOKEVIRTUAL | 调用实例方法 - 虚方法分派 |
 | ICONST_1 | int 型常量 1 进栈 |
+
+
+## 编译器
+
+ - 前端编译器： JDK 的 javac、Eclipse JDT 中的 ECJ
+ - 即时编译器（JIT）： HotSpot 虚拟机中的 C1、C2 编译器，Graal 编译器
+ - 运行时编译器（AOT）： JDK 的 Jaotc、GNU Compiler for the Java、Excelsior JET
+ 
+
+## Docs
+
+### JVM Runtime
+
+![Runtime](docs/jvm-runtime.jpg)
+
+Thread
+  - PC (Program Counter)
+  - Stack
+     - Frame
+     - Return Value
+     - Local Vars
+     - Operand Stack
+     - Current Class Constant Pool Ref
+     
