@@ -37,7 +37,7 @@ impl InstructionExec for NoOperandsInstruction {
     }
 }
 
-pub fn get_instruction(ins: u8) -> Box<dyn InstructionExec> {
+pub fn decode_instruction(ins: u8) -> Box<dyn InstructionExec> {
     match ins {
         opcode::OpNop => {
             Box::new(NoOperandsInstruction::new())

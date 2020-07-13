@@ -1,4 +1,4 @@
-use crate::instructions::instruction::get_instruction;
+use crate::instructions::instruction::decode_instruction;
 use crate::instructions::exec::InstructionExec;
 use crate::classfile::class_file_stream::ClassFileStream;
 
@@ -8,7 +8,7 @@ pub fn decoder(code: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
 
     while reader.current  < code.len() {
         let ins = reader.get_u1();
-        let mut instruction = get_instruction(ins);
+        let mut instruction = decode_instruction(ins);
         instruction.fetch_operands(&mut reader);
         vec.push(instruction)
     }
