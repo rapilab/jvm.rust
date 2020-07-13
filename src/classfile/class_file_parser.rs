@@ -197,3 +197,19 @@ impl ClassFileParser {
         klass.fill_methods(self.methods.clone());
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::classfile::class_factory::ClassFactory;
+    use crate::classfile::class_file_parser::ClassFileParser;
+    use crate::classpath::class_file_entry::ClassFileEntry;
+
+    #[test]
+    fn should_eq_count_entries_length() {
+        let entry = ClassFileEntry::new();
+        let stream = entry.open_stream(String::from("testdata/java8/HelloWorld.Class"));
+        let mut parser = ClassFileParser::new(stream);
+        assert_eq!(parser.constant_pool_count, parser.constant_pool_entries.len() as u8);
+    }
+}
