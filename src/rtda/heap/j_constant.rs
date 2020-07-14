@@ -1,7 +1,7 @@
 use crate::classfile::class_file_parser::ClassFileParser;
 use crate::classfile::constant_pool::{CpEntry, MemberRef};
-use crate::rtda::heap::instanced_klass::InstanceKlass;
 use crate::rtda::heap::constant_member_ref::ConstantMemberRef;
+use crate::rtda::heap::instanced_klass::InstanceKlass;
 
 #[derive(Clone, Debug)]
 pub enum JConstant {

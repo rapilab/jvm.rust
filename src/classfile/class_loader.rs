@@ -39,10 +39,10 @@ impl ClassLoader {
 #[cfg(test)]
 mod tests {
     use crate::classfile::attribute_info::AttributeInfo;
-    use crate::classfile::class_loader::ClassLoader;
-    use crate::rtda::heap::instanced_klass::InstanceKlass;
-    use crate::classpath::class_file_entry::ClassFileEntry;
     use crate::classfile::class_file_parser::ClassFileParser;
+    use crate::classfile::class_loader::ClassLoader;
+    use crate::classpath::class_file_entry::ClassFileEntry;
+    use crate::rtda::heap::instanced_klass::InstanceKlass;
 
     #[test]
     fn test_should_get_basic_info() {
@@ -59,7 +59,6 @@ mod tests {
     #[test]
     fn test_get_methods_info() {
         let klass = build_klass();
-
 
         let info = klass.methods[0].clone();
         assert_eq!(1, info.attribute_table.len());
@@ -110,7 +109,7 @@ mod tests {
                 AttributeInfo::SourceFile(source) => {
                     assert!(true);
                     assert_eq!(14, source.source_file_index);
-                },
+                }
                 _ => assert!(false),
             }
         }

@@ -1,7 +1,7 @@
 use crate::instructions::decoder::decoder;
 use crate::instructions::exec::InstructionExec;
-use crate::rtda::heap::instanced_klass::JMethod;
 use crate::rtda::frame::Frame;
+use crate::rtda::heap::instanced_klass::JMethod;
 use crate::rtda::j_stack::JStack;
 use std::borrow::Borrow;
 

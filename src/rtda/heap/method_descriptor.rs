@@ -1,15 +1,11 @@
-use std::borrow::Borrow;
-
 #[derive(Debug, Clone)]
 pub struct TypeDescriptor {
-    str: String
+    str: String,
 }
 
 impl TypeDescriptor {
     pub fn new(str: String) -> TypeDescriptor {
-        TypeDescriptor {
-            str
-        }
+        TypeDescriptor { str }
     }
 }
 
@@ -51,12 +47,8 @@ impl MethodDescriptor {
         while not_finish_parse {
             let option = self.parse_field_type();
             match option {
-                None => {
-                    not_finish_parse = false
-                }
-                Some(desc) => {
-                    params.push(desc)
-                }
+                None => not_finish_parse = false,
+                Some(desc) => params.push(desc),
             }
         }
 
@@ -87,20 +79,16 @@ impl MethodDescriptor {
                             let s = &text[i + 1..len];
                             self.text = s.to_string();
                             let descriptor = TypeDescriptor::new(String::from(x));
-                            return Some(descriptor)
+                            return Some(descriptor);
                         }
                     }
                 }
-                "[" => {
-
-                }
-                _ => {
-                    return None
-                }
+                "[" => {}
+                _ => return None,
             }
         }
 
-        return None
+        None
     }
 
     pub fn parse_object_type(&self) {}
@@ -110,10 +98,8 @@ impl MethodDescriptor {
             None => {
                 self.text = String::from("V");
                 TypeDescriptor::new(String::from("V"))
-            },
-            Some(val) => {
-                val
-            },
+            }
+            Some(val) => val,
         }
     }
 }
@@ -146,5 +132,3 @@ mod tests {
         assert_eq!("V", option.str);
     }
 }
-
-

@@ -8,8 +8,8 @@ use crate::classfile::attribute_info::{
 use crate::classfile::class_file_parser::ClassFileParser;
 use crate::classfile::constant_pool::CpEntry;
 use crate::classfile::member_info::MemberInfo;
-use crate::rtda::heap::method_descriptor::MethodDescriptor;
 use crate::rtda::heap::j_constant::{JConstant, JField, JMethodRef, JString};
+use crate::rtda::heap::method_descriptor::MethodDescriptor;
 
 #[derive(Debug, Clone)]
 pub struct InstanceKlass {

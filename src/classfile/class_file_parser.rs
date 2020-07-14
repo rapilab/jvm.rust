@@ -2,8 +2,8 @@ use byteorder::{BigEndian, ByteOrder};
 
 use crate::classfile::attribute_info::{read_attribute_info, read_attributes, AttributeInfo};
 use crate::classfile::class_file_stream::ClassFileStream;
-use crate::classfile::member_info::MemberInfo;
 use crate::classfile::constant_pool::{ConstantInfo, CpEntry};
+use crate::classfile::member_info::MemberInfo;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 
 pub struct ClassFileParser {
@@ -198,7 +198,6 @@ impl ClassFileParser {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::classfile::class_file_parser::ClassFileParser;
@@ -209,6 +208,9 @@ mod tests {
         let entry = ClassFileEntry::new();
         let stream = entry.open_stream(String::from("testdata/java8/HelloWorld.Class"));
         let mut parser = ClassFileParser::new(stream);
-        assert_eq!(parser.constant_pool_count, parser.constant_pool_entries.len() as u8);
+        assert_eq!(
+            parser.constant_pool_count,
+            parser.constant_pool_entries.len() as u8
+        );
     }
 }
