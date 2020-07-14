@@ -3,9 +3,9 @@ pub mod heap;
 pub mod jvm_stack;
 pub mod thread;
 
-use crate::rtda::thread::JThread;
 use crate::classpath::class_path::ClassPath;
 use crate::rtda::heap::runtime::Runtime;
+use crate::rtda::thread::JThread;
 
 pub fn create_main_thread(jre_home: &str) -> JThread {
     let cp = ClassPath::parse(String::from(jre_home), String::from("testdata/java8"));

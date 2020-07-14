@@ -1,6 +1,8 @@
+use crate::classfile::attribute_info::{
+    AttributeInfo, ExceptionTableEntry, LineNumberTableAttribute,
+};
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 use crate::rtda::heap::method_descriptor::MethodDescriptor;
-use crate::classfile::attribute_info::{ExceptionTableEntry, AttributeInfo, LineNumberTableAttribute};
 
 #[derive(Debug, Clone)]
 pub struct JMethod {

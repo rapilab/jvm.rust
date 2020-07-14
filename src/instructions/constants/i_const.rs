@@ -1,7 +1,7 @@
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::instructions::exec::InstructionExec;
-use crate::rtda::heap::slot::{EmptySlot, IntSlot, Slot};
 use crate::rtda::frame::Frame;
+use crate::rtda::heap::slot::{EmptySlot, IntSlot, Slot};
 
 pub struct IConst {
     k: Slot,

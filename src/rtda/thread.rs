@@ -2,9 +2,9 @@ use crate::instructions::decoder::decoder;
 use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 use crate::rtda::heap::j_method::JMethod;
+use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::jvm_stack::JVMStack;
 use std::borrow::Borrow;
-use crate::rtda::heap::runtime::Runtime;
 
 #[derive(Debug, Clone)]
 pub struct JThread {
@@ -49,10 +49,10 @@ pub fn create_frame(method: &JMethod, thread: &mut JThread) -> Frame {
 
 #[cfg(test)]
 mod tests {
-    use crate::rtda::heap::runtime::Runtime;
-    use crate::rtda::thread::{create_frame, execute_method, JThread};
     use crate::classpath::class_path::ClassPath;
     use crate::rtda::create_main_thread;
+    use crate::rtda::heap::runtime::Runtime;
+    use crate::rtda::thread::{create_frame, execute_method, JThread};
 
     #[test]
     fn test_frame() {

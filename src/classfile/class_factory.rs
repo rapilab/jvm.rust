@@ -1,5 +1,5 @@
-use crate::classfile::parsed_class::ParsedClass;
 use crate::classfile::class_file_stream::ClassFileStream;
+use crate::classfile::parsed_class::ParsedClass;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 
 pub struct ClassFactory {}

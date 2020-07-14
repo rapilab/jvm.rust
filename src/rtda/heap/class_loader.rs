@@ -14,9 +14,7 @@ impl ClassLoader {
         }
     }
 
-    pub fn init(&mut self) {
-
-    }
+    pub fn init(&mut self) {}
 
     pub fn add_user_class(&mut self, class_name: String) {
         let klass = self.build_user_class(class_name);
@@ -41,8 +39,8 @@ impl ClassLoader {
 mod tests {
     use crate::classfile::attribute_info::AttributeInfo;
     use crate::classfile::parsed_class::ParsedClass;
-    use crate::rtda::heap::class_loader::ClassLoader;
     use crate::classpath::class_file_entry::ClassFileEntry;
+    use crate::rtda::heap::class_loader::ClassLoader;
     use crate::rtda::heap::instanced_klass::InstanceKlass;
 
     #[test]

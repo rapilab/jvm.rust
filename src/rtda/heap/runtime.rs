@@ -1,5 +1,5 @@
-use crate::rtda::heap::class_loader::ClassLoader;
 use crate::classpath::class_path::ClassPath;
+use crate::rtda::heap::class_loader::ClassLoader;
 
 #[derive(Debug, Clone)]
 pub struct Runtime {
@@ -7,7 +7,7 @@ pub struct Runtime {
 }
 
 impl Runtime {
-    pub fn new(cp: ClassPath) -> Runtime {
+    pub fn new(_cp: ClassPath) -> Runtime {
         let mut loader = ClassLoader::new();
 
         let runtime = Runtime {

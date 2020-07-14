@@ -10,7 +10,7 @@ pub trait Entry {
 }
 
 pub struct ClassPath {
-    pub runtime_path: Vec<Box<dyn Entry>>
+    pub runtime_path: Vec<Box<dyn Entry>>,
 }
 
 impl ClassPath {

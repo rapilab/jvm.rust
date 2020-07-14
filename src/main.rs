@@ -1,12 +1,10 @@
-fn main() {
-
-}
+fn main() {}
 
 #[cfg(test)]
 mod tests {
     use jvm::classpath::class_path::ClassPath;
-    use jvm::rtda::heap::runtime::Runtime;
     use jvm::rtda::create_main_thread;
+    use jvm::rtda::heap::runtime::Runtime;
     use std::fs::File;
     use zip::ZipArchive;
 

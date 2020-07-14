@@ -1,6 +1,6 @@
-use crate::classfile::parsed_class::ParsedClass;
-use crate::classfile::constant_pool::{CpEntry, MemberRef};
 use crate::classfile::constant_member_ref::ConstantMemberRef;
+use crate::classfile::constant_pool::{CpEntry, MemberRef};
+use crate::classfile::parsed_class::ParsedClass;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 
 #[derive(Clone, Debug)]
