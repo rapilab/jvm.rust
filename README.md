@@ -2,6 +2,19 @@
 
 ![build](https://github.com/phodal/jvm.rust/workflows/build/badge.svg)
 
+## Roadmap
+
+ - [x] .class parser
+ - [ ] code parser
+    - [x] support hello world
+ - [ ] VM
+    - [ ] Runtime
+    - [ ] Thread
+    - [ ] Frame  
+ - [ ] JIT / interp
+ - [ ] GC
+ - [ ] _Pass test cases in JDK_
+
 ## Document
 
 ### .class file Parser
