@@ -66,7 +66,7 @@ mod tests {
 
         let method2 = klass.methods[1].clone();
         assert_eq!(1, method2.attribute_table.len());
-        assert_eq!(34, klass.constant_pool.len());
+        assert_eq!(29, klass.constant_pool.len());
     }
 
     fn build_klass() -> InstanceKlass {
@@ -109,7 +109,7 @@ mod tests {
             match attr {
                 AttributeInfo::SourceFile(source) => {
                     assert!(true);
-                    assert_eq!(19, source.source_file_index);
+                    assert_eq!(14, source.source_file_index);
                 },
                 _ => assert!(false),
             }
