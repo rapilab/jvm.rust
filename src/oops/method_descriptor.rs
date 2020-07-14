@@ -47,15 +47,20 @@ impl MethodDescriptor {
 
         self.text = self.text[1..].to_string();
 
-        let option = self.parse_field_type();
-        match option {
-            None => {}
-            Some(desc) => {
-                params.push(desc)
+        let mut not_finish_parse = true;
+        while not_finish_parse {
+            let option = self.parse_field_type();
+            match option {
+                None => {
+                    not_finish_parse = false
+                }
+                Some(desc) => {
+                    params.push(desc)
+                }
             }
         }
 
-        if self.text.len() == 0 && !self.text.ends_with("(") {
+        if self.text.len() == 0 && !self.text.ends_with(")") {
             return vec![];
         }
 
@@ -64,9 +69,9 @@ impl MethodDescriptor {
     }
 
     pub fn parse_field_type(&mut self) -> Option<TypeDescriptor> {
-        let type_desc: Option<TypeDescriptor> = None;
         if self.text.len() > 0 {
-            let x = &self.text[0..0];
+            let string = get_char_by_index(self.text.clone(), 0);
+            let x: &str = string.as_str();
             match x {
                 "B" | "C" | "D" | "F" | "I" | "J" | "S" | "Z" => {
                     let t = &self.text[0..1];
@@ -87,11 +92,13 @@ impl MethodDescriptor {
                     }
                 }
                 "[" => {}
-                _ => {}
+                _ => {
+                    return None
+                }
             }
         }
 
-        return type_desc;
+        return None
     }
 
     pub fn parse_object_type(&self) {}
@@ -118,10 +125,21 @@ mod tests {
     use crate::oops::method_descriptor::MethodDescriptor;
 
     #[test]
-    fn test_stack() {
+    fn should_get_desc_from_void_no_params() {
         let mut descriptor = MethodDescriptor::new(String::from("()V"));
         descriptor.parse();
         assert_eq!(0, descriptor.parameter_types.len());
+        let option = descriptor.return_type;
+        assert_eq!("V", option.str);
+    }
+
+    #[test]
+    fn should_get_desc_from_void_string() {
+        let string = String::from("(Ljava/lang/String;)V");
+        let mut descriptor = MethodDescriptor::new(string);
+        descriptor.parse();
+        assert_eq!(1, descriptor.parameter_types.len());
+        assert_eq!("Ljava/lang/String;", descriptor.parameter_types[0].str);
         let option = descriptor.return_type;
         assert_eq!("V", option.str);
     }
