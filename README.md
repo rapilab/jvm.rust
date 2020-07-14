@@ -2,11 +2,14 @@
 
 ![build](https://github.com/phodal/jvm.rust/workflows/build/badge.svg)
 
-[Java The class File Format ](https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html)
+## Document
 
-中文：[JVM 揭秘：一个 class 文件的前世今生](https://zhuanlan.zhihu.com/p/33440868)
+### .class file Parser
 
-### The ClassFile Structure
+ - Official：[Java The class File Format ](https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html)
+ - 中文相关翻译：[JVM 揭秘：一个 class 文件的前世今生](https://zhuanlan.zhihu.com/p/33440868)
+
+#### The ClassFile Structure
 
 ```
 ClassFile {
@@ -29,8 +32,9 @@ ClassFile {
 }
 ```
 
+## Tools
 
-## Hex
+### Hex 显示 
 
 Vim show bytes:
 
@@ -83,7 +87,7 @@ hex examples:
 00000210: 1200 0000 0200 13                        .......
 ```
 
-## javap
+### javap
 
 ```
 javap -verbose testdata.java8.HelloWorld
@@ -193,6 +197,12 @@ ICONST_1
 RETURN
 ```
 
+### OpCode
+
+Wiki: [Java OpCode](https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings)
+
+HelloWorld 相关
+
 | 常量池操作 | 含义 |
 |---|---|
 | GETSTATIC | 获取类的静态字段，将其值压入栈顶 |
@@ -202,15 +212,11 @@ RETURN
 | INVOKEVIRTUAL | 调用实例方法 - 虚方法分派 |
 | ICONST_1 | int 型常量 1 进栈 |
 
-
 ## 编译器
 
  - 前端编译器： JDK 的 javac、Eclipse JDT 中的 ECJ
  - 即时编译器（JIT）： HotSpot 虚拟机中的 C1、C2 编译器，Graal 编译器
  - 运行时编译器（AOT）： JDK 的 Jaotc、GNU Compiler for the Java、Excelsior JET
- 
-
-## Docs
 
 ### JVM Runtime
 
@@ -238,3 +244,9 @@ Thread
 [C = char
 [L = any non-primitives(Object) 
 ```
+
+## Related
+
+ - Go -> [https://github.com/zxh0/jvm.go](https://github.com/zxh0/jvm.go) 3.1k stars
+ - Rust -> [https://github.com/douchuan/jvm](https://github.com/douchuan/jvm) 278 stars
+ - Rust -> [ocelotter](https://github.com/kittylyst/ocelotter) 45 stars
