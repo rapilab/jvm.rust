@@ -17,7 +17,7 @@ impl TypeDescriptor {
 pub struct MethodDescriptor {
     pub text: String,
     pub parameter_types: Vec<TypeDescriptor>,
-    pub return_type: Option<TypeDescriptor>,
+    pub return_type: TypeDescriptor,
 }
 
 impl MethodDescriptor {
@@ -25,7 +25,7 @@ impl MethodDescriptor {
         MethodDescriptor {
             text: str,
             parameter_types: vec![],
-            return_type: None,
+            return_type: TypeDescriptor::new(String::from("")),
         }
     }
 
@@ -74,11 +74,15 @@ impl MethodDescriptor {
                     return Option::from(descriptor);
                 }
                 "L" => {
-                    for i in 0..self.text.len() {
-                        if get_char_by_index(self.text.clone(), i) == String::from(";") {
-                            let t = self.text[0..(i + 1)].to_string();
-                            self.text = self.text[i + 1..].to_string();
-                            return Option::from(TypeDescriptor::new(String::from(t)));
+                    let len = self.text.len();
+                    for i in 0..len - 1 {
+                        let text = self.text.clone();
+                        if get_char_by_index(text.clone(), i) == ';'.to_string() {
+                            let x = &text[0..i + 1];
+                            let s = &text[i + 1..len];
+                            self.text = s.to_string();
+                            let descriptor = TypeDescriptor::new(String::from(x));
+                            return Some(descriptor)
                         }
                     }
                 }
@@ -92,24 +96,35 @@ impl MethodDescriptor {
 
     pub fn parse_object_type(&self) {}
 
-    pub fn parse_return_type(&mut self) -> Option<TypeDescriptor> {
-        let len = self.text.len();
-        for i in 0..len - 1 {
-            let text = self.text.clone();
-            if get_char_by_index(text.clone(), i) == ';'.to_string() {
-                let x = &text[0..i + 1];
-                let s = &text[i + 1..len];
-                self.text = s.to_string();
-                let descriptor = TypeDescriptor::new(String::from(x));
-                return Some(descriptor)
-            }
+    pub fn parse_return_type(&mut self) -> TypeDescriptor {
+        match self.parse_field_type() {
+            None => {
+                self.text = String::from("V");
+                TypeDescriptor::new(String::from("V"))
+            },
+            Some(val) => {
+                val
+            },
         }
-        None
     }
 }
 
 pub fn get_char_by_index(text: String, i: usize) -> String {
     text.chars().nth(i).unwrap().to_string()
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::oops::method_descriptor::MethodDescriptor;
+
+    #[test]
+    fn test_stack() {
+        let mut descriptor = MethodDescriptor::new(String::from("()V"));
+        descriptor.parse();
+        assert_eq!(0, descriptor.parameter_types.len());
+        let option = descriptor.return_type;
+        assert_eq!("V", option.str);
+    }
 }
 
 
