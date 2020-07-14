@@ -10,17 +10,13 @@ pub trait Entry {
 }
 
 pub struct ClassPath {
-    pub entries: Vec<Box<dyn Entry>>,
-    pub java_home: String,
-    pub user_path: String,
+    pub runtime_path: Vec<Box<dyn Entry>>
 }
 
 impl ClassPath {
     pub fn new(java_home: String, user_path: String) -> ClassPath {
         ClassPath {
-            entries: vec![],
-            java_home,
-            user_path,
+            runtime_path: vec![],
         }
     }
 
@@ -53,8 +49,7 @@ impl ClassPath {
             .filter(|d| is_dir_jar(d))
             .for_each(|f| {
                 let entry = ZipEntry::new(f.path());
-                // entries.push(Box::from(entry));
-                self.entries.push(Box::from(entry));
+                self.runtime_path.push(Box::from(entry));
             });
     }
 
@@ -64,10 +59,10 @@ impl ClassPath {
 
         if is_jar || is_zip {
             let entry = ZipEntry::new(Path::new(&path).to_path_buf());
-            self.entries.push(Box::from(entry));
+            self.runtime_path.push(Box::from(entry));
         } else {
             let dir_entry = DirectoryEntry::new(Path::new(&path).to_path_buf());
-            self.entries.push(Box::from(dir_entry));
+            self.runtime_path.push(Box::from(dir_entry));
         }
     }
 }
@@ -93,6 +88,6 @@ mod tests {
         let user_path: String = String::from("testdata/java8");
         let class_paths = ClassPath::parse(java_home, user_path);
 
-        assert_eq!(21, class_paths.entries.len());
+        assert_eq!(21, class_paths.runtime_path.len());
     }
 }
