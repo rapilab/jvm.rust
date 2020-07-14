@@ -43,7 +43,7 @@ mod tests {
     use crate::oops::instanced_klass::InstanceKlass;
 
     #[test]
-    fn test_load_class() {
+    fn test_should_get_basic_info() {
         let klass = build_klass();
 
         assert_eq!(0, klass.minor_version);
@@ -52,12 +52,18 @@ mod tests {
         assert_eq!("java/lang/Object", klass.super_klass_name);
         assert_eq!(0, klass.interfaces.len());
         assert_eq!(2, klass.methods.len());
+    }
+
+    #[test]
+    fn test_get_methods_info() {
+        let klass = build_klass();
+
+
         let info = klass.methods[0].clone();
         assert_eq!(1, info.attribute_table.len());
 
         let method2 = klass.methods[1].clone();
         assert_eq!(1, method2.attribute_table.len());
-
         assert_eq!(34, klass.constant_pool.len());
     }
 
@@ -95,19 +101,28 @@ mod tests {
     }
 
     #[test]
-    fn test_load_attr() {
+    fn should_had_source_file() {
         let klass = build_klass();
         for attr in klass.attributes {
             match attr {
-                AttributeInfo::SourceFile(_) => assert!(true),
+                AttributeInfo::SourceFile(source) => {
+                    assert!(true);
+                    assert_eq!(19, source.source_file_index);
+                },
                 _ => assert!(false),
             }
         }
     }
 
     #[test]
-    fn test_load_source_file() {
+    fn test_should_load_source_filename() {
         let klass = build_klass();
         assert_eq!("HelloWorld.java", klass.source_file);
+    }
+
+    #[test]
+    fn test_should_get_correct_fields_length() {
+        let klass = build_klass();
+        assert_eq!(0, klass.fields.len());
     }
 }
