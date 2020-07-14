@@ -1,6 +1,7 @@
 use crate::rtda::heap::class_loader::ClassLoader;
 use crate::classpath::class_path::ClassPath;
 
+#[derive(Debug, Clone)]
 pub struct Runtime {
     pub boot_loader: Box<ClassLoader>,
 }
