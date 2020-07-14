@@ -29,7 +29,7 @@ pub struct InstanceKlass {
 
 impl InstanceKlass {
     pub fn new() -> InstanceKlass {
-        InstanceKlass {
+        Self {
             minor_version: 0,
             major_version: 0,
             constant_pool_count: 0,
