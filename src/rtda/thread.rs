@@ -2,13 +2,13 @@ use crate::instructions::decoder::decoder;
 use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 use crate::rtda::heap::j_method::JMethod;
-use crate::rtda::j_stack::JStack;
+use crate::rtda::jvm_stack::JVMStack;
 use std::borrow::Borrow;
 use crate::rtda::heap::runtime::Runtime;
 
 #[derive(Debug, Clone)]
 pub struct JThread {
-    pub stack: Box<JStack>,
+    pub stack: Box<JVMStack>,
     pub runtime: Box<Runtime>,
 }
 
@@ -16,7 +16,7 @@ impl JThread {
     pub fn new(runtime: Runtime) -> JThread {
         JThread {
             runtime: Box::from(runtime),
-            stack: Box::from(JStack::new(0)),
+            stack: Box::from(JVMStack::new(0)),
         }
     }
 

@@ -2,7 +2,7 @@ use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 
 use crate::classfile::class_file_stream::ClassFileStream;
-use crate::rtda::heap::constant_member_ref::ConstantMemberRef;
+use crate::classfile::constant_member_ref::ConstantMemberRef;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 use crate::rtda::heap::j_constant::{JConstant, JField};
 

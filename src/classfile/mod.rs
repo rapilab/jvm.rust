@@ -7,3 +7,4 @@ pub mod class_file_stream;
 pub mod attribute_info;
 pub mod constant_pool;
 pub mod member_info;
+pub mod constant_member_ref;
