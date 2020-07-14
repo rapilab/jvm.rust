@@ -91,7 +91,9 @@ impl MethodDescriptor {
                         }
                     }
                 }
-                "[" => {}
+                "[" => {
+
+                }
                 _ => {
                     return None
                 }

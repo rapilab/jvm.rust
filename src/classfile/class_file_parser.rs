@@ -201,7 +201,6 @@ impl ClassFileParser {
 
 #[cfg(test)]
 mod tests {
-    use crate::classfile::class_factory::ClassFactory;
     use crate::classfile::class_file_parser::ClassFileParser;
     use crate::classpath::class_file_entry::ClassFileEntry;
 

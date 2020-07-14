@@ -194,7 +194,7 @@ pub fn read_attribute_info(stream: &mut ClassFileStream, entries: Vec<CpEntry>) 
             AttributeInfo::SourceFile(source_file)
         }
         _ => {
-            println!("{}", attr_name);
+            println!("read_attribute_info -> {}", attr_name);
             AttributeInfo::None()
         }
     }

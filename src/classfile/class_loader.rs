@@ -41,6 +41,8 @@ mod tests {
     use crate::classfile::attribute_info::AttributeInfo;
     use crate::classfile::class_loader::ClassLoader;
     use crate::oops::instanced_klass::InstanceKlass;
+    use crate::classpath::class_file_entry::ClassFileEntry;
+    use crate::classfile::class_file_parser::ClassFileParser;
 
     #[test]
     fn test_should_get_basic_info() {
@@ -124,5 +126,12 @@ mod tests {
     fn test_should_get_correct_fields_length() {
         let klass = build_klass();
         assert_eq!(0, klass.fields.len());
+    }
+
+    #[test]
+    fn should_get_array_type() {
+        let path = "testdata/java8/ArraySample.class";
+        let mut class_loader = ClassLoader::new();
+        let klass = class_loader.build_user_class(String::from(path));
     }
 }
