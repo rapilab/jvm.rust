@@ -1,4 +1,4 @@
-use crate::instructions::j_object::JObject;
+use crate::rtda::heap::j_object::JObject;
 
 #[derive(Debug, Clone)]
 pub struct Slot {

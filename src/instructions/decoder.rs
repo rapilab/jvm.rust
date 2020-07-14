@@ -1,6 +1,6 @@
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::instructions::exec::InstructionExec;
-use crate::instructions::instruction::{get_instruction, NullOperandsInstruction};
+use crate::instructions::instruction_factory::{get_instruction, NullOperandsInstruction};
 
 pub fn decoder(code: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
     let mut vec: Vec<Box<dyn InstructionExec>> = Vec::with_capacity(code.len());

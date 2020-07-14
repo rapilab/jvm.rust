@@ -1,4 +1,4 @@
-use crate::instructions::slot::Slot;
+use crate::rtda::heap::slot::Slot;
 use crate::rtda::heap::j_method::JMethod;
 use crate::rtda::heap::j_constant::JConstant;
 use crate::rtda::thread::JThread;

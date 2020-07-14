@@ -1,7 +1,7 @@
 use crate::classfile::class_file_stream::ClassFileStream;
-use crate::instructions::constants::j_const::{ConstInt, ConstNull};
+use crate::instructions::constants::i_const::{ConstInt, ConstNull};
 use crate::instructions::constants::ldc::LDC;
-use crate::instructions::control::j_return::JReturn;
+use crate::instructions::control::i_return::IReturn;
 use crate::instructions::exec::InstructionExec;
 use crate::instructions::loads::load_n::LoadN;
 use crate::instructions::opcode;
@@ -56,7 +56,7 @@ pub fn get_instruction(ins: u8) -> Box<dyn InstructionExec> {
         opcode::OpALoad0 => Box::new(LoadN::new(0, false)),
         opcode::OpInvokeSpecial => Box::new(InvokeSpecial::new()),
         opcode::OpInvokeVirtual => Box::new(InvokeVirtual::new()),
-        opcode::OpReturn => Box::new(JReturn::new()),
+        opcode::OpReturn => Box::new(IReturn::new()),
         opcode::OpGetStatic => Box::new(GetStatic::new()),
         _ => Box::new(NoOperandsInstruction::new()),
     }
