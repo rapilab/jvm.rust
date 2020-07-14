@@ -1,4 +1,4 @@
-use crate::classfile::class_loader::ClassLoader;
+use crate::rtda::heap::class_loader::ClassLoader;
 
 pub struct Runtime {
     pub boot_loader: ClassLoader,
