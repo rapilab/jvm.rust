@@ -194,6 +194,7 @@ impl ClassFileParser {
         // should before set methods
         klass.fill_pool(self);
 
+        // latest
         klass.fill_methods(self.methods.clone());
     }
 }

@@ -1,3 +1,4 @@
+pub mod j_method;
 pub mod constant_member_ref;
 pub mod instanced_klass;
 pub mod j_constant;
