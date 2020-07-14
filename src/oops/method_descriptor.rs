@@ -1,16 +1,115 @@
-type TypeDescriptor = String;
+use std::borrow::Borrow;
+
+#[derive(Debug, Clone)]
+pub struct TypeDescriptor {
+    str: String
+}
+
+impl TypeDescriptor {
+    pub fn new(str: String) -> TypeDescriptor {
+        TypeDescriptor {
+            str
+        }
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct MethodDescriptor {
+    pub text: String,
     pub parameter_types: Vec<TypeDescriptor>,
     pub return_type: Option<TypeDescriptor>,
 }
 
 impl MethodDescriptor {
-    pub fn new() -> MethodDescriptor {
+    pub fn new(str: String) -> MethodDescriptor {
         MethodDescriptor {
+            text: str,
             parameter_types: vec![],
             return_type: None,
         }
     }
+
+    pub fn parse(&mut self) -> &mut MethodDescriptor {
+        let param_types = self.parse_param_types();
+        let return_type = self.parse_return_type();
+
+        self.parameter_types = param_types;
+        self.return_type = return_type;
+
+        self
+    }
+
+    pub fn parse_param_types(&mut self) -> Vec<TypeDescriptor> {
+        let mut params: Vec<TypeDescriptor> = vec![];
+        if self.text.len() == 0 && !self.text.starts_with("(") {
+            return params;
+        }
+
+        self.text = self.text[1..].to_string();
+
+        let option = self.parse_field_type();
+        match option {
+            None => {}
+            Some(desc) => {
+                params.push(desc)
+            }
+        }
+
+        if self.text.len() == 0 && !self.text.ends_with("(") {
+            return vec![];
+        }
+
+        self.text = self.text[1..].to_string();
+        params
+    }
+
+    pub fn parse_field_type(&mut self) -> Option<TypeDescriptor> {
+        let type_desc: Option<TypeDescriptor> = None;
+        if self.text.len() > 0 {
+            let x = &self.text[0..0];
+            match x {
+                "B" | "C" | "D" | "F" | "I" | "J" | "S" | "Z" => {
+                    let t = &self.text[0..1];
+                    let descriptor = TypeDescriptor::new(String::from(t));
+                    return Option::from(descriptor);
+                }
+                "L" => {
+                    for i in 0..self.text.len() {
+                        if get_char_by_index(self.text.clone(), i) == String::from(";") {
+                            let t = self.text[0..(i + 1)].to_string();
+                            self.text = self.text[i + 1..].to_string();
+                            return Option::from(TypeDescriptor::new(String::from(t)));
+                        }
+                    }
+                }
+                "[" => {}
+                _ => {}
+            }
+        }
+
+        return type_desc;
+    }
+
+    pub fn parse_object_type(&self) {}
+
+    pub fn parse_return_type(&mut self) -> Option<TypeDescriptor> {
+        let len = self.text.len();
+        for i in 0..len - 1 {
+            let text = self.text.clone();
+            if get_char_by_index(text.clone(), i) == ';'.to_string() {
+                let x = &text[0..i + 1];
+                let s = &text[i + 1..len];
+                self.text = s.to_string();
+                let descriptor = TypeDescriptor::new(String::from(x));
+                return Some(descriptor)
+            }
+        }
+        None
+    }
 }
+
+pub fn get_char_by_index(text: String, i: usize) -> String {
+    text.chars().nth(i).unwrap().to_string()
+}
+
+

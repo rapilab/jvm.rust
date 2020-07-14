@@ -55,7 +55,7 @@ impl JMethod {
             parameter_annotation_data: vec![],
             annotation_default_data: vec![],
             line_num_table: LineNumberTableAttribute::new(),
-            descriptor: MethodDescriptor::new(),
+            descriptor: MethodDescriptor::new(String::from("")),
         }
     }
 }
@@ -113,6 +113,7 @@ impl InstanceKlass {
             j_method.name = self.klass_name.clone();
             j_method.attribute_table = x.attribute_table.clone();
             j_method.klass = self.clone().borrow().clone();
+            j_method.descriptor = self.get_method_descriptor(x.clone());
 
             for j in x.attribute_table {
                 match j {
@@ -129,6 +130,14 @@ impl InstanceKlass {
                 self.methods.push(j_method);
             }
         }
+    }
+
+    pub fn get_method_descriptor(&mut self, member: MemberInfo) -> MethodDescriptor {
+        let desc_str = self.get_string_by_index(member.descriptor_index);
+        let mut descriptor = MethodDescriptor::new(desc_str);
+        descriptor.parse();
+
+        descriptor
     }
 
     pub fn fill_attributes(&mut self, attributes: Vec<AttributeInfo>) {
