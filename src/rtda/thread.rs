@@ -59,12 +59,13 @@ mod tests {
         let first = klass.methods.get(0).unwrap();
 
         let mut thread = JThread::new();
-        let mut frame = create_frame(second, &mut thread);
 
-        let execs = execute_method(&mut frame, second.clone().code);
-        assert_eq!(9, execs.len());
-
-        let first_execs = execute_method(&mut frame, first.clone().code);
+        let mut frame1 = create_frame(first, &mut thread);
+        let first_execs = execute_method(&mut frame1, first.clone().code);
         assert_eq!(5, first_execs.len());
+
+        let mut frame2 = create_frame(second, &mut thread);
+        let execs = execute_method(&mut frame2, second.clone().code);
+        assert_eq!(9, execs.len());
     }
 }
