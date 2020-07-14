@@ -1,5 +1,6 @@
-# JVM research
+# Rust + JVM research
 
+![build](https://github.com/phodal/jvm.rust/workflows/build/badge.svg)
 
 [Java The class File Format ](https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html)
 
