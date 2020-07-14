@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 byteorder = "1.0.0"
 log = "0.4"
+zip = "0.5.6"
