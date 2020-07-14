@@ -1,6 +1,6 @@
 use crate::classfile::class_factory::ClassFactory;
 use crate::classpath::class_file_entry::ClassFileEntry;
-use crate::oops::instanced_klass::InstanceKlass;
+use crate::rtda::heap::instanced_klass::InstanceKlass;
 
 pub struct ClassLoader {
     pub jl_object_class: Vec<InstanceKlass>,
@@ -40,7 +40,7 @@ impl ClassLoader {
 mod tests {
     use crate::classfile::attribute_info::AttributeInfo;
     use crate::classfile::class_loader::ClassLoader;
-    use crate::oops::instanced_klass::InstanceKlass;
+    use crate::rtda::heap::instanced_klass::InstanceKlass;
     use crate::classpath::class_file_entry::ClassFileEntry;
     use crate::classfile::class_file_parser::ClassFileParser;
 

@@ -1,6 +1,6 @@
 use crate::classfile::class_file_parser::ClassFileParser;
-use crate::oops::constant_pool::MemberRef;
-use crate::oops::instanced_klass::InstanceKlass;
+use crate::classfile::constant_pool::MemberRef;
+use crate::rtda::heap::instanced_klass::InstanceKlass;
 
 #[derive(Clone, Debug)]
 pub struct ConstantMemberRef {

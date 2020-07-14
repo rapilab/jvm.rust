@@ -124,7 +124,7 @@ pub fn get_char_by_index(text: String, i: usize) -> String {
 
 #[cfg(test)]
 mod tests {
-    use crate::oops::method_descriptor::MethodDescriptor;
+    use crate::rtda::heap::method_descriptor::MethodDescriptor;
 
     #[test]
     fn should_get_desc_from_void_no_params() {

@@ -3,8 +3,8 @@ use byteorder::{BigEndian, ByteOrder};
 use crate::classfile::attribute_info::{read_attribute_info, read_attributes, AttributeInfo};
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::classfile::member_info::MemberInfo;
-use crate::oops::constant_pool::{ConstantInfo, CpEntry};
-use crate::oops::instanced_klass::InstanceKlass;
+use crate::classfile::constant_pool::{ConstantInfo, CpEntry};
+use crate::rtda::heap::instanced_klass::InstanceKlass;
 
 pub struct ClassFileParser {
     major_version: Vec<u8>,

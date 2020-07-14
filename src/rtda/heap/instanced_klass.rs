@@ -1,14 +1,15 @@
+use std::borrow::Borrow;
+
+use byteorder::{BigEndian, ByteOrder};
+
 use crate::classfile::attribute_info::{
     AttributeInfo, ExceptionTableEntry, LineNumberTableAttribute,
 };
-use crate::classfile::member_info::MemberInfo;
-use crate::oops::constant_pool::CpEntry;
-use crate::oops::method_descriptor::MethodDescriptor;
-use byteorder::{BigEndian, ByteOrder};
-
 use crate::classfile::class_file_parser::ClassFileParser;
+use crate::classfile::constant_pool::CpEntry;
+use crate::classfile::member_info::MemberInfo;
+use crate::rtda::heap::method_descriptor::MethodDescriptor;
 use crate::rtda::heap::j_constant::{JConstant, JField, JMethodRef, JString};
-use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
 pub struct InstanceKlass {

@@ -1,5 +1,5 @@
 use crate::classfile::class_file_stream::ClassFileStream;
-use crate::oops::constant_pool::CpEntry;
+use crate::classfile::constant_pool::CpEntry;
 
 const ConstantValue: &str = "ConstantValue";
 const Code: &str = "Code";
