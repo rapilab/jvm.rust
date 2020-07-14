@@ -7,14 +7,14 @@ use crate::rtda::jvm_stack::JVMStack;
 use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
-pub struct JThread {
+pub struct Thread {
     pub stack: Box<JVMStack>,
     pub runtime: Box<Runtime>,
 }
 
-impl JThread {
-    pub fn new(runtime: Runtime) -> JThread {
-        JThread {
+impl Thread {
+    pub fn new(runtime: Runtime) -> Thread {
+        Thread {
             runtime: Box::from(runtime),
             stack: Box::from(JVMStack::new(0)),
         }
@@ -41,7 +41,7 @@ pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Box<dyn Instruct
     vec
 }
 
-pub fn create_frame(method: &JMethod, thread: &mut JThread) -> Frame {
+pub fn create_frame(method: &JMethod, thread: &mut Thread) -> Frame {
     let frame = thread.clone().new_frame(method.clone());
     thread.push_frame(frame.borrow());
     frame
@@ -52,7 +52,7 @@ mod tests {
     use crate::classpath::class_path::ClassPath;
     use crate::rtda::create_main_thread;
     use crate::rtda::heap::runtime::Runtime;
-    use crate::rtda::thread::{create_frame, execute_method, JThread};
+    use crate::rtda::thread::{create_frame, execute_method, Thread};
 
     #[test]
     fn test_frame() {
