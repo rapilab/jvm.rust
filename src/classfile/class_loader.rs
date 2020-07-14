@@ -39,7 +39,7 @@ impl ClassLoader {
 #[cfg(test)]
 mod tests {
     use crate::classfile::attribute_info::AttributeInfo;
-    use crate::classfile::class_file_parser::ClassFileParser;
+    use crate::classfile::parsed_class::ParsedClass;
     use crate::classfile::class_loader::ClassLoader;
     use crate::classpath::class_file_entry::ClassFileEntry;
     use crate::rtda::heap::instanced_klass::InstanceKlass;

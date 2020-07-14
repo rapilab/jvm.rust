@@ -6,20 +6,26 @@ use crate::classfile::constant_pool::{ConstantInfo, CpEntry};
 use crate::classfile::member_info::MemberInfo;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 
-pub struct ClassFileParser {
+pub struct ParsedClass {
     major_version: Vec<u8>,
     minor_version: Vec<u8>,
+
     constant_pool_count: u8,
     constant_pool_entries: Vec<CpEntry>,
+
     access_flags: Vec<u8>,
     this_class_index: u16,
     super_class_index: u16,
+
     interface_count: u16,
     interfaces: Vec<u16>,
+
     field_count: u16,
     fields: Vec<MemberInfo>,
+
     method_count: u16,
     methods: Vec<MemberInfo>,
+
     attr_count: u16,
     attributes: Vec<AttributeInfo>,
 }
@@ -52,9 +58,9 @@ fn is_klass_magic(clz_read: Vec<u8>) -> bool {
     clz_read[0] != 0xca || clz_read[1] != 0xfe || clz_read[2] != 0xba || clz_read[3] != 0xbe
 }
 
-impl ClassFileParser {
-    pub fn new(stream: ClassFileStream) -> ClassFileParser {
-        let mut file_parser = ClassFileParser {
+impl ParsedClass {
+    pub fn new(stream: ClassFileStream) -> ParsedClass {
+        let mut file_parser = ParsedClass {
             major_version: vec![0; 2],
             minor_version: vec![0; 2],
             constant_pool_count: 0,
@@ -201,14 +207,14 @@ impl ClassFileParser {
 
 #[cfg(test)]
 mod tests {
-    use crate::classfile::class_file_parser::ClassFileParser;
+    use crate::classfile::parsed_class::ParsedClass;
     use crate::classpath::class_file_entry::ClassFileEntry;
 
     #[test]
     fn should_eq_count_entries_length() {
         let entry = ClassFileEntry::new();
         let stream = entry.open_stream(String::from("testdata/java8/HelloWorld.Class"));
-        let mut parser = ClassFileParser::new(stream);
+        let mut parser = ParsedClass::new(stream);
         assert_eq!(
             parser.constant_pool_count,
             parser.constant_pool_entries.len() as u8

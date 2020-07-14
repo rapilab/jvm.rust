@@ -3,7 +3,7 @@ use std::borrow::Borrow;
 use byteorder::{BigEndian, ByteOrder};
 
 use crate::classfile::attribute_info::{AttributeInfo};
-use crate::classfile::class_file_parser::ClassFileParser;
+use crate::classfile::parsed_class::ParsedClass;
 use crate::classfile::constant_pool::CpEntry;
 use crate::classfile::member_info::MemberInfo;
 use crate::rtda::heap::j_constant::{JConstant, JField, JMethodRef, JString};
@@ -128,7 +128,7 @@ impl InstanceKlass {
         self.interfaces = results
     }
 
-    pub fn fill_pool(&mut self, cf: &mut ClassFileParser) {
+    pub fn fill_pool(&mut self, cf: &mut ParsedClass) {
         let entries = self.constant_pool_entries.clone();
         let mut pool: Vec<JConstant> = Vec::with_capacity(entries.len());
 

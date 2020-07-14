@@ -1,7 +1,7 @@
 pub mod access_flags;
 
 pub mod class_factory;
-pub mod class_file_parser;
+pub mod parsed_class;
 pub mod class_file_stream;
 pub mod class_loader;
 

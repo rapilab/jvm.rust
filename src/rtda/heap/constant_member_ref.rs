@@ -1,4 +1,4 @@
-use crate::classfile::class_file_parser::ClassFileParser;
+use crate::classfile::parsed_class::ParsedClass;
 use crate::classfile::constant_pool::MemberRef;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 
@@ -13,7 +13,7 @@ pub struct ConstantMemberRef {
 impl ConstantMemberRef {
     pub fn new(
         class: &InstanceKlass,
-        cf: &ClassFileParser,
+        cf: &ParsedClass,
         field_ref: MemberRef,
     ) -> ConstantMemberRef {
         let class_name = &class.klass_name;

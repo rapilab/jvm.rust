@@ -1,4 +1,4 @@
-use crate::classfile::class_file_parser::ClassFileParser;
+use crate::classfile::parsed_class::ParsedClass;
 use crate::classfile::constant_pool::{CpEntry, MemberRef};
 use crate::rtda::heap::constant_member_ref::ConstantMemberRef;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
@@ -26,7 +26,7 @@ pub struct JMethodRef {
 }
 
 impl JMethodRef {
-    pub fn new(class: &InstanceKlass, cf: &ClassFileParser, method_ref: MemberRef) -> JMethodRef {
+    pub fn new(class: &InstanceKlass, cf: &ParsedClass, method_ref: MemberRef) -> JMethodRef {
         let member_ref = ConstantMemberRef::new(class, cf, method_ref);
         JMethodRef { member_ref }
     }
@@ -44,7 +44,7 @@ pub struct JField {
 }
 
 impl JField {
-    pub fn new(class: &InstanceKlass, cf: &ClassFileParser, field_ref: MemberRef) -> JField {
+    pub fn new(class: &InstanceKlass, cf: &ParsedClass, field_ref: MemberRef) -> JField {
         let member_ref = ConstantMemberRef::new(class, cf, field_ref);
         JField { member_ref }
     }
