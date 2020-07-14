@@ -223,4 +223,17 @@ Thread
      - Local Vars
      - Operand Stack
      - Current Class Constant Pool Ref
+
+### Type Descriptor
      
+```
+[Z = boolean
+[B = byte
+[S = short
+[I = int
+[J = long
+[F = float
+[D = double
+[C = char
+[L = any non-primitives(Object) 
+```
