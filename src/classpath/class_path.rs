@@ -14,14 +14,14 @@ pub struct ClassPath {
 }
 
 impl ClassPath {
-    pub fn new(java_home: String, user_path: String) -> ClassPath {
+    pub fn new() -> ClassPath {
         ClassPath {
             runtime_path: vec![],
         }
     }
 
     pub fn parse(java_home: String, user_path: String) -> ClassPath {
-        let mut classpaths = ClassPath::new(java_home.clone(), user_path.clone());
+        let mut classpaths = ClassPath::new();
 
         classpaths.parse_boot_path(java_home.clone());
 

@@ -2,6 +2,7 @@ use crate::classfile::class_factory::ClassFactory;
 use crate::classpath::class_file_entry::ClassFileEntry;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 
+#[derive(Debug, Clone)]
 pub struct ClassLoader {
     pub jl_object_class: Vec<InstanceKlass>,
 }
@@ -13,11 +14,11 @@ impl ClassLoader {
         }
     }
 
-    pub fn init(&mut self, class_name: String) {
-        self.add_user_class(class_name);
+    pub fn init(&mut self) {
+
     }
 
-    fn add_user_class(&mut self, class_name: String) {
+    pub fn add_user_class(&mut self, class_name: String) {
         let klass = self.build_user_class(class_name);
         self.jl_object_class.push(klass);
     }

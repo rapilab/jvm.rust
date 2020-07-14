@@ -46,13 +46,14 @@ pub fn create_frame(method: &JMethod, thread: &mut JThread) -> Frame {
 mod tests {
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::{create_frame, execute_method, JThread};
+    use crate::classpath::class_path::ClassPath;
 
     #[test]
     fn test_frame() {
-        let runtime = Runtime::new();
+        let runtime = Runtime::new(ClassPath::new());
         let string = String::from("testdata/java8/HelloWorld.Class");
         let mut class_loader = runtime.boot_loader;
-        class_loader.init(string);
+        class_loader.add_user_class(string);
         let klass = class_loader.jl_object_class.get(0).unwrap();
 
         let second = klass.methods.get(1).unwrap();
