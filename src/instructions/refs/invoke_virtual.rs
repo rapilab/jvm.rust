@@ -1,15 +1,19 @@
 use crate::classfile::class_file_stream::ClassFileStream;
 use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
-use crate::rtda::heap::j_constant::JConstant;
+use crate::rtda::heap::j_constant::{JConstant, JMethodRef};
 
 pub struct InvokeVirtual {
     pub index: usize,
+    pub method_ref: Option<JMethodRef>,
 }
 
 impl InvokeVirtual {
     pub fn new() -> InvokeVirtual {
-        InvokeVirtual { index: 0 }
+        InvokeVirtual {
+            index: 0,
+            method_ref: None,
+        }
     }
 }
 
@@ -19,9 +23,10 @@ impl InstructionExec for InvokeVirtual {
         let option = cp.get(self.index);
         if let Some(entry) = option {
             match entry {
-                JConstant::ConstantMethodRef(str) => {
-                    println!("descriptor -> {:?}", str.member_ref.descriptor);
-                    println!("name -> {:?}", str.member_ref.name);
+                JConstant::ConstantMethodRef(method) => {
+                    self.method_ref = Some(method.clone());
+                    println!("descriptor -> {:?}", method.member_ref.descriptor);
+                    println!("name -> {:?}", method.member_ref.name);
                 }
                 _ => {
                     println!("{:?}", entry);
