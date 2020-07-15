@@ -277,3 +277,50 @@ Thread
  - Go -> [https://github.com/zxh0/jvm.go](https://github.com/zxh0/jvm.go) 3.1k stars
  - Rust -> [https://github.com/douchuan/jvm](https://github.com/douchuan/jvm) 278 stars
  - Rust -> [ocelotter](https://github.com/kittylyst/ocelotter) 45 stars
+ 
+## process
+
+### Java.c
+
+#### 虚拟机生命周期
+
+Launcher:
+
+ - OSLauncher -> OSLauncher::launch
+   - AppLauncher::launchApp
+      - AppLauncher::createJvmLauncher
+         - JVMLauncher::initFromConfigFile
+         - JVMLauncher::launch
+ 
+
+
+#### 主线程
+
+
+```c++
+// src/java.base/share/native/libjli/java.c
+1. 初始化虚拟机
+
+RegisterThread();
+FreeKnownVMs();
+
+2. 获取应用程序主类
+mainClass = LoadMainClass(env, mode, what);
+
+
+3. 获取应用程序主方法
+appClass = GetApplicationClass(env);
+mainArgs = CreateApplicationArgs(env, argv, argc);
+PostJVMInit(env, appClass, vm);
+mainID = (*env)->GetStaticMethodID(env, mainClass, "main",
+                                       "([Ljava/lang/String;)V");
+
+4. 传递应用程序参数并执行主方法
+(*env)->CallStaticVoidMethod(env, mainClass, mainID, mainArgs);
+
+5. Detach 主线程
+(*vm)->DetachCurrentThread(vm)
+
+6. 销毁 JVM
+(*vm)->DestroyJavaVM(vm);
+```
