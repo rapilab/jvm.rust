@@ -1,10 +1,10 @@
-use crate::instructions::decoder::decoder;
 use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 use crate::rtda::heap::j_method::JMethod;
 use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::jvm_stack::JVMStack;
 use std::borrow::Borrow;
+use crate::instructions::decoder::{Decode, decoder};
 
 #[derive(Debug, Clone)]
 pub struct Thread {
@@ -24,18 +24,22 @@ impl Thread {
         self.stack.push(frame)
     }
 
-    pub fn new_frame(self, method: JMethod) -> Frame {
-        Frame::new(Box::from(self), method)
+    pub fn new_frame(&self, method: JMethod) -> Frame {
+        Frame::new(Box::from(self.clone()), method)
+    }
+
+    pub fn current_frame(&self) -> Option<Frame> {
+        self.stack.top()
     }
 
     pub fn invoke_method_with_shim(&self) {}
 }
 
-pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Box<dyn InstructionExec>> {
+pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Decode> {
     let _length = instr.len();
     let mut vec = decoder(instr.clone());
     for i in 0..vec.len() {
-        vec[i].execute(frame);
+        vec[i].ins.execute(frame);
     }
 
     vec
@@ -66,7 +70,7 @@ mod tests {
         let first = klass.methods.get(0).unwrap();
 
         let jre_home = "/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre";
-        let mut thread = create_main_thread(jre_home);
+        let mut thread = create_main_thread(String::from(jre_home));
 
         let mut frame1 = create_frame(first, &mut thread);
         let first_execs = execute_method(&mut frame1, first.clone().code);

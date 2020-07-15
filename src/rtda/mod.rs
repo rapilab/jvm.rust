@@ -8,7 +8,7 @@ use crate::classpath::class_path::ClassPath;
 use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::thread::Thread;
 
-pub fn create_main_thread(jre_home: &str) -> Thread {
+pub fn create_main_thread(jre_home: String) -> Thread {
     let cp = ClassPath::parse(String::from(jre_home), String::from("testdata/java8"));
     let runtime = Runtime::new(cp);
 

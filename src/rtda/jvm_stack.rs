@@ -19,4 +19,8 @@ impl JVMStack {
     pub fn push(&mut self, _frame: &Frame) {
         // self.top = Some(frame.borrow());
     }
+
+    pub fn top(&self) -> Option<Frame> {
+        self.clone().top
+    }
 }

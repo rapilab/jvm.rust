@@ -1,4 +1,24 @@
+use jvm::rtda::create_main_thread;
+use jvm::instructions::instruction_factory::get_instruction;
+use jvm::rtda::thread::execute_method;
+use jvm::instructions::decoder::{decoder, Decode};
+use jvm::rtda::heap::j_method::JMethod;
+use jvm::instructions::exec::InstructionExec;
+
 fn main() {}
+
+pub fn start_vm(jre: String) {
+    let thread = create_main_thread(jre);
+
+    let mut frame = thread.current_frame();
+    // let mut instruction = fetch_instruction(frame.clone().method);
+    // instruction.execute(&mut frame);
+    // let mut vec = decoder(method.code);
+    // vec[0].ins.execute(&mut frame);
+    // while {
+    //     get_instruction()
+    // }
+}
 
 #[cfg(test)]
 mod tests {
@@ -7,6 +27,13 @@ mod tests {
     use jvm::rtda::heap::runtime::Runtime;
     use std::fs::File;
     use zip::ZipArchive;
+    use crate::start_vm;
+
+    #[test]
+    fn test_start_vm() {
+        let jre_home = "/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre";
+        start_vm(String::from(jre_home));
+    }
 
     #[test]
     fn test_stack() {
@@ -19,7 +46,7 @@ mod tests {
     #[test]
     fn test_main_thread() {
         let jre_home = "/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre";
-        create_main_thread(jre_home);
+        create_main_thread(String::from(jre_home));
     }
 
     #[test]
