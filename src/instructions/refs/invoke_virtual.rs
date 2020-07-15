@@ -3,6 +3,7 @@ use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 use crate::rtda::heap::j_constant::{JConstant, JMethodRef};
 
+#[derive(Clone)]
 pub struct InvokeVirtual {
     pub index: usize,
     pub method_ref: Option<JMethodRef>,

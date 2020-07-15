@@ -3,6 +3,7 @@ use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 use crate::rtda::heap::j_constant::JConstant;
 
+#[derive(Clone)]
 pub struct InvokeSpecial {
     pub index: usize,
 }

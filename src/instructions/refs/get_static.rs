@@ -6,6 +6,7 @@ use crate::classfile::constant_member_ref::ConstantMemberRef;
 use crate::rtda::heap::instanced_klass::InstanceKlass;
 use crate::rtda::heap::j_constant::{JConstant, JField};
 
+#[derive(Clone)]
 pub struct GetStatic {
     pub index: usize,
     pub field: Box<JField>,

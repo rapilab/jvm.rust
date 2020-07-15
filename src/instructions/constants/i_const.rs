@@ -3,6 +3,7 @@ use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 use crate::rtda::heap::slot::{EmptySlot, IntSlot, Slot};
 
+#[derive(Clone)]
 pub struct IConst {
     k: Slot,
 }

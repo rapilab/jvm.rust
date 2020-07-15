@@ -24,12 +24,14 @@ pub enum Instruction {
     OpGetStatic(),
 }
 
+#[derive(Clone)]
 pub struct NullOperandsInstruction {}
 impl InstructionExec for NullOperandsInstruction {
     fn execute(&mut self, _frame: &mut Frame) {}
     fn fetch_operands(&mut self, _reader: &mut ClassFileStream) {}
 }
 
+#[derive(Clone)]
 pub struct NoOperandsInstruction {}
 
 impl NoOperandsInstruction {

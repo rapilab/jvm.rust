@@ -2,6 +2,7 @@ use crate::classfile::class_file_stream::ClassFileStream;
 use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 
+#[derive(Clone)]
 pub struct LoadN {
     n: usize,
     d: bool,
