@@ -306,6 +306,7 @@ Launcher:
 1. 初始化虚拟机
 
 RegisterThread();
+InitializeJVM();
 FreeKnownVMs();
 
 2. 获取应用程序主类
