@@ -1,33 +1,46 @@
-use jvm::rtda::create_main_thread;
 use jvm::instructions::instruction_factory::get_instruction;
-use jvm::rtda::thread::execute_method;
+use jvm::rtda::thread::{execute_method, create_frame, Thread};
 use jvm::instructions::decoder::{decoder, Decode};
 use jvm::rtda::heap::j_method::JMethod;
 use jvm::instructions::exec::InstructionExec;
+use jvm::rtda::frame::Frame;
+use jvm::classpath::class_path::ClassPath;
+use jvm::rtda::heap::runtime::Runtime;
 
 fn main() {}
+
+pub fn create_main_thread(jre_home: String) -> Thread {
+    let cp = ClassPath::parse(String::from(jre_home), String::from("testdata/java8"));
+    let runtime = Runtime::new(cp);
+
+    let main_thread = Thread::new(runtime);
+
+    main_thread.invoke_method_with_shim();
+
+    main_thread
+}
+
 
 pub fn start_vm(jre: String) {
     let thread = create_main_thread(jre);
 
-    let mut frame = thread.current_frame();
-    // let mut instruction = fetch_instruction(frame.clone().method);
-    // instruction.execute(&mut frame);
-    // let mut vec = decoder(method.code);
-    // vec[0].ins.execute(&mut frame);
-    // while {
-    //     get_instruction()
-    // }
+    let mut current_frame = thread.current_frame();
+    match current_frame {
+        None => {},
+        Some(mut frame) => {
+            let mut vec = decoder(frame.clone().method.code);
+            vec[0].ins.execute(&mut frame);
+        },
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use jvm::classpath::class_path::ClassPath;
-    use jvm::rtda::create_main_thread;
     use jvm::rtda::heap::runtime::Runtime;
     use std::fs::File;
     use zip::ZipArchive;
-    use crate::start_vm;
+    use crate::{start_vm, create_main_thread};
 
     #[test]
     fn test_start_vm() {
