@@ -47,6 +47,20 @@ ClassFile {
 
 ## Tools
 
+### HSDB
+
+> HSDB（Hotspot Debugger），是一款内置于 SA 中的GUI调试工具，集成了各种JVM 监控工具，适用于深入分析JVM的内部状态
+
+```bash
+java -cp sa-jdi.jar sun.jvm.hotspot.HSDB
+```
+
+or 
+
+```bash
+sudo java -classpath "$JAVA_HOME/lib/sa-jdi.jar" sun.jvm.hotspot.HSDB
+```
+
 ### Hex 显示 
 
 Vim show bytes:
