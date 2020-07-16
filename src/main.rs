@@ -1,16 +1,12 @@
-use jvm::instructions::instruction_factory::get_instruction;
-use jvm::rtda::thread::{execute_method, create_frame, Thread};
-use jvm::instructions::decoder::{decoder, Decode};
-use jvm::rtda::heap::j_method::JMethod;
-use jvm::instructions::exec::InstructionExec;
-use jvm::rtda::frame::Frame;
+use jvm::rtda::thread::{Thread};
+use jvm::instructions::decoder::{decoder};
 use jvm::classpath::class_path::ClassPath;
 use jvm::rtda::heap::runtime::Runtime;
 
 fn main() {}
 
-pub fn create_main_thread(jre_home: String) -> Thread {
-    let cp = ClassPath::parse(String::from(jre_home), String::from("testdata/java8"));
+pub fn create_main_thread(jre_home: String, source: String) -> Thread {
+    let cp = ClassPath::parse(String::from(jre_home), String::from(source));
     let runtime = Runtime::new(cp);
 
     let main_thread = Thread::new(runtime);
@@ -21,8 +17,8 @@ pub fn create_main_thread(jre_home: String) -> Thread {
 }
 
 
-pub fn start_vm(jre: String) {
-    let thread = create_main_thread(jre);
+pub fn start_vm(jre: String, source: String) {
+    let thread = create_main_thread(jre, source);
 
     let mut current_frame = thread.current_frame();
     match current_frame {
@@ -44,22 +40,24 @@ mod tests {
 
     #[test]
     fn test_start_vm() {
+        let source = String::from("testdata/java8/HelloWorld.Class");
         let jre_home = "/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre";
-        start_vm(String::from(jre_home));
+        start_vm(String::from(jre_home), source);
     }
 
     #[test]
     fn test_stack() {
         let runtime = Runtime::new(ClassPath::new());
-        let string = String::from("testdata/java8/HelloWorld.Class");
+        let source = String::from("testdata/java8/HelloWorld.Class");
         let mut class_loader = runtime.boot_loader;
-        class_loader.add_user_class(string);
+        class_loader.add_user_class(source);
     }
 
     #[test]
     fn test_main_thread() {
+        let source = String::from("testdata/java8/HelloWorld.Class");
         let jre_home = "/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre";
-        create_main_thread(String::from(jre_home));
+        create_main_thread(String::from(jre_home), source);
     }
 
     #[test]
