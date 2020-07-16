@@ -4,11 +4,24 @@ use crate::rtda::heap::j_method::JMethod;
 use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::jvm_stack::JVMStack;
 use std::borrow::Borrow;
+use std::sync::{Mutex, Arc};
+
+#[derive(Debug, Clone)]
+pub struct ThreadPool {
+
+}
+
+impl ThreadPool {
+    pub fn new() -> ThreadPool {
+        ThreadPool {}
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct Thread {
     pub stack: Box<JVMStack>,
     pub runtime: Box<Runtime>,
+    pub lock: Arc<Mutex<ThreadPool>>,
 }
 
 impl Thread {
@@ -16,7 +29,14 @@ impl Thread {
         Thread {
             runtime: Box::from(runtime),
             stack: Box::from(JVMStack::new(0)),
+            lock: Arc::new(Mutex::new(ThreadPool::new()))
         }
+    }
+
+    pub fn sleep(&mut self) {
+        self.lock.lock();
+        let guard = self.lock.lock().unwrap();
+        std::mem::drop(guard);
     }
 
     pub fn push_frame(&mut self, frame: &Frame) {
