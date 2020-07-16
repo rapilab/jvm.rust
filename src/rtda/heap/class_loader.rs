@@ -38,8 +38,7 @@ impl ClassLoader {
 #[cfg(test)]
 mod tests {
     use crate::classfile::attribute_info::AttributeInfo;
-    
-    
+
     use crate::rtda::heap::class_loader::ClassLoader;
     use crate::rtda::heap::instanced_klass::InstanceKlass;
 

@@ -19,17 +19,16 @@ pub fn create_main_thread(jre_home: String, source: String) -> Thread {
     main_thread
 }
 
-
 pub fn start_vm(jre: String, source: String) {
     let thread = create_main_thread(jre, source);
 
     let current_frame = thread.current_frame();
     match current_frame {
-        None => {},
+        None => {}
         Some(mut frame) => {
             let mut vec = decoder(frame.clone().method.code);
             vec[0].ins.execute(&mut frame);
-        },
+        }
     }
 }
 
@@ -39,9 +38,9 @@ mod tests {
 
     use zip::ZipArchive;
 
-    use crate::{create_main_thread, start_vm};
     use crate::classpath::class_path::ClassPath;
     use crate::rtda::heap::runtime::Runtime;
+    use crate::{create_main_thread, start_vm};
 
     #[test]
     fn test_start_vm() {

@@ -6,8 +6,8 @@ pub trait InstructionExecClone {
 }
 
 impl<T> InstructionExecClone for T
-    where
-        T: 'static + InstructionExec + Clone,
+where
+    T: 'static + InstructionExec + Clone,
 {
     fn clone_box(&self) -> Box<dyn InstructionExec> {
         Box::new(self.clone())

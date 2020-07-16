@@ -4,7 +4,7 @@ use crate::instructions::instruction_factory::{get_instruction, NullOperandsInst
 
 #[derive(Clone)]
 pub struct Decode {
-    pub ins: Box<dyn InstructionExec>
+    pub ins: Box<dyn InstructionExec>,
 }
 
 pub fn decode_instruction(reader: &mut ClassFileStream) -> Decode {
@@ -12,9 +12,7 @@ pub fn decode_instruction(reader: &mut ClassFileStream) -> Decode {
     let mut instruction = get_instruction(ins);
     instruction.fetch_operands(reader);
 
-    Decode {
-        ins: instruction
-    }
+    Decode { ins: instruction }
 }
 
 pub fn decoder(code: Vec<u8>) -> Vec<Decode> {
@@ -22,7 +20,9 @@ pub fn decoder(code: Vec<u8>) -> Vec<Decode> {
     let mut reader = ClassFileStream::new(code.clone());
 
     for _i in 0..code.len() {
-        vec.push(Decode { ins: Box::new(NullOperandsInstruction {})});
+        vec.push(Decode {
+            ins: Box::new(NullOperandsInstruction {}),
+        });
     }
 
     while reader.current.clone() < code.len() {
