@@ -31,12 +31,13 @@ impl OperandStack {
 
 #[derive(Debug, Clone)]
 pub struct Frame {
-    pub max_locals: u16,
-    pub max_stack: u16,
-    pub thread: Box<Thread>,
     pub local_vars: LocalVars,
     pub operand_stack: OperandStack,
+    pub thread: Box<Thread>,
     pub method: JMethod,
+    pub max_locals: u16,
+    pub max_stack: u16,
+    pub next_pc: u16  // Program Counter
 }
 
 impl Frame {
@@ -48,6 +49,7 @@ impl Frame {
             local_vars: LocalVars::new(),
             operand_stack: OperandStack::new(),
             method,
+            next_pc: 0
         }
     }
 

@@ -59,10 +59,10 @@ mod tests {
         let klass = build_klass();
 
         let info = klass.methods[0].clone();
-        assert_eq!(1, info.attribute_table.len());
+        assert_eq!(1, info.method_data.attribute_table.len());
 
         let method2 = klass.methods[1].clone();
-        assert_eq!(1, method2.attribute_table.len());
+        assert_eq!(1, method2.method_data.attribute_table.len());
         assert_eq!(29, klass.constant_pool.len());
     }
 
@@ -76,7 +76,7 @@ mod tests {
     #[test]
     fn test_load_methods() {
         let klass = build_klass();
-        let attribute_info = klass.methods[0].attribute_table[0].clone();
+        let attribute_info = klass.methods[0].method_data.attribute_table[0].clone();
         match attribute_info {
             AttributeInfo::Code(code) => {
                 assert_eq!(1, code.max_stack);
@@ -87,7 +87,7 @@ mod tests {
             _ => assert!(false),
         }
 
-        let attribute_info = klass.methods[1].attribute_table[0].clone();
+        let attribute_info = klass.methods[1].method_data.attribute_table[0].clone();
         match attribute_info {
             AttributeInfo::Code(code) => {
                 assert_eq!(2, code.max_stack);

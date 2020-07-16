@@ -19,6 +19,7 @@ impl ThreadPool {
 
 #[derive(Debug, Clone)]
 pub struct Thread {
+    pub PC: i64,
     pub stack: Box<JVMStack>,
     pub runtime: Box<Runtime>,
     pub lock: Arc<Mutex<ThreadPool>>,
@@ -27,6 +28,7 @@ pub struct Thread {
 impl Thread {
     pub fn new(runtime: Runtime) -> Thread {
         Thread {
+            PC: 0,
             runtime: Box::from(runtime),
             stack: Box::from(JVMStack::new(0)),
             lock: Arc::new(Mutex::new(ThreadPool::new()))
@@ -35,6 +37,9 @@ impl Thread {
 
     pub fn sleep(&mut self) {
         self.lock.lock();
+    }
+
+    pub fn unlock(&mut self) {
         let guard = self.lock.lock().unwrap();
         std::mem::drop(guard);
     }
@@ -51,7 +56,10 @@ impl Thread {
         self.stack.top()
     }
 
-    pub fn invoke_method_with_shim(&self) {}
+    pub fn invoke_method_with_shim(&mut self) {
+
+        //  self.push_frame()
+    }
 }
 
 pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Decode> {
@@ -92,11 +100,11 @@ mod tests {
         let mut thread = create_main_thread(String::from(jre_home), String::from(""));
 
         let mut frame1 = create_frame(first, &mut thread);
-        let first_execs = execute_method(&mut frame1, first.clone().code);
+        let first_execs = execute_method(&mut frame1, first.method_data.clone().code);
         assert_eq!(5, first_execs.len());
 
         let mut frame2 = create_frame(second, &mut thread);
-        let execs = execute_method(&mut frame2, second.clone().code);
+        let execs = execute_method(&mut frame2, second.method_data.clone().code);
         assert_eq!(9, execs.len());
     }
 }

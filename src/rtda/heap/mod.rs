@@ -1,3 +1,4 @@
+pub mod member;
 pub mod class_loader;
 pub mod instanced_klass;
 pub mod j_constant;

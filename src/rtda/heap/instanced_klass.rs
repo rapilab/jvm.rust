@@ -7,7 +7,7 @@ use crate::classfile::constant_pool::CpEntry;
 use crate::classfile::member_info::MemberInfo;
 use crate::classfile::parsed_class::ParsedClass;
 use crate::rtda::heap::j_constant::{JConstant, JField, JMethodRef, JString};
-use crate::rtda::heap::j_method::JMethod;
+use crate::rtda::heap::j_method::{JMethod, MethodData};
 use crate::rtda::heap::method_descriptor::MethodDescriptor;
 
 #[derive(Debug, Clone)]
@@ -77,8 +77,9 @@ impl InstanceKlass {
     pub fn fill_methods(&mut self, methods: Vec<MemberInfo>) {
         for x in methods {
             let mut j_method = JMethod::new();
+            // let method_data = MethodData::new();
             j_method.name = self.klass_name.clone();
-            j_method.attribute_table = x.attribute_table.clone();
+            j_method.method_data.attribute_table = x.attribute_table.clone();
             j_method.klass = self.clone().borrow().clone();
             j_method.descriptor = self.get_method_descriptor(x.clone());
 
@@ -86,9 +87,8 @@ impl InstanceKlass {
                 match j {
                     AttributeInfo::Code(code) => {
                         j_method.max_stack = code.max_stack;
-                        j_method.code = code.code;
+                        j_method.method_data.code = code.code;
                         j_method.max_locals = code.max_locals;
-                        j_method.exception_table = code.exception_table;
                     }
                     _ => {}
                 }

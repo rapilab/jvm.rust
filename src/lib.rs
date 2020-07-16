@@ -2,6 +2,8 @@ use crate::classpath::class_path::ClassPath;
 use crate::instructions::decoder::decoder;
 use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::thread::Thread;
+use crate::rtda::heap::j_method::JMethod;
+use crate::rtda::shim_method::new_shim_member;
 
 pub mod classfile;
 pub mod classpath;
@@ -12,7 +14,7 @@ pub fn create_main_thread(jre_home: String, source: String) -> Thread {
     let cp = ClassPath::parse(String::from(jre_home), String::from(source));
     let runtime = Runtime::new(cp);
 
-    let main_thread = Thread::new(runtime);
+    let mut main_thread = Thread::new(runtime);
 
     main_thread.invoke_method_with_shim();
 
@@ -31,7 +33,7 @@ fn looper(thread: Thread) {
     match current_frame {
         None => {}
         Some(mut frame) => {
-            let mut vec = decoder(frame.clone().method.code);
+            let mut vec = decoder(frame.clone().method.method_data.code);
             vec[0].ins.execute(&mut frame);
         }
     }
