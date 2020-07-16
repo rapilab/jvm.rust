@@ -22,6 +22,11 @@ pub fn create_main_thread(jre_home: String, source: String) -> Thread {
 pub fn start_vm(jre: String, source: String) {
     let thread = create_main_thread(jre, source);
 
+    // loop here
+    looper(thread)
+}
+
+fn looper(thread: Thread) {
     let current_frame = thread.current_frame();
     match current_frame {
         None => {}
