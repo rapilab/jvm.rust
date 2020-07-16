@@ -38,8 +38,8 @@ impl ClassLoader {
 #[cfg(test)]
 mod tests {
     use crate::classfile::attribute_info::AttributeInfo;
-    use crate::classfile::parsed_class::ParsedClass;
-    use crate::classpath::class_file_entry::ClassFileEntry;
+    
+    
     use crate::rtda::heap::class_loader::ClassLoader;
     use crate::rtda::heap::instanced_klass::InstanceKlass;
 
@@ -130,6 +130,6 @@ mod tests {
     fn should_get_array_type() {
         let path = "testdata/java8/ArraySample.class";
         let mut class_loader = ClassLoader::new();
-        let klass = class_loader.build_user_class(String::from(path));
+        let _klass = class_loader.build_user_class(String::from(path));
     }
 }

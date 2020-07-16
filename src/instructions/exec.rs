@@ -15,7 +15,7 @@ impl<T> InstructionExecClone for T
 }
 
 // We can now implement Clone manually by forwarding to clone_box.
-impl Clone for Box<InstructionExec> {
+impl Clone for Box<dyn InstructionExec> {
     fn clone(&self) -> Box<dyn InstructionExec> {
         self.clone_box()
     }

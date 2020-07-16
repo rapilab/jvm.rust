@@ -214,7 +214,7 @@ mod tests {
     fn should_eq_count_entries_length() {
         let entry = ClassFileEntry::new();
         let stream = entry.open_stream(String::from("testdata/java8/HelloWorld.Class"));
-        let mut parser = ParsedClass::new(stream);
+        let parser = ParsedClass::new(stream);
         assert_eq!(
             parser.constant_pool_count,
             parser.constant_pool_entries.len() as u8

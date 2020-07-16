@@ -1,4 +1,3 @@
-use crate::instructions::exec::InstructionExec;
 use crate::rtda::frame::Frame;
 use crate::rtda::heap::j_method::JMethod;
 use crate::rtda::heap::runtime::Runtime;
@@ -55,7 +54,7 @@ pub fn create_frame(method: &JMethod, thread: &mut Thread) -> Frame {
 mod tests {
     use crate::classpath::class_path::ClassPath;
     use crate::rtda::heap::runtime::Runtime;
-    use crate::rtda::thread::{create_frame, execute_method, Thread};
+    use crate::rtda::thread::{create_frame, execute_method};
     use crate::create_main_thread;
 
     #[test]

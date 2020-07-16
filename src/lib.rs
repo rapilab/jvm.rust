@@ -23,7 +23,7 @@ pub fn create_main_thread(jre_home: String, source: String) -> Thread {
 pub fn start_vm(jre: String, source: String) {
     let thread = create_main_thread(jre, source);
 
-    let mut current_frame = thread.current_frame();
+    let current_frame = thread.current_frame();
     match current_frame {
         None => {},
         Some(mut frame) => {
@@ -73,7 +73,7 @@ mod tests {
 
         let mut can_get_hello_class = false;
         for i in 0..za.len() {
-            let mut zf = za.by_index(i).unwrap();
+            let zf = za.by_index(i).unwrap();
             if zf.name().contains("HelloWorld.class") {
                 // println!("{}", zf.name());
                 can_get_hello_class = true;
