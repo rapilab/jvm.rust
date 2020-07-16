@@ -9,6 +9,12 @@ struct A<'a> {
     c: &'a C, // now this is a reference too
 }
 
+impl<'a> A<'a> {
+    fn new(c: &'a C) -> A<'a> {
+        A {c: c, b: B{c: c}}
+    }
+}
+
 fn main() {
     let c1 = C;
     let _ = A {
