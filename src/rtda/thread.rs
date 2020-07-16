@@ -7,6 +7,7 @@ use std::borrow::Borrow;
 use std::sync::{Mutex, Arc};
 use crate::rtda::shim_method::{new_shim_frame};
 use std::cell::RefCell;
+use std::rc::Rc;
 
 #[derive(Debug, Clone)]
 pub struct ThreadPool {}
@@ -72,9 +73,10 @@ pub fn execute_method(frame: &mut Frame, instr: Vec<u8>) -> Vec<Decode> {
     vec
 }
 
-pub fn create_frame(method: &JMethod, thread: &mut Thread) -> Frame {
-    let frame = thread.clone().new_frame(method.clone());
-    thread.push_frame(frame.borrow());
+pub fn create_frame(method: &JMethod, thread: Rc<RefCell<Thread>>) -> Frame {
+    let mut ref_mut = thread.borrow_mut();
+    let frame = ref_mut.new_frame(method.clone());
+    ref_mut.push_frame(frame.borrow());
     frame
 }
 
@@ -84,6 +86,15 @@ mod tests {
     use crate::create_main_thread;
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::{create_frame, execute_method};
+    use std::sync::Arc;
+    use std::borrow::BorrowMut;
+
+    #[test]
+    fn test_vec() {
+        let v = Vec::from("Ljava/lang/Object;");
+        let v = Arc::new(v);
+        println!("{:?}", v);
+    }
 
     #[test]
     fn test_frame() {
@@ -99,11 +110,11 @@ mod tests {
         let jre_home = "/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre";
         let mut thread = create_main_thread(String::from(jre_home), String::from(""));
 
-        let mut frame1 = create_frame(first, &mut thread);
+        let mut frame1 = create_frame(first, thread.clone());
         let first_execs = execute_method(&mut frame1, first.method_data.clone().code);
         assert_eq!(5, first_execs.len());
 
-        let mut frame2 = create_frame(second, &mut thread);
+        let mut frame2 = create_frame(second, thread.clone());
         let execs = execute_method(&mut frame2, second.method_data.clone().code);
         assert_eq!(9, execs.len());
     }

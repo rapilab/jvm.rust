@@ -2,19 +2,22 @@ use crate::classpath::class_path::ClassPath;
 use crate::instructions::decoder::decoder;
 use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::thread::Thread;
+use std::rc::Rc;
+use std::cell::RefCell;
+use std::collections::HashMap;
 
 pub mod classfile;
 pub mod classpath;
 pub mod instructions;
 pub mod rtda;
 
-pub fn create_main_thread(jre_home: String, source: String) -> Thread {
+pub fn create_main_thread(jre_home: String, source: String) -> Rc<RefCell<Thread>> {
     let cp = ClassPath::parse(String::from(jre_home), String::from(source));
     let runtime = Runtime::new(cp);
 
-    let mut main_thread = Thread::new(runtime);
+    let mut main_thread = Rc::new(RefCell::new(Thread::new(runtime)));
 
-    main_thread.clone().invoke_method_with_shim();
+    main_thread.borrow_mut().invoke_method_with_shim();
 
     main_thread
 }
@@ -25,8 +28,8 @@ pub fn start_vm(jre: String, source: String) {
     looper(thread)
 }
 
-fn looper(thread: Thread) {
-    let current_frame = thread.current_frame();
+fn looper(thread: Rc<RefCell<Thread>>) {
+    let current_frame = thread.borrow_mut().current_frame();
     match current_frame {
         None => {}
         Some(mut frame) => {
