@@ -16,14 +16,13 @@ pub fn create_main_thread(jre_home: String, source: String) -> Thread {
 
     let mut main_thread = Thread::new(runtime);
 
-    main_thread.invoke_method_with_shim();
+    main_thread.clone().invoke_method_with_shim();
 
     main_thread
 }
 
 pub fn start_vm(jre: String, source: String) {
     let thread = create_main_thread(jre, source);
-
     // loop here
     looper(thread)
 }

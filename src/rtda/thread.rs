@@ -5,6 +5,7 @@ use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::jvm_stack::JVMStack;
 use std::borrow::Borrow;
 use std::sync::{Mutex, Arc};
+use crate::rtda::shim_method::{new_shim_member, new_shim_frame};
 
 #[derive(Debug, Clone)]
 pub struct ThreadPool {
@@ -56,8 +57,8 @@ impl Thread {
         self.stack.top()
     }
 
-    pub fn invoke_method_with_shim(&mut self) {
-
+    pub fn invoke_method_with_shim(self) {
+        new_shim_frame(Box::new(self));
         //  self.push_frame()
     }
 }

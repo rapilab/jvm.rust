@@ -11,17 +11,22 @@ pub fn new_shim_member(name: String) -> ClassMember {
     }
 }
 
-pub fn shim_return_method() {
-    let member = new_shim_member(String::from("<return>"));
-    let data = MethodData::new();
-    // data.
+pub fn shim_return_method() -> JMethod {
+    // let member = new_shim_member(String::from("<return>"));
+    let mut data = MethodData::new();
+    data.code = vec![0xb1];
+
+    let mut method = JMethod::new();
+    method.method_data = data;
+
+    method
 }
 
-pub fn new_shim_frame(thread: Thread) -> Frame {
+pub fn new_shim_frame(thread: Box<Thread>) -> Frame {
     Frame {
         local_vars: LocalVars::new(),
         operand_stack: OperandStack::new(),
-        thread: Box::new(thread),
+        thread,
         method: JMethod::new(),
         max_locals: 0,
         max_stack: 0,
