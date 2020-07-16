@@ -1,13 +1,13 @@
 use crate::rtda::frame::Frame;
 
 #[derive(Debug, Clone)]
-pub struct JVMStack {
+pub struct JVMStack<'a> {
     max_size: usize,
     size: usize,
-    top: Option<Frame>,
+    top: Option<Frame<'a>>,
 }
 
-impl JVMStack {
+impl<'a> JVMStack<'a> {
     pub fn new(_max_size: usize) -> JVMStack {
         JVMStack {
             max_size: 0,

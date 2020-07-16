@@ -50,16 +50,16 @@ impl Thread {
     }
 
     pub fn new_frame(&self, method: JMethod) -> Frame {
-        Frame::new(Box::from(self.clone()), method)
+        Frame::new(self, method)
     }
 
     pub fn current_frame(&self) -> Option<Frame> {
         self.stack.top()
     }
 
-    pub fn invoke_method_with_shim(self) {
-        new_shim_frame(Box::new(self));
-        //  self.push_frame()
+    pub fn invoke_method_with_shim(&mut self) {
+        let frame = new_shim_frame(self);
+        self.push_frame(&frame);
     }
 }
 
