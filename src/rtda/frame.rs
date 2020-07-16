@@ -30,19 +30,19 @@ impl OperandStack {
 }
 
 #[derive(Debug, Clone)]
-pub struct Frame<'a> {
+pub struct Frame {
     pub local_vars: LocalVars,
     pub operand_stack: OperandStack,
-    pub thread: &'a Thread,
+    pub thread: Box<Thread>,
     pub method: JMethod,
     pub max_locals: u16,
     pub max_stack: u16,
     pub next_pc: u16  // Program Counter
 }
 
-impl<'a> Frame<'a> {
-    pub fn new(thread: &Thread, method: JMethod) -> Frame<'a> {
-        Self {
+impl Frame {
+    pub fn new(thread: Box<Thread>, method: JMethod) -> Frame {
+        Frame {
             max_locals: 0,
             max_stack: 0,
             thread,

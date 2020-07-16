@@ -22,7 +22,7 @@ pub fn shim_return_method() -> JMethod {
     method
 }
 
-pub fn new_shim_frame(thread: &Thread) -> Frame {
+pub fn new_shim_frame(thread: Box<Thread>) -> Frame {
     Frame {
         local_vars: LocalVars::new(),
         operand_stack: OperandStack::new(),
