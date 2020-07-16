@@ -2,8 +2,6 @@ use crate::classpath::class_path::ClassPath;
 use crate::instructions::decoder::decoder;
 use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::thread::Thread;
-use crate::rtda::heap::j_method::JMethod;
-use crate::rtda::shim_method::new_shim_member;
 
 pub mod classfile;
 pub mod classpath;

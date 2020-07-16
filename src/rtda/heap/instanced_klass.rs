@@ -7,7 +7,7 @@ use crate::classfile::constant_pool::CpEntry;
 use crate::classfile::member_info::MemberInfo;
 use crate::classfile::parsed_class::ParsedClass;
 use crate::rtda::heap::j_constant::{JConstant, JField, JMethodRef, JString};
-use crate::rtda::heap::j_method::{JMethod, MethodData};
+use crate::rtda::heap::j_method::{JMethod};
 use crate::rtda::heap::method_descriptor::MethodDescriptor;
 
 #[derive(Debug, Clone)]

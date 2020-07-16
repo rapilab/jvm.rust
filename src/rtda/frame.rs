@@ -2,6 +2,7 @@ use crate::rtda::heap::j_constant::JConstant;
 use crate::rtda::heap::j_method::JMethod;
 use crate::rtda::heap::slot::Slot;
 use crate::rtda::thread::Thread;
+use std::cell::RefCell;
 
 #[derive(Debug, Clone)]
 pub struct LocalVars {
@@ -33,7 +34,7 @@ impl OperandStack {
 pub struct Frame {
     pub local_vars: LocalVars,
     pub operand_stack: OperandStack,
-    pub thread: Box<Thread>,
+    pub thread: RefCell<Thread>,
     pub method: JMethod,
     pub max_locals: u16,
     pub max_stack: u16,
@@ -41,11 +42,11 @@ pub struct Frame {
 }
 
 impl Frame {
-    pub fn new(thread: Box<Thread>, method: JMethod) -> Frame {
+    pub fn new(thread: RefCell<Thread>, method: JMethod) -> Frame {
         Frame {
             max_locals: 0,
             max_stack: 0,
-            thread,
+            thread: thread,
             local_vars: LocalVars::new(),
             operand_stack: OperandStack::new(),
             method,

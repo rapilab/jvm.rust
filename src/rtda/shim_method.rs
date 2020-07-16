@@ -2,6 +2,7 @@ use crate::rtda::heap::member::ClassMember;
 use crate::rtda::heap::j_method::{JMethod, MethodData};
 use crate::rtda::frame::{Frame, LocalVars, OperandStack};
 use crate::rtda::thread::Thread;
+use std::cell::RefCell;
 
 pub fn new_shim_member(name: String) -> ClassMember {
     ClassMember {
@@ -22,7 +23,8 @@ pub fn shim_return_method() -> JMethod {
     method
 }
 
-pub fn new_shim_frame(thread: Box<Thread>) -> Frame {
+pub fn new_shim_frame(thread: RefCell<Thread>) -> Frame {
+    // let x = **thread;;
     Frame {
         local_vars: LocalVars::new(),
         operand_stack: OperandStack::new(),

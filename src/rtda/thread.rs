@@ -5,12 +5,11 @@ use crate::rtda::heap::runtime::Runtime;
 use crate::rtda::jvm_stack::JVMStack;
 use std::borrow::Borrow;
 use std::sync::{Mutex, Arc};
-use crate::rtda::shim_method::{new_shim_member, new_shim_frame};
+use crate::rtda::shim_method::{new_shim_frame};
+use std::cell::RefCell;
 
 #[derive(Debug, Clone)]
-pub struct ThreadPool {
-
-}
+pub struct ThreadPool {}
 
 impl ThreadPool {
     pub fn new() -> ThreadPool {
@@ -32,7 +31,7 @@ impl Thread {
             PC: 0,
             runtime: Box::from(runtime),
             stack: Box::from(JVMStack::new(0)),
-            lock: Arc::new(Mutex::new(ThreadPool::new()))
+            lock: Arc::new(Mutex::new(ThreadPool::new())),
         }
     }
 
@@ -50,16 +49,16 @@ impl Thread {
     }
 
     pub fn new_frame(&self, method: JMethod) -> Frame {
-        Frame::new(Box::from(self.clone()), method)
+        Frame::new(RefCell::new(self.clone()), method)
     }
 
     pub fn current_frame(&self) -> Option<Frame> {
         self.stack.top()
     }
 
-    pub fn invoke_method_with_shim(self) {
-        new_shim_frame(Box::new(self));
-        //  self.push_frame()
+    pub fn invoke_method_with_shim(&mut self) {
+        // let frame = new_shim_frame(RefCell::from(**self));
+        // self.push_frame(&frame)
     }
 }
 
