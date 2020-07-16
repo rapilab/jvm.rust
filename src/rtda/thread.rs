@@ -54,9 +54,9 @@ pub fn create_frame(method: &JMethod, thread: &mut Thread) -> Frame {
 #[cfg(test)]
 mod tests {
     use crate::classpath::class_path::ClassPath;
-    use crate::rtda::create_main_thread;
     use crate::rtda::heap::runtime::Runtime;
     use crate::rtda::thread::{create_frame, execute_method, Thread};
+    use crate::create_main_thread;
 
     #[test]
     fn test_frame() {
@@ -70,7 +70,7 @@ mod tests {
         let first = klass.methods.get(0).unwrap();
 
         let jre_home = "/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre";
-        let mut thread = create_main_thread(String::from(jre_home));
+        let mut thread = create_main_thread(String::from(jre_home), String::from(""));
 
         let mut frame1 = create_frame(first, &mut thread);
         let first_execs = execute_method(&mut frame1, first.clone().code);
